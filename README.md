@@ -1,1 +1,3 @@
-# gsv.js
+# GeoSmartCity client
+
+[project wiki pages] (wiki)
