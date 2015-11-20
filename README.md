@@ -1,3 +1,3 @@
 # GeoSmartCity client
 
-[project wiki pages] (wiki)
+[project wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki)
