@@ -5,14 +5,7 @@
  * applications.</p>
  *
  * @namespace
- * @requires d3.v3
- * @requires jQuery-1.10.2
- * @requires jQuery-xml2json
- * @requires jQuery-number-2.1.3
- * @requires topojson
- * @requires simple-statistics
- * @requires queue.v1
- * @requires topojson.v1
+ * @requires jQuery-2.1.4
  */
 
 var gsc = {
