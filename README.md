@@ -3,6 +3,7 @@
 [project wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki)
 
 ## To be done
+AVINET to do before next meeting (before Christmas)
 * Add a 'test' catalogue to the source structure
 * To contain one index.html file that provides a framework for navigating and displaying examples
 * An increasing number of example-*.html files to illustrate how to use the use (http://sit.comune.catania.gov.it/mapwork-api/examples/) as a template to get an idea
