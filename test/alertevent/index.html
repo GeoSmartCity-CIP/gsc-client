@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST alert event functionality</title>
+    <script src="../../src/gsc.js" type="text/javascript"></script>
+    <script src="../../deps/jquery/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script src="../../src/alertevent/alertevent.js" type="text/javascript"></script>
+
+    <script>
+        var AE = gsc.alertevent.AE('http://geo.mapshakers.com:8080/CrowsSourcing');
+
+        function print(err,data){
+            if (err){
+                console.error(err);
+                return;
+            }
+            console.log(data);
+        }
+
+        function getConfig() {
+            AE.getConfig(print);
+        }
+
+
+        function eventComment(){
+            var data = {
+                "user": {
+                    "id": "franta",
+                    "email": "franta@nowhere.com"
+                },
+                "text": "A new comment",
+                "datetime": "$(date +'%Y-%m-%dT%H:%M:%SZ')"
+            };
+
+            AE.eventComment(print,data);
+        }
+
+        function eventCreate1(){
+
+            var data ={
+                "id": Math.round(Math.random()*100000),
+                "description": "An event with 1 attachment",
+                "media": [{"type": "image/jpeg", "uri": "test"}],
+                "user": {
+                    "id": "karel",
+                    "email": "karel@unckle.com",
+                    "role": "admin",
+                    "organization": "family"
+                },
+                "location": {
+                    "lat": 23.43,
+                    "lon": 33.1,
+                    "crs": "epsg:4326"
+                },
+                "priority": "normal",
+                "datetime": $.now(),
+                "status": "created"
+            };
+
+            AE.eventCreate(print,data);
+        }
+
+        function eventCreate2(){
+
+            var data ={
+                "id": Math.round(Math.random()*100000),
+                "description": "An event with 2 attachments",
+                "media": [
+                    {"type": "image/jpeg", "uri": "test1"},
+                    {"type": "image/jpeg", "uri": "test2"}
+                ],
+                "user": {
+                    "id": "karel",
+                    "email": "karel@unckle.com",
+                    "role": "admin",
+                    "organization": "family"
+                },
+                "location": {
+                    "lat": 23.43,
+                    "lon": 33.1,
+                    "crs": "epsg:4326"
+                },
+                "priority": "normal",
+                "datetime": $.now(),
+                "status": "created"
+            };
+
+            AE.eventCreate(print,data);
+        }
+
+
+        function eventListFilterBbox(){
+
+            var data ={
+                "bbox": {
+                    "lat-min": 23,
+                    "lon-min": 33.1,
+                    "lat-max": 24,
+                    "lon-max": 33.1,
+                    "crs": "epsg:4326"
+                }
+            };
+
+            AE.eventListFilter(print,data);
+        }
+
+
+        function eventListFilterDateTime1(){
+
+            var data ={
+                "datetime": {
+                    "from": "2015-12-05T10:32:00"
+                }
+            };
+
+            AE.eventListFilter(print,data);
+        }
+
+        function eventListFilterDateTime2(){
+
+            var data ={
+                "datetime": {
+                    "from": "2014-12-03T00:00:00",
+                    "to": "2015-12-03T00:00:00"
+                }
+            };
+
+            AE.eventListFilter(print,data);
+        }
+
+        function eventListFilterDateTime3(){
+
+            var data ={
+                "datetime": {
+                    "to": "2015-12-03T00:00:00"
+                }
+            };
+
+            AE.eventListFilter(print,data);
+        }
+
+        function eventListFilterEmpty(){
+
+            var data ={};
+
+            AE.eventListFilter(print,data);
+        }
+
+        function eventListFilterPriority(){
+
+            var data ={
+                "priority": [
+                ]
+            };
+
+            AE.eventListFilter(print,data);
+        }
+    </script>
+</head>
+<body>
+<h1>Hello, it's me.</h1>
+<p> Just open your dev console and wonder happens </p>
+<p>
+    <button onclick="getConfig()">get config</button>
+    <button onclick="eventComment()">event comment</button>
+    <button onclick="eventCreate1()">event create 1</button>
+    <button onclick="eventCreate2()">event create 2</button>
+    <button onclick="eventListFilterBbox()">filter bbox</button>
+    <button onclick="eventListFilterDateTime1()">filter datetime from</button>
+    <button onclick="eventListFilterDateTime2()">filter datetime from to</button>
+    <button onclick="eventListFilterDateTime3()">filter datetime to</button>
+    <button onclick="eventListFilterEmpty()">filter empty</button>
+    <button onclick="eventListFilterPriority()">filter priority</button>
+</p>
+</body>
+</html>
