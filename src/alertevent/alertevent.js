@@ -1,6 +1,6 @@
 /**
  *
- * @namespace sgc
+ * @namespace gsc
  */
 
 gsc.alertevent = {};
@@ -9,7 +9,7 @@ gsc.alertevent = {};
  * Create an alert event object
  *
  * @constructor
- * @param {String} url The url of a server
+ * @param {String} url The url of an aplication
  */
 
 gsc.alertevent.AE = function(url) {
@@ -34,18 +34,18 @@ gsc.alertevent.AE = function(url) {
 
     };
 
-
     /**
-     * Create comment
+     * Create a comment
      *
      * @param {Function} callback The calback function f(error,data)
      * @param {JSON} data The JSON data object
+     * @param {String} uuid Identification string of event
      */
-    _self.eventComment =  function(callback,data){
+    _self.eventComment =  function(callback,data,uuid){
 
 
         $.ajax({
-            url: url + '/event/comment',
+            url: url + '/event/comment/'+uuid,
             type: 'POST',
             data: JSON.stringify(data),
             contentType: 'application/json; charset=utf-8',
@@ -63,16 +63,17 @@ gsc.alertevent.AE = function(url) {
      * Create an event
      *
      * @param {Function} callback The calback function f(error,data)
-     * @param {JSON} data The JSON data object
+     * @param {JSON} formdata The formdata object (JSON + attachment)
      */
-    _self.eventCreate =  function(callback,data){
+    _self.eventCreate =  function(callback,formdata){
 
-        $.ajax({
+       $.ajax({
                 url: url + '/event/create',
                 type: 'POST',
-                data: JSON.stringify(data),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json'}
+                data: formdata,
+                processData : false,
+                contentType : false,
+            }
         )
             .done(function( data ) {
                 console.log( data );
