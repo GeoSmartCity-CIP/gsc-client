@@ -63,7 +63,7 @@ gsc.alertevent.AE = function(url) {
      * Create an event
      *
      * @param {Function} callback The calback function f(error,data)
-     * @param {JSON} formdata The formdata object (JSON + attachment)
+     * @param {FormData} formdata The FormData object (JSON + attachment)
      */
     _self.eventCreate =  function(callback,formdata){
 
