@@ -73,7 +73,7 @@
             var data ={
                 "id":createUuidgen(),
                 "description": "An event with 1 attachment",
-                "media": [{"type": "image/jpeg", "uri": "test"}],
+                "media": [{"type": "image/jpeg", "uri": "part://1"}],
                 "user": {
                     "id": "Filip_"+createUuidgen(),
                     "email": "karel@unckle.com",
@@ -87,7 +87,7 @@
                 },
                 "priority": "normal",
                 "datetime": getTimeStamp(),
-                "status": "created"
+                "status": "submitted"
             };
 
             var request = new FormData();
@@ -103,8 +103,8 @@
                 "id":createUuidgen(),
                 "description": "An event with 2 attachments",
                 "media": [
-                    {"type": "image/jpeg", "uri": "test1"},
-                    {"type": "image/jpeg", "uri": "test2"}
+                    {"type": "image/jpeg", "uri": "part://1"},
+                    {"type": "image/jpeg", "uri": "part://2"}
                 ],
                 "user": {
                     "id": "Filip_"+createUuidgen(),
@@ -119,7 +119,7 @@
                 },
                 "priority": "normal",
                 "datetime": getTimeStamp(),
-                "status": "created"
+                "status": "submitted"
             };
 
             var request = new FormData();
