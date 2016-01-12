@@ -92,7 +92,7 @@
 
             var request = new FormData();
             request.append('event', JSON.stringify(data));
-            request.append('part://1', "@checkmark-512.png");
+            request.append('part://1', $('input[type=file]')[0].files[0]);
 
             AE.eventCreate(print,request);
         }
@@ -124,8 +124,8 @@
 
             var request = new FormData();
             request.append('event', JSON.stringify(data));
-            request.append('part://1', "@checkmark-512.png");
-            request.append('part://2', "@checkmark-256.png");
+            request.append('part://1', $('input[type=file]')[0].files[0]);
+            request.append('part://2', $('input[type=file]')[0].files[0]);
 
             AE.eventCreate(print,request);
         }
@@ -214,6 +214,11 @@
     <button onclick="eventListFilterDateTime3()">filter datetime to</button>
     <button onclick="eventListFilterEmpty()">filter empty</button>
     <button onclick="eventListFilterPriority()">filter priority</button>
+
+
+<form id="upload" method="post" action="" enctype="multipart/form-data">
+    <input class="input-file" id="fileInput" type="file" name="file">
+</form>
 </p>
 </body>
 </html>
