@@ -7,7 +7,7 @@
 
 ## Goals
 * this library should be simple as much as possible
-* this library should be independent as much as possible (if you need any other library, do not forget to edit file `package.json` )
+* this library should be independent as much as possible (if you need any other library, do not forget to edit dependecies in `package.json` and add the library files to `deps` dir  )
 * each feature should have simple test page (single `html` document)
 
 ## How to start
