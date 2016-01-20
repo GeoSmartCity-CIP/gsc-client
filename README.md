@@ -1,9 +1,17 @@
-# GeoSmartCity client
+# GeoSmartCity client library gsc.js
 
-[project wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki)
+## Usefull links
+* [wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki)
+* [Meeting timetable and minutes] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki/Meeting-timetable-and-minutes)
+* [Geoadmin questions](https://github.com/GeoSmartCity-CIP/gsc-geoadmin/wiki/GeoAdmin%20QA)
 
-## To be done
-AVINET to do before next meeting (before Christmas)
-* Add a 'test' catalogue to the source structure
-* To contain one index.html file that provides a framework for navigating and displaying examples
-* An increasing number of example-*.html files to illustrate how to use the use (http://sit.comune.catania.gov.it/mapwork-api/examples/) as a template to get an idea
+## Goals
+* this library should be simple as much as possible
+* this library should be independent as much as possible (if you need any other library, do not forget to edit file `package.json` )
+* each feature should have simple test page (single `html` document)
+
+## How to start
+ * Look at the table of responsibilities [here](https://github.com/GeoSmartCity-CIP/gsc-client/wiki/List-of-tasks-and-responsible-partner) and for a clarification use delivered mockups
+ * Create a new branch [help](https://github.com/GeoSmartCity-CIP/gsc-client/wiki/git-workflow#starting-a-new-feature)
+ * As an example you can use [this](https://github.com/GeoSmartCity-CIP/gsc-client/tree/feature/workflow-alert-event) if there is a bug, open issue
+ * Start coding your feature
