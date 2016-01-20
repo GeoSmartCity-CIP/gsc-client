@@ -1,6 +1,6 @@
 # GeoSmartCity client library gsc.js
 
-## Usefull links
+## Useful links
 * [wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki)
 * [Meeting timetable and minutes] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki/Meeting-timetable-and-minutes)
 * [Geoadmin questions](https://github.com/GeoSmartCity-CIP/gsc-geoadmin/wiki/GeoAdmin%20QA)
