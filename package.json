@@ -11,9 +11,10 @@
   "bugs": {
     "url": "https://github.com/GeoSmartCity-CIP/gsc-client/issues"
   },
+  "license": "Apache2",
   "licenses": [
     {
-      "type": "Apache2",
+      "type": "APACHE2",
       "url": "https://github.com/GeoSmartCity-CIP/gsc-client/blob/master/LICENSE"
     }
   ],
@@ -34,9 +35,13 @@
     "grunt-jscs": "^2.3.0",
     "grunt-jsdoc": "^1.0.0"
   },
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery.1": "^1.0.0",
+    "openlayers": "^3.13.0"
+  },
   "keywords": [],
   "directories": {
     "doc": "doc"
-  },
-  "license": "Apache2"
+  }
 }
