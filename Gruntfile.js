@@ -30,7 +30,7 @@ module.exports = function (grunt) {
         jsdoc: {
             dist: {
                 src: [
-                    'README.md',
+                    'DOC.md',
                     'dist/*.js'
                 ],
                 options: {
