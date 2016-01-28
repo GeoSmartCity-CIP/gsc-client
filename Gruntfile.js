@@ -19,14 +19,20 @@ module.exports = function (grunt) {
             dist: {
                 nonull: true,
                 src: [
-                    'src/<%= pkg.name %>.js'
+                    'src/<%= pkg.name %>.js',
+                    'src/auth/LoginSession.js',
+                    'src/auth/User.js',
+                    'src/auth/auth.js'
                 ],
                 dest: 'dist/<%= pkg.name %>.js'
             },
         },
         jsdoc: {
             dist: {
-                src: ['dist/*.js'],
+                src: [
+                    'README.md',
+                    'dist/*.js'
+                ],
                 options: {
                     destination: 'doc'
                 }
