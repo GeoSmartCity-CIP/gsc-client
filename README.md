@@ -1,17 +1,23 @@
-# GeoSmartCity client library gsc.js
+# GeoSmartCity Client Side JavaScript Library API
 
-## Useful links
+## Status
+* The library is under Development
+
+## Useful links for contributors
 * [wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki)
 * [Meeting timetable and minutes] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki/Meeting-timetable-and-minutes)
 * [Geoadmin questions](https://github.com/GeoSmartCity-CIP/gsc-geoadmin/wiki/GeoAdmin%20QA)
 
-## Goals
-* this library should be simple as much as possible
-* this library should be independent as much as possible *(if you need any other library, do not forget to edit dependencies in `package.json` and add the library files to `deps` dir)*
-* each feature should have simple test page *(single `html` document)*
+## How to install
+todo
 
-## How to start
+## How to start contribute
  * Look at the table of responsibilities [here](https://github.com/GeoSmartCity-CIP/gsc-client/wiki/List-of-tasks-and-responsible-partner) and for a clarification use delivered mockups
  * Create a new branch ([how to](https://github.com/GeoSmartCity-CIP/gsc-client/wiki/git-workflow#starting-a-new-feature))
  * As an example you can use [this feature branch](https://github.com/GeoSmartCity-CIP/gsc-client/tree/feature/workflow-alert-event) if there is a bug, open issue
  * Start coding your feature
+
+
+
+## Funding
+The development of gsc.js is part-funded by the European Commission through the GeoSmartCities project.
