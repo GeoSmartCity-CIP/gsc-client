@@ -47,8 +47,6 @@
 
 
         /** LIBRARY FUNCTIONS **/
-
-
         function getConfig() {
             AE.getConfig(print);
         }
@@ -73,7 +71,7 @@
             var data ={
                 "id":createUuidgen(),
                 "description": "An event with 1 attachment",
-                "media": [{"type": "image/jpeg", "uri": "part://1"}],
+                "media": [{"type": "image/png", "uri": "part://1"}],
                 "user": {
                     "id": "Filip_"+createUuidgen(),
                     "email": "karel@unckle.com",
@@ -106,6 +104,7 @@
                     {"type": "image/jpeg", "uri": "part://1"},
                     {"type": "image/jpeg", "uri": "part://2"}
                 ],
+
                 "user": {
                     "id": "Filip_"+createUuidgen(),
                     "email": "karel@unckle.com",

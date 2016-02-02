@@ -72,7 +72,7 @@ gsc.alertevent.AE = function(url) {
                 type: 'POST',
                 data: formdata,
                 processData : false,
-                contentType : false,
+                contentType : false
             }
         )
             .done(function( data ) {
@@ -86,7 +86,7 @@ gsc.alertevent.AE = function(url) {
 
     /**
      * Filter list on bounding box
-     *
+     **
      * @param {Function} callback The calback function f(error,data)
      * @param {JSON} data The JSON data object
      */
