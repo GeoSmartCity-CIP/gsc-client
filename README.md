@@ -9,7 +9,9 @@
 * [Geoadmin questions](https://github.com/GeoSmartCity-CIP/gsc-geoadmin/wiki/GeoAdmin%20QA)
 
 ## How to install
-run `npm install`
+`git clone https://github.com/GeoSmartCity-CIP/gsc-client.git`
+`npm install`
+`grunt`
 
 ## How to start contribute
  * Look at the table of responsibilities [here](https://github.com/GeoSmartCity-CIP/gsc-client/wiki/List-of-tasks-and-responsible-partner) and for a clarification use delivered mockups
