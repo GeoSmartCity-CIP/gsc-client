@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEST alert event functionality</title>
     <script src="../../src/gsc.js" type="text/javascript"></script>
-    <script src="../../deps/jquery/jquery-2.1.4.min.js" type="text/javascript"></script>
-    <script src="../../src/alertevent/alertevent.js" type="text/javascript"></script>
+    <script src="../../node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../src/cs/cs.js" type="text/javascript"></script>
 
     <script>
-        // initialize alertevent object
-        var AE = gsc.alertevent.AE('http://geo.mapshakers.com:8080/CrowdSourcing');
+        // initialize cs object
+        var AE = gsc.cs.AE('http://geo.mapshakers.com:8080/CrowdSourcing');
 
         // callback function which catch the error or print the results to a console
         function print(err,data){

@@ -5,7 +5,7 @@
 
 var gsc = gsc || {};
 
-gsc.alertevent = {};
+gsc.cs = {};
 
 /**
  * Create an alert event object
@@ -14,7 +14,7 @@ gsc.alertevent = {};
  * @param {String} url The url of an aplication
  */
 
-gsc.alertevent.AE = function(url) {
+gsc.cs.AE = (function(url) {
   var _self = this;
   url = url || 'http://geo.mapshakers.com:8080/CrowsSourcing';
 
@@ -107,4 +107,4 @@ gsc.alertevent.AE = function(url) {
   };
 
   return _self;
-};
+})();
