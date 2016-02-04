@@ -9,9 +9,14 @@
 * [Geoadmin questions](https://github.com/GeoSmartCity-CIP/gsc-geoadmin/wiki/GeoAdmin%20QA)
 
 ## How to install
-```
+```bash
+# clone repository
 git clone https://github.com/GeoSmartCity-CIP/gsc-client.git
+
+# to isntall package (dependecies,...)
 npm install
+
+# to run tasks (jhint, nodeunit, concat, uglify, jsdoc)
 grunt
 ```
 
