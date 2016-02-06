@@ -9,7 +9,7 @@
 # clone repository
 git clone https://github.com/GeoSmartCity-CIP/gsc-client.git
 
-# to isntall package (dependecies,...)
+# to install package (dependecies,...)
 npm install
 
 # to build entire project (jhint, nodeunit, concat, uglify, jsdoc)
