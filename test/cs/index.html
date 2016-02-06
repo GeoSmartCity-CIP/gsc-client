@@ -10,7 +10,7 @@
 
     <script>
         // initialize cs object
-        var AE = gsc.cs.AE('http://geo.mapshakers.com:8080/CrowdSourcing');
+        gsc.cs.url = 'http://geo.mapshakers.com:8080/CrowsSourcing';
 
         // callback function which catch the error or print the results to a console
         function print(err,data){
@@ -48,7 +48,7 @@
 
         /** LIBRARY FUNCTIONS **/
         function getConfig() {
-            AE.getConfig(print);
+            gsc.cs.getConfig(print);
         }
 
 
@@ -63,7 +63,7 @@
             };
 
             var uuid = "5ed32063-45bd-4ac2-9f68-0bf8efa38814";
-            AE.eventComment(print,data,uuid);
+            gsc.cs.eventComment(print,data,uuid);
         }
 
         function eventCreate1(){
@@ -92,7 +92,7 @@
             request.append('event', JSON.stringify(data));
             request.append('part://1', $('input[type=file]')[0].files[0]);
 
-            AE.eventCreate(print,request);
+            gsc.cs.eventCreate(print,request);
         }
 
         function eventCreate2(){
@@ -126,7 +126,7 @@
             request.append('part://1', $('input[type=file]')[0].files[0]);
             request.append('part://2', $('input[type=file]')[0].files[0]);
 
-            AE.eventCreate(print,request);
+            gsc.cs.eventCreate(print,request);
         }
 
 
@@ -143,7 +143,7 @@
                 }
             };
 
-            AE.eventListFilter(print,data);
+            gsc.cs.eventListFilter(print,data);
         }
 
 
@@ -155,7 +155,7 @@
                 }
             };
 
-            AE.eventListFilter(print,data);
+            gsc.cs.eventListFilter(print,data);
         }
 
         function eventListFilterDateTime2(){
@@ -167,7 +167,7 @@
                 }
             };
 
-            AE.eventListFilter(print,data);
+            gsc.cs.eventListFilter(print,data);
         }
 
         function eventListFilterDateTime3(){
@@ -178,14 +178,14 @@
                 }
             };
 
-            AE.eventListFilter(print,data);
+            gsc.cs.eventListFilter(print,data);
         }
 
         function eventListFilterEmpty(){
 
             var data ={};
 
-            AE.eventListFilter(print,data);
+            gsc.cs.eventListFilter(print,data);
         }
 
         function eventListFilterPriority(){
@@ -195,7 +195,7 @@
                 ]
             };
 
-            AE.eventListFilter(print,data);
+            gsc.cs.eventListFilter(print,data);
         }
     </script>
 </head>
