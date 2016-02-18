@@ -6,19 +6,20 @@
  * @requires jQuery-2.1.4
  */
 
+
 var gsc = gsc || {};
 
 gsc.cs = {
-  /**
-   * Version number of the crowd sourcing feauture of gsc.js
-   * @type {Number}
-   */
-  version: '0.1.0',
-  /**
-   * URI of server-side crowd sourcing application
-   * @type {String}
-   */
-  url: 'http://geo.mapshakers.com:8080/CrowdSourcing'
+    /**
+     * Version number of the crowd sourcing feauture of gsc.js
+     * @type {Number}
+     */
+    version: '0.1.0',
+    /**
+     * URI of server-side crowd sourcing application
+     * @type {String}
+     */
+    url: 'http://geo.mapshakers.com:8080/CrowdSourcing'
 };
 
 /**
@@ -28,6 +29,7 @@ gsc.cs = {
  * @param {String} url The url of an application
  */
 
+
 /**
  * Receive a config file
  *
@@ -35,12 +37,12 @@ gsc.cs = {
  */
 gsc.cs.getConfig = function(callback) {
 
-  $.post(gsc.cs.url + '/config')
+    $.post(gsc.cs.url + '/config')
         .done(function(data) {
-          callback(null,data);
+            callback(null,data);
         })
         .fail(function(err) {
-          callback(err);
+            callback(err);
         });
 
 };
@@ -54,18 +56,18 @@ gsc.cs.getConfig = function(callback) {
  */
 gsc.cs.eventComment =  function(cb, data, uuid) {
 
-  $.ajax({
-          url: gsc.cs.url + '/event/comment/' + uuid,
-          type: 'POST',
-          data: JSON.stringify(data),
-          //contentType: 'application/json; charset=utf-8',
-          dataType: 'json'}
-  )
+    $.ajax({
+            url: gsc.cs.url + '/event/comment/' + uuid,
+            type: 'POST',
+            data: JSON.stringify(data),
+            //contentType: 'application/json; charset=utf-8',
+            dataType: 'json'}
+    )
         .done(function(data) {
-          cb(null,data);
+            cb(null,data);
         })
         .fail(function(err) {
-          cb(err);
+            cb(err);
         });
 };
 
@@ -77,19 +79,19 @@ gsc.cs.eventComment =  function(cb, data, uuid) {
  */
 gsc.cs.eventCreate =  function(cb, formdata) {
 
-  $.ajax({
-    url: gsc.cs.url + '/event/create',
-    type: 'POST',
-    data: formdata,
-    processData: false,
-    contentType: false
-  }
-)
+    $.ajax({
+            url: gsc.cs.url + '/event/create',
+            type: 'POST',
+            data: formdata,
+            processData: false,
+            contentType: false
+        }
+    )
         .done(function(data) {
-          cb(null,data);
+            cb(null,data);
         })
         .fail(function(err) {
-          cb(err);
+            cb(err);
         });
 };
 
@@ -101,21 +103,22 @@ gsc.cs.eventCreate =  function(cb, formdata) {
  */
 gsc.cs.eventListFilter =  function(cb, data) {
 
-  $.ajax({
-          url: gsc.cs.url + '/event/list',
-          type: 'POST',
-          data: JSON.stringify(data),
-          //contentType: 'application/json; charset=utf-8',
-          dataType: 'json'}
-  )
+    $.ajax({
+            url: gsc.cs.url + '/event/list',
+            type: 'POST',
+            data: JSON.stringify(data),
+            //contentType: 'application/json; charset=utf-8',
+            dataType: 'json'}
+    )
         .done(function(data) {
-          cb(null,data);
+            cb(null,data);
 
         })
         .fail(function(err) {
-          cb(err);
+            cb(err);
         });
 };
+
 /**
  * This callback is displayed as a global member.
  * @callback requestCallback
