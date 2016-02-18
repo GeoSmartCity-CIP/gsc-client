@@ -35,7 +35,7 @@ gsc.cs = {
  */
 gsc.cs.getConfig = function(callback) {
 
-  $.get(gsc.cs.url + '/config')
+  $.post(gsc.cs.url + '/config')
         .done(function(data) {
           callback(null,data);
         })
@@ -58,7 +58,7 @@ gsc.cs.eventComment =  function(cb, data, uuid) {
           url: gsc.cs.url + '/event/comment/' + uuid,
           type: 'POST',
           data: JSON.stringify(data),
-          contentType: 'application/json; charset=utf-8',
+          //contentType: 'application/json; charset=utf-8',
           dataType: 'json'}
   )
         .done(function(data) {
@@ -105,11 +105,12 @@ gsc.cs.eventListFilter =  function(cb, data) {
           url: gsc.cs.url + '/event/list',
           type: 'POST',
           data: JSON.stringify(data),
-          contentType: 'application/json; charset=utf-8',
+          //contentType: 'application/json; charset=utf-8',
           dataType: 'json'}
   )
         .done(function(data) {
           cb(null,data);
+
         })
         .fail(function(err) {
           cb(err);
