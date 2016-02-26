@@ -208,3 +208,37 @@ gsc.upload.Data.prototype.send = function(pc, sc, fc) {
     request.send(formData);
   }
 };
+/**
+ * Create a Data with uploaded file and building height
+ *
+ * @param {File} file First element of FileList provided by input type file
+ * @param {Number} [height] Height of the building (for solar potential calculation) in meters
+ * @constructor
+ */
+gsc.upload.Data = function(file, height) {
+  /**
+   * The name of the file referenced by the File object
+   * @type {string}
+   */
+  this.name = file.name;
+  /**
+   * Returns the last modified date of the file. Files without a known last modified date use the current date instead
+   * @type {Date}
+   */
+  this.lastModifiedDate = file.lastModifiedDate;
+  /**
+   * The size, in bytes, of the data contained in the file
+   * @type {number}
+   */
+  this.size = file.size;
+  /**
+   * A string indicating the MIME type of the data contained in the Blob. If the type is unknown, this string is empty
+   * @type {string}
+   */
+  this.type = file.type;
+  /**
+   * Height of the building (for solar potetnial calculation) in meters
+   * @type {Number}
+   */
+  this.height = height;
+};
