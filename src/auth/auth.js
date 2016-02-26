@@ -1,3 +1,5 @@
+'use strict';
+
 var gsc = gsc || {};
 
 /**
@@ -36,14 +38,30 @@ gsc.auth.login = function(email, password) {
   return null;
 };
 
+/**
+ * Log out of system
+ */
 gsc.auth.logout = function() {
+
+    // Pseudo code
+    // Log out
 
 };
 
+/**
+ * Update a user profile
+ *
+ * @return {gsc.auth.User} The updated user object
+ */
 gsc.auth.update = function() {
 
 };
 
+/**
+ * Delete a user profile
+ *
+ * @return {gsc.auth.User} The deleted user object
+ */
 gsc.auth.delete = function() {
 
 };
