@@ -72,3 +72,16 @@ gsc.upload.Data.isFileSizeCorrect = function() {
     return false;
   }
 };
+/**
+ * Checks if type of file to be uploaded is acceptable by config {@link gsc.upload#fileType}
+ *
+ * @returns {boolean} True if file type is acceptable
+ */
+gsc.upload.Data.isFileTypeCorrect = function() {
+  gsc.upload.fileType.forEach(function(fileType) {
+    if (gsc.upload.Data.type === fileType) {
+      return true;
+    }
+  });
+  return false;
+};
