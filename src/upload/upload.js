@@ -3,7 +3,7 @@
  * <p>Functions to handle server side crowd sourcing app.</p>
  *
  * @namespace gsc.upload
- * //@requires jQuery-2.1.4
+ * @requires jQuery-2.1.4
  */
 
 var gsc = gsc || {};
@@ -59,4 +59,16 @@ gsc.upload.Data = function(file, height) {
    * @type {Number}
    */
   this.height = height;
+};
+/**
+ * Checks if size of file to be uploaded is smaller or equals to config {@link gsc.upload#fileSize}
+ *
+ * @returns {boolean} True if file size is smaller or equals to config
+ */
+gsc.upload.Data.isFileSizeCorrect = function() {
+  if (gsc.upload.Data.size <= gsc.upload.fileSize) {
+    return true;
+  } else {
+    return false;
+  }
 };
