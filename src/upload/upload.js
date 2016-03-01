@@ -16,7 +16,7 @@ gsc.upload = {
   version: '0.1.0',
   /**
    * Byte size of the uploading file
-   * @type {Number} [fileSize=8000000]
+   * @type {Number}
    */
   fileSize: 8000000,
   /**
@@ -34,6 +34,12 @@ gsc.upload = {
  * @constructor
  */
 gsc.upload.Data = function(file, height) {
+  'use strict';
+  /**
+   * Actual file to send
+   * @type {File}
+   */
+  this.file = file;
   /**
    * The name of the file referenced by the File object
    * @type {string}
@@ -65,8 +71,9 @@ gsc.upload.Data = function(file, height) {
  *
  * @returns {boolean} True if file size is smaller or equals to config
  */
-gsc.upload.Data.isFileSizeCorrect = function() {
-  if (gsc.upload.Data.size <= gsc.upload.fileSize) {
+gsc.upload.Data.prototype.isFileSizeCorrect = function() {
+  'use strict';
+  if (this.size <= gsc.upload.fileSize) {
     return true;
   } else {
     return false;
@@ -77,11 +84,17 @@ gsc.upload.Data.isFileSizeCorrect = function() {
  *
  * @returns {boolean} True if file type is acceptable
  */
-gsc.upload.Data.isFileTypeCorrect = function() {
+gsc.upload.Data.prototype.isFileTypeCorrect = function() {
+  'use strict';
   gsc.upload.fileType.forEach(function(fileType) {
-    if (gsc.upload.Data.type === fileType) {
+    if (this.type === fileType) {
       return true;
     }
   });
   return false;
+};
+
+gsc.upload.Data.prototype.send = function() {
+  'use strict';
+    // TODO Code
 };
