@@ -48,7 +48,7 @@ gsc.upload.Data = function(file, height) {
 };
 /**
  * The name of the file referenced by the File object
- * @property {string} name of the file
+ * @property {String} name of the file
  * @name gsc.upload.Data#name
  */
 Object.defineProperty(gsc.upload.Data.prototype, 'name', {
@@ -68,7 +68,7 @@ Object.defineProperty(gsc.upload.Data.prototype, 'lastModifiedDate', {
 });
 /**
  * The size, in bytes, of the data contained in the file
- * @property {number} size in bytes
+ * @property {Number} size in bytes
  * @name gsc.upload.Data#size
  */
 Object.defineProperty(gsc.upload.Data.prototype, 'size', {
@@ -78,7 +78,7 @@ Object.defineProperty(gsc.upload.Data.prototype, 'size', {
 });
 /**
  * A string indicating the MIME type of the data contained in the Blob. If the type is unknown, this string is empty
- * @property {string} MIME type
+ * @property {String} MIME type
  * @name gsc.upload.Data#type
  */
 Object.defineProperty(gsc.upload.Data.prototype, 'type', {
@@ -89,7 +89,7 @@ Object.defineProperty(gsc.upload.Data.prototype, 'type', {
 /**
  * Checks if size of file to be uploaded is smaller or equals to config {@link gsc.upload#fileSize}
  *
- * @returns {boolean} True if file size is smaller or equals to config
+ * @returns {Boolean} True if file size is smaller or equals to config
  */
 gsc.upload.Data.prototype.isFileSizeCorrect = function() {
   'use strict';
@@ -102,7 +102,7 @@ gsc.upload.Data.prototype.isFileSizeCorrect = function() {
 /**
  * Checks if type of file to be uploaded is acceptable by config {@link gsc.upload#fileType}
  *
- * @returns {boolean} True if file type is acceptable
+ * @returns {Boolean} True if file type is acceptable
  */
 gsc.upload.Data.prototype.isFileTypeCorrect = function() {
   'use strict';
