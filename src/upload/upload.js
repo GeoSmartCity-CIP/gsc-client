@@ -93,11 +93,7 @@ Object.defineProperty(gsc.upload.Data.prototype, 'type', {
  */
 gsc.upload.Data.prototype.isFileSizeCorrect = function() {
   'use strict';
-  if (this.size <= gsc.upload.fileSize) {
-    return true;
-  } else {
-    return false;
-  }
+  return (this.size <= gsc.upload.fileSize)
 };
 /**
  * Checks if type of file to be uploaded is acceptable by config {@link gsc.upload#fileType}
