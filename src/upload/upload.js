@@ -86,12 +86,10 @@ gsc.upload.Data.prototype.isFileSizeCorrect = function() {
  */
 gsc.upload.Data.prototype.isFileTypeCorrect = function() {
   'use strict';
-  gsc.upload.fileType.forEach(function(fileType) {
-    if (this.type === fileType) {
-      return true;
-    }
+  var temp = this;
+  return gsc.upload.fileType.some(function(fileType) {
+    return (temp.type === fileType);
   });
-  return false;
 };
 
 gsc.upload.Data.prototype.send = function() {
