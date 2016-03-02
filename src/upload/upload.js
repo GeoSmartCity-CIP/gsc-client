@@ -41,31 +41,51 @@ gsc.upload.Data = function(file, height) {
    */
   this.file = file;
   /**
-   * The name of the file referenced by the File object
-   * @type {string}
-   */
-  this.name = file.name;
-  /**
-   * Returns the last modified date of the file. Files without a known last modified date use the current date instead
-   * @type {Date}
-   */
-  this.lastModifiedDate = file.lastModifiedDate;
-  /**
-   * The size, in bytes, of the data contained in the file
-   * @type {number}
-   */
-  this.size = file.size;
-  /**
-   * A string indicating the MIME type of the data contained in the Blob. If the type is unknown, this string is empty
-   * @type {string}
-   */
-  this.type = file.type;
-  /**
    * Height of the building (for solar potetnial calculation) in meters
    * @type {Number}
    */
   this.height = height;
 };
+/**
+ * The name of the file referenced by the File object
+ * @property {string} name of the file
+ * @name gsc.upload.Data#name
+ */
+Object.defineProperty(gsc.upload.Data.prototype, 'name', {
+  get: function() {
+    return this.file && this.file.name;
+  }
+});
+/**
+ * Returns the last modified date of the file. Files without a known last modified date use the current date instead
+ * @property {Date} last modified date
+ * @name gsc.upload.Data#lastModifiedDate
+ */
+Object.defineProperty(gsc.upload.Data.prototype, 'lastModifiedDate', {
+  get: function() {
+    return this.file && this.file.lastModifiedDate;
+  }
+});
+/**
+ * The size, in bytes, of the data contained in the file
+ * @property {number} size in bytes
+ * @name gsc.upload.Data#size
+ */
+Object.defineProperty(gsc.upload.Data.prototype, 'size', {
+  get: function() {
+    return this.file && this.file.size;
+  }
+});
+/**
+ * A string indicating the MIME type of the data contained in the Blob. If the type is unknown, this string is empty
+ * @property {string} MIME type
+ * @name gsc.upload.Data#type
+ */
+Object.defineProperty(gsc.upload.Data.prototype, 'type', {
+  get: function() {
+    return this.file && this.file.type;
+  }
+});
 /**
  * Checks if size of file to be uploaded is smaller or equals to config {@link gsc.upload#fileSize}
  *
@@ -94,5 +114,5 @@ gsc.upload.Data.prototype.isFileTypeCorrect = function() {
 
 gsc.upload.Data.prototype.send = function() {
   'use strict';
-    // TODO Code
+  // TODO Code
 };
