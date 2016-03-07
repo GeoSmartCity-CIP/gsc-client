@@ -4,6 +4,7 @@
  *
  * @namespace gsc.upload
  * @requires jQuery-2.1.4
+ * @requires jszip-2.5.0
  */
 
 var gsc = gsc || {};
@@ -24,7 +25,9 @@ gsc.upload = {
    * @type {Array.<String>}
    */
   fileType: ['application/octet-stream', 'application/gml+xml',
-    'application/kml+xml']
+    'application/kml+xml', 'application/zip', 'application/x-zip',
+    'application/x-zip-compressed', 'application/x-compress',
+    'application/x-compressed', 'multipart/x-zip']
 };
 /**
  * Create a Data with uploaded file and building height
@@ -93,7 +96,7 @@ Object.defineProperty(gsc.upload.Data.prototype, 'type', {
  */
 gsc.upload.Data.prototype.isFileSizeCorrect = function() {
   'use strict';
-  return (this.size <= gsc.upload.fileSize)
+  return (this.size <= gsc.upload.fileSize);
 };
 /**
  * Checks if type of file to be uploaded is acceptable by config {@link gsc.upload#fileType}
@@ -107,8 +110,28 @@ gsc.upload.Data.prototype.isFileTypeCorrect = function() {
     return (temp.type === fileType);
   });
 };
+/**
+ * Check if .zip contain .shp .shx and .dbf files
+ *
+ * @returns {boolean}
+ */
+gsc.upload.Data.prototype.validateShapefile  = function() {
+  'use strict';
+  var arrayBufferZip;
+  var fileReader = new FileReader();
+  fileReader.onload = function() {
+    arrayBufferZip = this.result;
+  };
+  fileReader.readAsArrayBuffer(this.file);
+  var zip = new JSZip(arrayBufferZip);
+  return zip.files.every(function(file) {
+    return (file.name.substr(-3,3) === 'shp' ||
+           file.name.substr(-3,3) === 'dbf' ||
+           file.name.substr(-3,3) === 'shx');
+  });
+};
 
 gsc.upload.Data.prototype.send = function() {
   'use strict';
-  // TODO Code
+  //TODO Code
 };
