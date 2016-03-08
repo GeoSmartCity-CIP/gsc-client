@@ -133,5 +133,23 @@ gsc.upload.Data.prototype.validateShapefile  = function() {
 
 gsc.upload.Data.prototype.send = function() {
   'use strict';
-  //TODO Code
+  var formData = new FormData();
+  formData.append('file', this.file, this.name);
+  if (this.height !== undefined) {
+    formData.append('height', this.height);
+  }
+  var request = new XMLHttpRequest();
+
+  request.upload.addEventListener('progress', function(e) {
+    var pc = parseInt(100 - (e.loaded / e.total * 100));
+    progress.style.backgroundPosition = pc + '% 0';
+  }, false);
+
+  request.onreadystatechange = function(e) {
+    if (xhr.readyState == 4) {
+      progress.className = (xhr.status == 200 ? 'success' : 'failure');
+    }
+  };
+  request.open('POST', some.php, true);
+  request.send(formData);
 };
