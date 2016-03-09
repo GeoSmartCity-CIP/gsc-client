@@ -34,4 +34,4 @@ grunt
 The development of gsc.js is part-funded by the European Commission through the GeoSmartCity project.
 
 ## Licence 
-*gsc.js* is free software, and may be redistributed under the MIT-LICENSE.
+*gsc.js* is free software, and may be redistributed under the EUPL v.1.1 LICENSE.
