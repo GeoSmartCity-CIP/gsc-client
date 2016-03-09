@@ -11,7 +11,7 @@ var gsc = gsc || {};
 
 gsc.upload = {
   /**
-   * Version number of the uploading feauture of gsc.js
+   * Version number of the uploading feature of gsc.js
    * @type {String}
    */
   version: '0.1.0',
@@ -29,11 +29,13 @@ gsc.upload = {
     'application/x-zip-compressed', 'application/x-compress',
     'application/x-compressed', 'multipart/x-zip']
 };
+
 /**
  * Create a Data with uploaded file and building height
  *
  * @param {File} file First element of FileList provided by input type file
- * @param {Number} [height] Height of the building (for solar potential calculation) in meters
+ * @param {Number} [height] Height in meters of the building
+ * (for solar potential calculation) if not specified will be -1
  * @constructor
  */
 gsc.upload.Data = function(file, height) {
@@ -44,11 +46,16 @@ gsc.upload.Data = function(file, height) {
    */
   this.file = file;
   /**
-   * Height of the building (for solar potetnial calculation) in meters
+   * Height of the building (for solar potential calculation) in meters
    * @type {Number}
    */
-  this.height = height;
+  if (height !== undefined) {
+    this.height = height;
+  } else {
+    this.height = -1;
+  }
 };
+
 /**
  * The name of the file referenced by the File object
  * @property {String} name of the file
@@ -59,8 +66,10 @@ Object.defineProperty(gsc.upload.Data.prototype, 'name', {
     return this.file && this.file.name;
   }
 });
+
 /**
- * Returns the last modified date of the file. Files without a known last modified date use the current date instead
+ * Returns the last modified date of the file.
+ * Files without a known last modified date use the current date instead
  * @property {Date} last modified date
  * @name gsc.upload.Data#lastModifiedDate
  */
@@ -69,6 +78,7 @@ Object.defineProperty(gsc.upload.Data.prototype, 'lastModifiedDate', {
     return this.file && this.file.lastModifiedDate;
   }
 });
+
 /**
  * The size, in bytes, of the data contained in the file
  * @property {Number} size in bytes
@@ -79,8 +89,10 @@ Object.defineProperty(gsc.upload.Data.prototype, 'size', {
     return this.file && this.file.size;
   }
 });
+
 /**
- * A string indicating the MIME type of the data contained in the Blob. If the type is unknown, this string is empty
+ * A string indicating the MIME type of the data contained in the Blob.
+ * If the type is unknown, this string is empty
  * @property {String} MIME type
  * @name gsc.upload.Data#type
  */
@@ -89,8 +101,10 @@ Object.defineProperty(gsc.upload.Data.prototype, 'type', {
     return this.file && this.file.type;
   }
 });
+
 /**
- * Checks if size of file to be uploaded is smaller or equals to config {@link gsc.upload#fileSize}
+ * Checks if size of file to be uploaded is smaller or equals to
+ * config {@link gsc.upload#fileSize}
  *
  * @returns {Boolean} True if file size is smaller or equals to config
  */
@@ -98,8 +112,10 @@ gsc.upload.Data.prototype.isFileSizeCorrect = function() {
   'use strict';
   return (this.size <= gsc.upload.fileSize);
 };
+
 /**
- * Checks if type of file to be uploaded is acceptable by config {@link gsc.upload#fileType}
+ * Checks if type of file to be uploaded is acceptable by
+ * config {@link gsc.upload#fileType}
  *
  * @returns {Boolean} True if file type is acceptable
  */
@@ -110,46 +126,85 @@ gsc.upload.Data.prototype.isFileTypeCorrect = function() {
     return (temp.type === fileType);
   });
 };
+
 /**
- * Check if .zip contain .shp .shx and .dbf files
+ * Check if .zip and if yes is it contain .shp .shx and .dbf files,
+ * if no return true
  *
  * @returns {boolean}
  */
-gsc.upload.Data.prototype.validateShapefile  = function() {
+gsc.upload.Data.prototype.isShapefileCorrect  = function() {
   'use strict';
-  var arrayBufferZip;
-  var fileReader = new FileReader();
-  fileReader.onload = function() {
-    arrayBufferZip = this.result;
-  };
-  fileReader.readAsArrayBuffer(this.file);
-  var zip = new JSZip(arrayBufferZip);
-  return zip.files.every(function(file) {
-    return (file.name.substr(-3,3) === 'shp' ||
-           file.name.substr(-3,3) === 'dbf' ||
-           file.name.substr(-3,3) === 'shx');
-  });
+  if (this.name.substr(-3,3) === 'zip') {
+    var arrayBufferZip = new ArrayBuffer(0);
+    var fileReader = new FileReader();
+    fileReader.onload = function() {
+      arrayBufferZip = this.result;
+    };
+    fileReader.readAsArrayBuffer(this.file);
+    var zip = new JSZip(arrayBufferZip);
+    return zip.files.every(function(file) {
+      return (file.name.substr(-3, 3) === 'shp' ||
+      file.name.substr(-3, 3) === 'dbf' ||
+      file.name.substr(-3, 3) === 'shx');
+    });
+  } else {
+    return true;
+  }
 };
 
-gsc.upload.Data.prototype.send = function() {
+/**
+ * Callback for handling upload progress percentage
+ *
+ * @callback progressCallback
+ * @param {number} Percentage
+ */
+
+/**
+ * Callback for handling upload success
+ *
+ * @callback successCallback
+ * @param {event}
+ */
+
+/**
+ * Callback for handling upload failure
+ *
+ * @callback failedCallback
+ * @param {event}
+ */
+
+/**
+ * Function
+ *
+ * @param pc {progressCallback} Callback that handles upload progress
+ * @param sc {successCallback} Callback that handles upload success
+ * @param fc {failedCallback} Callback that handles upload failure
+ */
+gsc.upload.Data.prototype.send = function(pc, sc, fc) {
   'use strict';
-  var formData = new FormData();
-  formData.append('file', this.file, this.name);
-  if (this.height !== undefined) {
+  if (this.isFileSizeCorrect() && this.isFileTypeCorrect() &&
+      this.isShapefileCorrect()) {
+    var formData = new FormData();
+    formData.append('file', this.file, this.name);
     formData.append('height', this.height);
-  }
-  var request = new XMLHttpRequest();
-
-  request.upload.addEventListener('progress', function(e) {
-    var pc = parseInt(100 - (e.loaded / e.total * 100));
-    progress.style.backgroundPosition = pc + '% 0';
-  }, false);
-
-  request.onreadystatechange = function(e) {
-    if (xhr.readyState == 4) {
-      progress.className = (xhr.status == 200 ? 'success' : 'failure');
+    var request = new XMLHttpRequest();
+    if (pc || typeof pc === 'function') {
+      request.upload.addEventListener('progress', function(e) {
+        pc(parseInt(e.loaded / e.total * 100));
+      }, false);
     }
-  };
-  request.open('POST', some.php, true);
-  request.send(formData);
+    if (sc || typeof sc === 'function') {
+      request.upload.addEventListener('load', function(e) {
+        sc(e);
+      }, false);
+    }
+    if (fc || typeof fc === 'function') {
+      request.upload.addEventListener('error', function(e) {
+        fc(e);
+      }, false);
+    }
+    request.open('POST', 'some.php', true);
+    request.send(formData);
+  }
 };
