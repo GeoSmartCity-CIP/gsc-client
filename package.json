@@ -11,10 +11,10 @@
   "bugs": {
     "url": "https://github.com/GeoSmartCity-CIP/gsc-client/issues"
   },
-  "license": "Apache2",
+  "license": "EUPL v.1.1",
   "licenses": [
     {
-      "type": "APACHE2",
+      "type": "EUPL v.1.1",
       "url": "https://github.com/GeoSmartCity-CIP/gsc-client/blob/master/LICENSE"
     }
   ],
