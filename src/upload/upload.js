@@ -31,33 +31,41 @@ gsc.upload = {
 };
 
 gsc.upload.uploadForm = function(selector) {
-  var html = '<form role="form">' +
-  '  <h4>Upload file</h4>' +
-  '  <div class="upload-file">' +
-  '    <div class="input-group">' +
-  '      <span class="input-group-btn">' +
-  '      <span class="btn btn-primary btn-file">' +
-  '      Browse&hellip; <input type="file" accept=".gml, .kml, .zip">' +
-  '      </span>' +
-  '      </span>' +
-  '      <input type="text" class="form-control" style="width: 20%" readonly>' +
-  '    </div>' +
-  '    <span class="help-block">' +
-  '    Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )' +
-  '    </span>' +
-  '  </div>' +
-  '  <div class="building-height" style="display:none">' +
-  '    <div class="input-group">' +
-  '      <span class="input-group-addon" id="basic-addon1">&#127970;' +
-  '      </span>' +
-  '      <input type="text" class="form-control numbersOnly" style="width: 20%" placeholder="Height" aria-describedby="basic-addon1">' +
-  '    </div>' +
-  '    <span class="help-block">' +
-  '    Provide height of the building in meters' +
-  '    </span>' +
-  '  </div>' +
-  '  <button type="submit" class="btn btn-primary ">Submit</button>' +
-  '</form>';
+  'use strict';
+
+  var html = '<div class="upload">'+
+    '  <form role="form">'+
+    '    <h4>Upload file</h4>'+
+    '    <div class="upload-file">'+
+    '      <div class="input-group">'+
+    '        <span class="input-group-btn">'+
+    '        <span class="btn btn-primary btn-file">'+
+    '        Browse… <input type="file" accept=".gml, .kml, .zip">'+
+    '        </span>'+
+    '        </span>'+
+    '        <input type="text" class="form-control" style="width: 20%" readonly>'+
+    '      </div>'+
+    '      <span class="help-block">'+
+    '      Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )'+
+    '      </span>'+
+    '    </div>'+
+    '    <div class="building-height" style="display:none">'+
+    '      <div class="input-group">'+
+    '        <span class="input-group-addon" id="basic-addon1">&#127970;'+
+    '        </span>'+
+    '        <input type="text" class="form-control numbersOnly" style="width: 20%" placeholder="Height" aria-describedby="basic-addon1">'+
+    '      </div>'+
+    '      <span class="help-block">'+
+    '      Provide height of the building in meters'+
+    '      </span>'+
+    '    </div>'+
+    '    <button type="submit" class="btn btn-primary ">Submit</button>'+
+    '  </form>'+
+    '  <div class="progress">'+
+    '    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">'+
+    '    </div>'+
+    '  </div>'+
+    '</div>';
   jQuery(selector).html(html);
 
   var script = '<script>jQuery(document).on("change", ".btn-file :file", function() {' +
@@ -123,6 +131,13 @@ gsc.upload.uploadForm = function(selector) {
   jQuery('input[readonly]').css({
     'background-color': 'white !important',
     'cursor': 'text !important'
+  });
+  jQuery('.upload').css({
+    'margin': '2em'
+  });
+  jQuery('.progress').css({
+    'margin-top': '1em',
+    'width': '25%'
   });
 };
 
