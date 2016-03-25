@@ -20,7 +20,7 @@ module.exports = function (grunt) {
                 nonull: true,
                 src: [
                     'node_modules/openlayers/dist/ol.js',
-                    'node_modules/jquery.1/node_modules/jquery/dist/jquery.js',
+                    'node_modules/jquery/dist/jquery.js',
                     'node_modules/bootstrap/dist/js/bootstrap.js',
                     'src/<%= pkg.name %>.js',
                     'src/*/*.js'
