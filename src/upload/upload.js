@@ -30,6 +30,102 @@ gsc.upload = {
     'application/x-compressed', 'multipart/x-zip']
 };
 
+gsc.upload.uploadForm = function(selector) {
+  var html = '<form role="form">' +
+  '  <h4>Upload file</h4>' +
+  '  <div class="upload-file">' +
+  '    <div class="input-group">' +
+  '      <span class="input-group-btn">' +
+  '      <span class="btn btn-primary btn-file">' +
+  '      Browse&hellip; <input type="file" accept=".gml, .kml, .zip">' +
+  '      </span>' +
+  '      </span>' +
+  '      <input type="text" class="form-control" style="width: 20%" readonly>' +
+  '    </div>' +
+  '    <span class="help-block">' +
+  '    Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )' +
+  '    </span>' +
+  '  </div>' +
+  '  <div class="building-height" style="display:none">' +
+  '    <div class="input-group">' +
+  '      <span class="input-group-addon" id="basic-addon1">&#127970;' +
+  '      </span>' +
+  '      <input type="text" class="form-control numbersOnly" style="width: 20%" placeholder="Height" aria-describedby="basic-addon1">' +
+  '    </div>' +
+  '    <span class="help-block">' +
+  '    Provide height of the building in meters' +
+  '    </span>' +
+  '  </div>' +
+  '  <button type="submit" class="btn btn-primary ">Submit</button>' +
+  '</form>';
+  jQuery(selector).html(html);
+
+  var script = '<script>jQuery(document).on("change", ".btn-file :file", function() {' +
+    '  var input = jQuery(this);' +
+    '  var label = input.val();' +
+    '     if (label.substring(3,11) == "fakepath" ) {' +
+    '      label = label.substring(12);' +
+    '      }'+
+    '  input.trigger("fileselect", [label]);' +
+    '});' +
+    '' +
+    'jQuery(document).ready(function() {' +
+    '  jQuery(".btn-file :file").on("fileselect", function(event, label) {' +
+    '' +
+    '    var input = jQuery(this).parents(".input-group").find(":text");' +
+    '    var extension = label.substr(-3,3);' +
+    '    if (extension === "zip" || extension === "gml") {' +
+    '      jQuery(".building-height").show();' +
+    '    } else {' +
+    '      jQuery(".building-height").hide();' +
+    '    }' +
+    '    if (input.length) {' +
+    '      input.val(label);' +
+    '    } else {' +
+    '      if (label) {' +
+    '        alert(label);' +
+    '      }' +
+    '    }' +
+    '  });' +
+    '});' +
+    '' +
+    'jQuery(".numbersOnly").keyup(function () {' +
+    '    if (jQuery.isNumeric(this.value) === false) {' +
+    '       this.value = this.value.slice(0,-1);' +
+    '    }' +
+    '});' +
+    '' +
+    'jQuery("form").on("submit", function (e) {' +
+    '   e.preventDefault();' +
+    '});</script>';
+  jQuery(function () {
+    jQuery('head').append(script);
+  });
+
+  jQuery('.btn-file').css({
+    'position': 'relative',
+    'overflow': 'hidden'
+  });
+  jQuery('.btn-file input[type=file]').css({
+    'position': 'absolute',
+    'top': '0',
+    'right': '0',
+    'min-width': '100%',
+    'min-height': '100%',
+    'font-size': '100px',
+    'text-align': 'right',
+    'filter': 'alpha(opacity=0)',
+    'opacity': '0',
+    'background': 'red',
+    'cursor': 'inherit',
+    'display': 'block'
+  });
+  jQuery('input[readonly]').css({
+    'background-color': 'white !important',
+    'cursor': 'text !important'
+  });
+};
+
 /**
  * Create a Data with uploaded file and building height
  *
