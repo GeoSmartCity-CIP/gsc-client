@@ -92,9 +92,70 @@ gsc.map.Map = function(divObject, mapOptions) {
     olMap.getView().setZoom(olMap.getView().getZoom() - 1);
   };
 
+  _self.infoOnFeatureEvent = function(evt) {
+    document.getElementById(this.nodelist).innerHTML = 'Loading... please ' +
+    'wait...';
+    var view = olMap.getView();
+    var viewResolution = view.getResolution();
+    var source = this.layer.getSource();
+    var url = source.getGetFeatureInfoUrl(
+      evt.coordinate, viewResolution, view.getProjection(),
+      {'INFO_FORMAT': 'text/html',
+             'FEATURE_COUNT': this.maxFeaturesNumber
+      });
+    if (url) {
+      document.getElementById(this.nodelist).innerHTML = '<iframe seamless ' +
+      'src="' + url + '"></iframe>';
+    }
+  };
+
+  _self.addInfoOnFeatureEvent = function(nodelist, maxFeaturesNumber, layer) {
+    var opts = {
+      nodelist: nodelist,
+      maxFeaturesNumber: maxFeaturesNumber,
+      layer: layer
+    };
+    olMap.on('singleclick', _self.infoOnFeatureEvent, opts);
+  };
+
+  _self.removeInfoOnFeatureEvent = function() {
+    olMap.on('singleclick', _self.infoOnFeatureEvent);
+  };
+
   if (mapOptions.bounds) {
     olMap.getView().fit(mapOptions.bounds, olMap.getSize());
   }
+
+  _self.filterOnAttributes = function(filterTypeName, filterName) {
+    var filterType = document.getElementById(filterTypeName).value;
+    var filter = document.getElementById(filterName).value;
+    // by default, reset all filters
+    var filterParams = {
+          'FILTER': null,
+          'CQL_FILTER': null,
+          'FEATUREID': null
+        };
+    if (filter.replace(/^\s\s*/, '').replace(/\s\s*$/, '') !== '') {
+      if (filterType === 'cql') {
+        filterParams.CQL_FILTER = filter;
+      }
+      if (filterType === 'ogc') {
+        filterParams.FILTER = filter;
+      }
+      if (filterType === 'fid') {
+        filterParams.FEATUREID = filter;
+      }
+    }
+    // merge the new filter definitions
+    olMap.getLayers().forEach(function(lyr) {
+            lyr.getSource().updateParams(filterParams);
+          });
+  };
+
+  _self.resetFilter = function(filterType, filter) {
+    document.getElementById(filter).value = '';
+    _self.filterOnAttributes(filterType,filter);
+  };
 
   return _self;
 };
