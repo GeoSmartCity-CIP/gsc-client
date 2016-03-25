@@ -45,8 +45,8 @@ gsc.map.Map = function(divObject, mapOptions) {
   };
 
   _self.redraw = function() {
-    jQuery.each(layers, function(position, layer) {
-      layer.redraw();
+    olMap.getLayers().forEach(function(lyr) {
+      lyr.redraw();
     });
   };
 
