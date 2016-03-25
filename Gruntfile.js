@@ -19,10 +19,11 @@ module.exports = function (grunt) {
             dist: {
                 nonull: true,
                 src: [
+                    'node_modules/openlayers/dist/ol.js',
+                    'node_modules/jquery.1/node_modules/jquery/dist/jquery.js',
+                    'node_modules/bootstrap/dist/js/bootstrap.js',
                     'src/<%= pkg.name %>.js',
-                    'src/auth/LoginSession.js',
-                    'src/auth/User.js',
-                    'src/auth/auth.js'
+                    'src/*/*.js'
                 ],
                 dest: 'dist/<%= pkg.name %>.js'
             },
@@ -77,6 +78,30 @@ module.exports = function (grunt) {
 		        requireCurlyBraces: [ "if" ]
 		    }
 		},
+        concat_css: {
+            options: {
+                // Task-specific options go here.
+            },
+            all: {
+                src: [
+                    'node_modules/openlayers/css/ol.css',
+                    'node_modules/bootstrap/dist/css/bootstrap.css',
+                    'node_modules/bootstrap/dist/css/bootstrap-theme.css',
+                    'css/*.css'
+                     ],
+                dest: "dist/styles.css"
+            },
+        },
+        cssmin: {
+            target: {
+                files: [{
+                    expand: true,
+                    src: ['dist/styles.css'],
+                    dest: '',
+                    ext: '.min.css'
+                }]
+            }
+        },
         watch: {
             gruntfile: {
                 files: '<%= jshint.gruntfile.src %>',
@@ -96,10 +121,16 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-jscs");
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-concat-css');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+
 
 
     // Default task.
     grunt.registerTask('default',
-        ['jshint', 'jscs', 'concat', 'uglify', 'update-docs']);
+        ['jshint', 'jscs', 'build-js', 'build-css', 'update-docs']);
+
+    grunt.registerTask('build-js', ['concat', 'uglify']);
+    grunt.registerTask('build-css', ['concat_css', 'cssmin']);
     grunt.registerTask('update-docs', ['concat', 'jsdoc']);
 };

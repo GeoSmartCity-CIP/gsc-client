@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="../../dist/styles.min.css" rel="stylesheet"/>
+</head>
+<body>
+
+<style>
+    #map {
+        height: 300px;
+        width: 100%;
+    }
+
+    #desc{
+        text-align: center;
+        margin: 20px;
+        padding-left: 40px;
+        padding-right: 40px;
+        font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial;
+    }
+
+    #desc p{
+
+        margin: 20px;
+        font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial;
+    }
+
+    #libNum {
+        font-weight: bold;
+    }
+
+    .gsc{
+        font-weight: bold;
+    }
+
+</style>
+
+<script src="../../dist/gsc.min.js"></script>
+<div id="desc">
+    <h1>Test of library build</h1>
+    <button type="button" class="btn btn-primary">Click me to test jquery</button>
+    <p>You should see Bootstrap styled button. JQuery test: After click on that button the page background should be black.
+        Openlayers: Do you see the map? <span class="gsc">gsc.js</span> library version number is <span id="libNum"></span>. There is list of available features below.   </p>
+    <p id="propList"></p>
+</div>
+
+<div id="map"></div>
+
+<script type="text/javascript">
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.MapQuest({layer: 'sat'})
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([37.41, 8.82]),
+            zoom: 4
+        })
+    });
+
+    $('.btn').on('click',function(){
+        $('body').css('background-color','black');
+        $('#desc').css('color','white');
+    })
+
+    var propList =  Object.keys(gsc);
+
+    $('#libNum').html(gsc.version);
+
+
+    $('#propList').html(propList.join(' | '));
+
+</script>
+
+
+</body>
+</html>
