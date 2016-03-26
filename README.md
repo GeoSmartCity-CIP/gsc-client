@@ -1,6 +1,8 @@
 # GeoSmartCity Client Side JavaScript Library API
 **gsc.js** is a productivity library for rapid spatial web application development. The library builds on jQuery, OpenLayers3 and invokes methods from an instance of the GeoSmartCity Hub.
 
+[![Build Status](https://travis-ci.org/GeoSmartCity-CIP/gsc-client.svg?branch=develop)](https://travis-ci.org/GeoSmartCity-CIP/gsc-client)
+
 ## Status
 * The library is under development
 
