@@ -1,3 +1,6 @@
+/*global module: true*/
+var module = module || {};
+
 /**
  * <p>Geosmartcity client-side library for rapid application development based
  * on the GSC platform OpenAPI</p>
@@ -8,7 +11,7 @@
  * @requires jQuery-2.1.4
  */
 
-var gsc = {
+var gsc = module.exports = {
   /**
    * Version number of the s4a.js library
    * @type Number
