@@ -127,5 +127,18 @@
         "require",
         "define",
         "escape"
-    ]
+    ],
+    
+    "globals": {
+        "document": true,
+        "window": true,
+        "setTimeout": true,
+        "clearTimeout": true,
+        "setInterval": true,
+        "clearInterval": true,
+
+        "jQuery": true,
+        "$": true,
+        "ol": true
+    }    
 }
