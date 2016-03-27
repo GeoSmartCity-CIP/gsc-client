@@ -1,4 +1,4 @@
-var gsc = gsc || {};
+var gsc = module.exports = gsc || {};
 
 gsc.map = gsc.map || {};
 
@@ -13,7 +13,7 @@ gsc.map = gsc.map || {};
  */
 gsc.map.Map = function(divObject, mapOptions) {
   var _self = this;
-  var layers = mapOptions.layers;
+  this.layers_ = mapOptions.layers || [];
 
   var projection = new ol.proj.Projection({
     code: mapOptions.epsg,
@@ -24,7 +24,7 @@ gsc.map.Map = function(divObject, mapOptions) {
     controls: ol.control.defaults({
           attribution: false
         }),
-    layers: layers,
+    layers: _self.layers_,
     target: divObject,
     view: new ol.View({
       projection: projection
@@ -33,7 +33,7 @@ gsc.map.Map = function(divObject, mapOptions) {
 
   _self.addLayer = function(layer) {
     olMap.addLayer(layer);
-    layers.push(layer);
+    _self.layers_.push(layer);
   };
 
   _self.getDomElement = function() {
@@ -52,7 +52,7 @@ gsc.map.Map = function(divObject, mapOptions) {
 
   _self.removeLayer = function(layer) {
     olMap.removeLayer(layer);
-    layers = layers.filter(function(value) {
+    _self.layers_ = _self.layers_.filter(function(value) {
       return value !== layer;
     });
   };
@@ -126,9 +126,8 @@ gsc.map.Map = function(divObject, mapOptions) {
     olMap.getView().fit(mapOptions.bounds, olMap.getSize());
   }
 
-  _self.filterOnAttributes = function(filterTypeName, filterName) {
-    var filterType = document.getElementById(filterTypeName).value;
-    var filter = document.getElementById(filterName).value;
+  _self.filterOnAttributes = function(filterType, filter) {
+
     // by default, reset all filters
     var filterParams = {
           'FILTER': null,
@@ -152,9 +151,8 @@ gsc.map.Map = function(divObject, mapOptions) {
           });
   };
 
-  _self.resetFilter = function(filterType, filter) {
-    document.getElementById(filter).value = '';
-    _self.filterOnAttributes(filterType,filter);
+  _self.resetFilter = function() {
+    _self.filterOnAttributes('cql','');
   };
 
   return _self;

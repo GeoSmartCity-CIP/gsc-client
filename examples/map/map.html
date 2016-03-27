@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example of gsc.map</title>
+    <link href="../../dist/styles.css" rel="stylesheet">
+    <script src="../../dist/gsc.js"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 400px;
+        }
+        #scalebar{
+            float: right;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="page-header">
+    <div class="container">
+        <h2>View/Browse map</h2>
+        <p id="example"> See the <a href="map.js" target="_blank">Browse/View map source</a> to see how this is done.</p>
+    </div>
+</div>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../../">gsc.js</a>
+            <a class="navbar-brand" href="../">examples</a>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div id='map'></div>
+    <div id="controls">
+        <span id="coordinate"></span>
+        <span id="scalebar"></span>
+    </div>
+    <script src="map.js"></script>
+
+</div>
+</body>
+</html>
