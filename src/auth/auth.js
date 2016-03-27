@@ -43,8 +43,8 @@ gsc.auth.login = function(email, password) {
  */
 gsc.auth.logout = function() {
 
-    // Pseudo code
-    // Log out
+  // Pseudo code
+  // Log out
 
 };
 
