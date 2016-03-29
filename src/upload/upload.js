@@ -1,3 +1,4 @@
+/*global File, JSZip */
 /**
  * <p>API for crowd sourcing feature of gsc.js library</p>
  * <p>Functions to handle server side crowd sourcing app.</p>
@@ -43,7 +44,8 @@ gsc.upload.uploadForm = function(selector) {
     '        Browse… <input type="file" accept=".gml, .kml, .zip">'+
     '        </span>'+
     '        </span>'+
-    '        <input type="text" class="form-control" style="width: 20%" readonly>'+
+    '        <input type="text" class="form-control" ' +
+    '        style="width: 20%" readonly>'+
     '      </div>'+
     '      <span class="help-block">'+
     '      Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )'+
@@ -53,7 +55,9 @@ gsc.upload.uploadForm = function(selector) {
     '      <div class="input-group">'+
     '        <span class="input-group-addon" id="basic-addon1">&#127970;'+
     '        </span>'+
-    '        <input type="text" class="form-control numbersOnly" style="width: 20%" placeholder="Height" aria-describedby="basic-addon1">'+
+    '        <input type="text" class="form-control numbersOnly" ' +
+    '        style="width: 20%" placeholder="Height" ' +
+    '        aria-describedby="basic-addon1">'+
     '      </div>'+
     '      <span class="help-block">'+
     '      Provide height of the building in meters'+
@@ -62,13 +66,15 @@ gsc.upload.uploadForm = function(selector) {
     '    <button type="submit" class="btn btn-primary ">Submit</button>'+
     '  </form>'+
     '  <div class="progress">'+
-    '    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">'+
+    '    <div class="progress-bar" role="progressbar" aria-valuenow="0" ' +
+    '    aria-valuemin="0" aria-valuemax="100" style="width: 0%;">'+
     '    </div>'+
     '  </div>'+
     '</div>';
   jQuery(selector).html(html);
 
-  var script = '<script>jQuery(document).on("change", ".btn-file :file", function() {' +
+  var script = '<script>' +
+    'jQuery(document).on("change", ".btn-file :file", function() {' +
     '  var input = jQuery(this);' +
     '  var label = input.val();' +
     '     if (label.substring(3,11) == "fakepath" ) {' +
@@ -144,7 +150,7 @@ gsc.upload.uploadForm = function(selector) {
 /**
  * Create a Data with uploaded file and building height
  *
- * @param {File} file First element of FileList provided by input type file
+ * @param {FileNode} file First element of FileList provided by input type file
  * @param {Number} [height] Height in meters of the building
  * (for solar potential calculation) if not specified will be -1
  * @constructor
