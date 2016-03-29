@@ -7,8 +7,7 @@
  * @requires jQuery-2.1.4
  * @requires jszip-2.5.0
  */
-
-var gsc = gsc || {};
+var gsc = module.exports = gsc || {};
 
 gsc.upload = {
   /**
@@ -26,7 +25,8 @@ gsc.upload = {
    * @type {Array.<String>}
    */
   fileType: ['application/octet-stream', 'application/gml+xml',
-    'application/kml+xml', 'application/zip', 'application/x-zip',
+    'application/kml+xml', 'application/vnd.google-earth.kml+xml',
+    'application/zip', 'application/x-zip',
     'application/x-zip-compressed', 'application/x-compress',
     'application/x-compressed', 'multipart/x-zip']
 };
@@ -34,85 +34,85 @@ gsc.upload = {
 gsc.upload.uploadForm = function(selector) {
   'use strict';
 
-  var html = '<div class="upload">'+
-    '  <form role="form">'+
-    '    <h4>Upload file</h4>'+
-    '    <div class="upload-file">'+
-    '      <div class="input-group">'+
-    '        <span class="input-group-btn">'+
-    '        <span class="btn btn-primary btn-file">'+
-    '        Browse… <input type="file" accept=".gml, .kml, .zip">'+
-    '        </span>'+
-    '        </span>'+
-    '        <input type="text" class="form-control" ' +
-    '        style="width: 20%" readonly>'+
-    '      </div>'+
-    '      <span class="help-block">'+
-    '      Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )'+
-    '      </span>'+
-    '    </div>'+
-    '    <div class="building-height" style="display:none">'+
-    '      <div class="input-group">'+
-    '        <span class="input-group-addon" id="basic-addon1">&#127970;'+
-    '        </span>'+
-    '        <input type="text" class="form-control numbersOnly" ' +
-    '        style="width: 20%" placeholder="Height" ' +
-    '        aria-describedby="basic-addon1">'+
-    '      </div>'+
-    '      <span class="help-block">'+
-    '      Provide height of the building in meters'+
-    '      </span>'+
-    '    </div>'+
-    '    <button type="submit" class="btn btn-primary ">Submit</button>'+
-    '  </form>'+
-    '  <div class="progress">'+
-    '    <div class="progress-bar" role="progressbar" aria-valuenow="0" ' +
-    '    aria-valuemin="0" aria-valuemax="100" style="width: 0%;">'+
-    '    </div>'+
-    '  </div>'+
-    '</div>';
+  var html = '<div class="upload">' +
+      '  <form role="form">' +
+      '    <h4>Upload file</h4>' +
+      '    <div class="upload-file">' +
+      '      <div class="input-group">' +
+      '        <span class="input-group-btn">' +
+      '        <span class="btn btn-primary btn-file">' +
+      '        Browse… <input type="file" accept=".gml, .kml, .zip">' +
+      '        </span>' +
+      '        </span>' +
+      '        <input type="text" class="form-control" ' +
+      '        style="width: 20%" readonly>' +
+      '      </div>' +
+      '      <span class="help-block">' +
+      '      Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )' +
+      '      </span>' +
+      '    </div>' +
+      '    <div class="building-height" style="display:none">' +
+      '      <div class="input-group">' +
+      '        <span class="input-group-addon" id="basic-addon1">&#127970;' +
+      '        </span>' +
+      '        <input type="text" class="form-control numbersOnly" ' +
+      '        style="width: 20%" placeholder="Height" ' +
+      '        aria-describedby="basic-addon1">' +
+      '      </div>' +
+      '      <span class="help-block">' +
+      '      Provide height of the building in meters' +
+      '      </span>' +
+      '    </div>' +
+      '    <button type="submit" class="btn btn-primary ">Submit</button>' +
+      '  </form>' +
+      '  <div class="progress">' +
+      '    <div class="progress-bar" role="progressbar" aria-valuenow="0" ' +
+      '    aria-valuemin="0" aria-valuemax="100" style="width: 0%;">' +
+      '    </div>' +
+      '  </div>' +
+      '</div>';
   jQuery(selector).html(html);
 
   var script = '<script>' +
-    'jQuery(document).on("change", ".btn-file :file", function() {' +
-    '  var input = jQuery(this);' +
-    '  var label = input.val();' +
-    '     if (label.substring(3,11) == "fakepath" ) {' +
-    '      label = label.substring(12);' +
-    '      }'+
-    '  input.trigger("fileselect", [label]);' +
-    '});' +
-    '' +
-    'jQuery(document).ready(function() {' +
-    '  jQuery(".btn-file :file").on("fileselect", function(event, label) {' +
-    '' +
-    '    var input = jQuery(this).parents(".input-group").find(":text");' +
-    '    var extension = label.substr(-3,3);' +
-    '    if (extension === "zip" || extension === "gml") {' +
-    '      jQuery(".building-height").show();' +
-    '    } else {' +
-    '      jQuery(".building-height").hide();' +
-    '    }' +
-    '    if (input.length) {' +
-    '      input.val(label);' +
-    '    } else {' +
-    '      if (label) {' +
-    '        alert(label);' +
-    '      }' +
-    '    }' +
-    '  });' +
-    '});' +
-    '' +
-    'jQuery(".numbersOnly").keyup(function () {' +
-    '    if (jQuery.isNumeric(this.value) === false) {' +
-    '       this.value = this.value.slice(0,-1);' +
-    '    }' +
-    '});' +
-    '' +
-    'jQuery("form").on("submit", function (e) {' +
-    '   e.preventDefault();' +
-    '});</script>';
-  jQuery(function () {
+      'jQuery(document).on("change", ".btn-file :file", function() {' +
+      '  var input = jQuery(this);' +
+      '  var label = input.val();' +
+      '     if (label.substring(3,11) == "fakepath" ) {' +
+      '      label = label.substring(12);' +
+      '      }' +
+      '  input.trigger("fileselect", [label]);' +
+      '});' +
+      '' +
+      'jQuery(document).ready(function() {' +
+      '  jQuery(".btn-file :file").on("fileselect", function(event, label) {' +
+      '' +
+      '    var input = jQuery(this).parents(".input-group").find(":text");' +
+      '    var extension = label.substr(-3,3);' +
+      '    if (extension === "zip" || extension === "gml") {' +
+      '      jQuery(".building-height").show();' +
+      '    } else {' +
+      '      jQuery(".building-height").hide();' +
+      '    }' +
+      '    if (input.length) {' +
+      '      input.val(label);' +
+      '    } else {' +
+      '      if (label) {' +
+      '        alert(label);' +
+      '      }' +
+      '    }' +
+      '  });' +
+      '});' +
+      '' +
+      'jQuery(".numbersOnly").keyup(function () {' +
+      '    if (jQuery.isNumeric(this.value) === false) {' +
+      '       this.value = this.value.slice(0,-1);' +
+      '    }' +
+      '});' +
+      '' +
+      'jQuery("form").on("submit", function (e) {' +
+      '   e.preventDefault();' +
+      '});</script>';
+  jQuery(function() {
     jQuery('head').append(script);
   });
 
@@ -161,7 +161,11 @@ gsc.upload.Data = function(file, height) {
    * Actual file to send
    * @type {File}
    */
-  this.file = file;
+  if (typeof file === undefined) {
+    this.file = new File([''], 'filename');
+  } else {
+    this.file = file;
+  }
   /**
    * Height of the building (for solar potential calculation) in meters
    * @type {Number}
@@ -246,13 +250,13 @@ gsc.upload.Data.prototype.isFileTypeCorrect = function() {
 
 /**
  * Check if .zip and if yes is it contain .shp .shx and .dbf files,
- * if no return true
+ * if its not .zip return true
  *
  * @returns {boolean}
  */
 gsc.upload.Data.prototype.isShapefileCorrect  = function() {
   'use strict';
-  if (this.name.substr(-3,3) === 'zip') {
+  if (this.name.slice(-3) === 'zip') {
     var arrayBufferZip = new ArrayBuffer(0);
     var fileReader = new FileReader();
     fileReader.onload = function() {
@@ -261,15 +265,14 @@ gsc.upload.Data.prototype.isShapefileCorrect  = function() {
     fileReader.readAsArrayBuffer(this.file);
     var zip = new JSZip(arrayBufferZip);
     return zip.files.every(function(file) {
-      return (file.name.substr(-3, 3) === 'shp' ||
-      file.name.substr(-3, 3) === 'dbf' ||
-      file.name.substr(-3, 3) === 'shx');
+      return (file.name.slice(-3) === 'shp' ||
+      file.name.slice(-3) === 'dbf' ||
+      file.name.slice(-3) === 'shx');
     });
   } else {
     return true;
   }
 };
-
 /**
  * Callback for handling upload progress percentage
  *
@@ -290,13 +293,12 @@ gsc.upload.Data.prototype.isShapefileCorrect  = function() {
  * @callback failedCallback
  * @param {event}
  */
-
 /**
  * Function
  *
- * @param pc {progressCallback} Callback that handles upload progress
- * @param sc {successCallback} Callback that handles upload success
- * @param fc {failedCallback} Callback that handles upload failure
+ * @param {progressCallback} pc Callback that handles upload progress
+ * @param {successCallback} sc Callback that handles upload success
+ * @param {failedCallback} fc Callback that handles upload failure
  */
 gsc.upload.Data.prototype.send = function(pc, sc, fc) {
   'use strict';
@@ -324,38 +326,4 @@ gsc.upload.Data.prototype.send = function(pc, sc, fc) {
     request.open('POST', 'some.php', true);
     request.send(formData);
   }
-};
-/**
- * Create a Data with uploaded file and building height
- *
- * @param {File} file First element of FileList provided by input type file
- * @param {Number} [height] Height of the building (for solar potential calculation) in meters
- * @constructor
- */
-gsc.upload.Data = function(file, height) {
-  /**
-   * The name of the file referenced by the File object
-   * @type {string}
-   */
-  this.name = file.name;
-  /**
-   * Returns the last modified date of the file. Files without a known last modified date use the current date instead
-   * @type {Date}
-   */
-  this.lastModifiedDate = file.lastModifiedDate;
-  /**
-   * The size, in bytes, of the data contained in the file
-   * @type {number}
-   */
-  this.size = file.size;
-  /**
-   * A string indicating the MIME type of the data contained in the Blob. If the type is unknown, this string is empty
-   * @type {string}
-   */
-  this.type = file.type;
-  /**
-   * Height of the building (for solar potetnial calculation) in meters
-   * @type {Number}
-   */
-  this.height = height;
 };
