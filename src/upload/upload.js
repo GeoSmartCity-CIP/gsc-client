@@ -236,18 +236,19 @@ gsc.upload.Data.prototype.isFileSizeCorrect = function() {
 gsc.upload.Data.prototype.isShapefileCorrect  = function() {
   'use strict';
   if (this.name.slice(-3) === 'zip') {
-    var arrayBufferZip = new ArrayBuffer(0);
     var fileReader = new FileReader();
+    var zip = new JSZip();
+    var shpCorrect = false;
     fileReader.onload = function() {
-      arrayBufferZip = this.result;
+      var zip = new JSZip(this.result);
+      shpCorrect = zip.file(/.*?/).every(function(file) {
+        return (file.name.slice(-3) === 'shp' ||
+        file.name.slice(-3) === 'dbf' ||
+        file.name.slice(-3) === 'shx');
+      });
     };
     fileReader.readAsArrayBuffer(this.file);
-    var zip = new JSZip(arrayBufferZip);
-    return zip.files.every(function(file) {
-      return (file.name.slice(-3) === 'shp' ||
-      file.name.slice(-3) === 'dbf' ||
-      file.name.slice(-3) === 'shx');
-    });
+    return shpCorrect;
   } else {
     return true;
   }
