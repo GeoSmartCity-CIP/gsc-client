@@ -19,16 +19,7 @@ gsc.upload = {
    * Byte size of the uploading file
    * @type {Number}
    */
-  fileSize: 8000000,
-  /**
-   * Allowed MIME types of files
-   * @type {Array.<String>}
-   */
-  fileType: ['application/octet-stream', 'application/gml+xml',
-    'application/kml+xml', 'application/vnd.google-earth.kml+xml',
-    'application/zip', 'application/x-zip',
-    'application/x-zip-compressed', 'application/x-compress',
-    'application/x-compressed', 'multipart/x-zip']
+  fileSize: 8000000
 };
 
 gsc.upload.uploadForm = function(selector) {
@@ -237,20 +228,6 @@ gsc.upload.Data.prototype.isFileSizeCorrect = function() {
 };
 
 /**
- * Checks if type of file to be uploaded is acceptable by
- * config {@link gsc.upload#fileType}
- *
- * @returns {Boolean} True if file type is acceptable
- */
-gsc.upload.Data.prototype.isFileTypeCorrect = function() {
-  'use strict';
-  var temp = this;
-  return gsc.upload.fileType.some(function(fileType) {
-    return (temp.type === fileType);
-  });
-};
-
-/**
  * Check if .zip and if yes is it contain .shp .shx and .dbf files,
  * if its not .zip return true
  *
@@ -304,8 +281,7 @@ gsc.upload.Data.prototype.isShapefileCorrect  = function() {
  */
 gsc.upload.Data.prototype.send = function(pc, sc, fc) {
   'use strict';
-  if (this.isFileSizeCorrect() && this.isFileTypeCorrect() &&
-      this.isShapefileCorrect()) {
+  if (this.isFileSizeCorrect() && this.isShapefileCorrect()) {
     var formData = new FormData();
     formData.append('file', this.file, this.name);
     formData.append('height', this.height);
