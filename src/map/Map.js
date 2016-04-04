@@ -1,4 +1,4 @@
-var gsc = module.exports = gsc || {};
+'use strict';
 
 gsc.map = gsc.map || {};
 
@@ -13,6 +13,7 @@ gsc.map = gsc.map || {};
  */
 gsc.map.Map = function(divObject, mapOptions) {
   var _self = this;
+
   this.layers_ = mapOptions.layers || [];
 
   var projection = new ol.proj.Projection({
