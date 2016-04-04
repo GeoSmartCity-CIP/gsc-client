@@ -2,5 +2,6 @@
 /nbproject/
 /dist/
 /doc/*
-.sublime-grunt.cache
+*.sublime-*
 .idea
+*.orig
