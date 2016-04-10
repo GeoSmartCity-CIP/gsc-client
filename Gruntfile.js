@@ -151,8 +151,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
 
-    // Default task.- including dependant libraries
-    grunt.registerTask('default', ['jshint', 'jscs', 'build-js', 'build-css', 'update-docs']);
+    // Default task.
+    grunt.registerTask('default',
+        ['jshint', 'jscs', 'build-js', 'build-css', 'update-docs']);
+
     grunt.registerTask('build-js', ['concat', 'uglify']);
     grunt.registerTask('build-css', ['concat_css', 'cssmin']);
     grunt.registerTask('update-docs', ['concat', 'jsdoc']);
