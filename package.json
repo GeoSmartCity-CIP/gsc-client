@@ -1,7 +1,7 @@
 {
   "name": "gsc",
   "description": "Geosmartcity Client Side Javascript Library",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/GeoSmartCity-CIP/gsc-client",
   "author": "GSC partners",
   "repository": {
@@ -23,7 +23,7 @@
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "grunt nodeunit"
+    "test": "grunt jasmine"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
