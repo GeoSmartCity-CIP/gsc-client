@@ -5,7 +5,6 @@
  *
  * @namespace gsc.upload
  * @requires jQuery-2.1.4
- * @requires jszip-2.5.0
  */
 var gsc = module.exports = gsc || {};
 
@@ -14,7 +13,7 @@ gsc.upload = {
    * Version number of the uploading feature of gsc.js
    * @type {String}
    */
-  version: '0.1.0',
+  version: '1.0.0',
   /**
    * Byte size of the uploading file
    * @type {Number}
@@ -25,86 +24,117 @@ gsc.upload = {
 gsc.upload.uploadForm = function(selector) {
   'use strict';
   var html =
-      `<div class="upload">
-      <form role="form">
-      <h4>Upload file</h4>
-      <div class="upload-file">
-      <div class="input-group">
-      <span class="input-group-btn">
-      <span class="btn btn-primary btn-file">
-      Browse… <input type="file" id="geometryFile" accept=".gml, .kml, .zip">
-      </span>
-      </span>
-      <input type="text" class="form-control" style="width: 20%" readonly>
-      </div>
-      <span class="help-block">
-      Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )
-      </span>
-      </div>
-      <div class="building-height" style="display:none">
-      <div class="input-group">
-      <span class="input-group-addon" id="basic-addon1">&#127970;
-      </span>
-      <input type="text" id="height" class="form-control numbersOnly" style="width: 20%"
-      placeholder="Height" aria-describedby="basic-addon1">
-      </div>
-      <span class="help-block">
-      Provide height of the building in meters
-      </span>
-      </div>
-      <button type="submit" class="btn btn-primary ">Submit</button>
-      </form>
-      <div class="progress">
-      <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-      aria-valuemax="100" style="width: 0%;">
-      </div>
-      </div>
-      </div>`;
+      `<div class='upload'>
+        <form role='form'>
+          <h4>Upload file</h4>
+          <div class='upload-file'>
+            <div class='input-group'>
+              <span class='input-group-btn'>
+            <span class='btn btn-primary btn-file'>
+            Browse… 
+            <input type='file' id='geometryFile' accept='.gml, .kml, .zip'>
+            </span>
+              </span>
+              <input type='text' class='form-control' style='width: 20%'
+                readonly>
+            </div>
+            <span class='help-block'>
+            Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )
+            </span>
+          </div>
+          <div class='building-height collapse'>
+            <div class='input-group'>
+              <span class='input-group-addon' id='basic-addon1'>&#127970;
+            </span>
+              <input type='text' id='height' class='form-control numbersOnly'
+                style='width: 20%' placeholder='Height'
+                aria-describedby='basic-addon1'>
+            </div>
+            <span class='help-block'>
+            Provide height of the building in meters
+            </span>
+          </div>
+          <button type='submit' class='btn btn-primary '>Submit</button>
+        </form>
+        <div class='progress'>
+          <div class='progress-bar' aria-valuenow='0'
+            aria-valuemin='0' aria-valuemax='100'
+            id='progressbar' style='min-width: 2em; width: 0'>0%</div>
+        </div>
+        <div class='alert collapse' id='alert' role='alert'>...</div>
+      </div>`      ;
   jQuery(selector).html(html);
 
-  var script = '<script>' +
-      'jQuery(document).on("change", ".btn-file :file", function() {' +
-      '  var input = jQuery(this);' +
-      '  var label = input.val();' +
-      '     if (label.substring(3,11) == "fakepath" ) {' +
-      '      label = label.substring(12);' +
-      '      }' +
-      '  input.trigger("fileselect", [label]);' +
-      '});' +
-      '' +
-      'jQuery(document).ready(function() {' +
-      '  jQuery(".btn-file :file").on("fileselect", function(event, label) {' +
-      '' +
-      '    var input = jQuery(this).parents(".input-group").find(":text");' +
-      '    var extension = label.substr(-3,3);' +
-      '    if (extension === "zip" || extension === "gml") {' +
-      '      jQuery(".building-height").show();' +
-      '    } else {' +
-      '      jQuery(".building-height").hide();' +
-      '    }' +
-      '    if (input.length) {' +
-      '      input.val(label);' +
-      '    } else {' +
-      '      if (label) {' +
-      '        alert(label);' +
-      '      }' +
-      '    }' +
-      '  });' +
-      '});' +
-      '' +
-      'jQuery(".numbersOnly").keyup(function () {' +
-      '    if (jQuery.isNumeric(this.value) === false) {' +
-      '       this.value = this.value.slice(0,-1);' +
-      '    }' +
-      '});' +
-      '' +
-      'progressCallback = function(progress){}'+
-      'jQuery("form").on("submit", function (e) {' +
-      '   e.preventDefault();' +
-      '   var fileToProcess = document.getElementById("geometryFile").files[0];' +
-      '   var height = jQuery("#height").val()' +
-      '   var dataToProcess = gsc.upload.Data(dataToProcess, height)' +
-      '});</script>';
+  var script =
+      `<script>
+      jQuery(document).on('change', '.btn-file :file', function() {
+        var input = jQuery(this);
+        var label = input.val();
+        if (label.substring(3, 11) == 'fakepath') {
+          label = label.substring(12);
+        }
+        input.trigger('fileselect', [label]);
+      });
+      
+      jQuery(document).ready(function() {
+        jQuery('.btn-file :file').on('fileselect', function(event,
+          label) {
+          jQuery('#progressbar').width('0%').text('0%');
+          jQuery('#alert').addClass('collapse').removeClass(
+            'alert-danger alert-success').text('');
+          var input = jQuery(this).parents('.input-group').find(
+            ':text');
+          var extension = label.substr(-3, 3);
+          if (extension === 'zip' || extension === 'gml') {
+            jQuery('.building-height').addClass('collapse');
+          } else {
+            jQuery('.building-height').removeClass('collapse');
+          }
+          if (input.length) {
+            input.val(label);
+          } else {
+            if (label) {
+              alert(label);
+            }
+          }
+        });
+      });
+      
+      jQuery('.numbersOnly').keyup(function() {
+        if (jQuery.isNumeric(this.value) === false) {
+          this.value = this.value.slice(0, -1);
+        }
+      });
+      
+      progressCallback = function(progress) {
+        if (progress > 0) {
+          jQuery('#progressbar').width(progress + '%').text(progress +
+            ' %');
+        }
+      };
+      
+      successCallback = function(success) {
+        jQuery('#alert').removeClass('collapse').addClass('alert-success')
+          .text('Upload successful');
+      };
+      
+      failedCallback = function(error) {
+        jQuery('#alert').removeClass('collapse').addClass('alert-danger')
+          .text('Upload failed with error: ' + error);
+      };
+      
+      jQuery('form').on('submit', function(e) {
+        e.preventDefault();
+        jQuery('#progressbar').width('0%').text('0%');
+        jQuery('#alert').addClass('collapse').removeClass(
+          'alert-danger alert-success').text('');
+        var fileToProcess = document.getElementById('geometryFile').files[
+          0];
+        var height = jQuery('#height').val();
+        var dataToProcess = gsc.upload.Data(fileToProcess, height);
+        dataToProcess.send(progressCallback, successCallback, failedCallback);
+      });
+      </script>`      ;
   jQuery(function() {
     jQuery('head').append(script);
   });
@@ -135,6 +165,10 @@ gsc.upload.uploadForm = function(selector) {
     'margin': '2em'
   });
   jQuery('.progress').css({
+    'margin-top': '1em',
+    'width': '25%'
+  });
+  jQuery('.alert').css({
     'margin-top': '1em',
     'width': '25%'
   });
@@ -228,32 +262,6 @@ gsc.upload.Data.prototype.isFileSizeCorrect = function() {
 };
 
 /**
- * Check if .zip and if yes is it contain .shp .shx and .dbf files,
- * if its not .zip return true
- *
- * @returns {boolean}
- */
-gsc.upload.Data.prototype.isShapefileCorrect  = function() {
-  'use strict';
-  if (this.name.slice(-3) === 'zip') {
-    var fileReader = new FileReader();
-    var zip = new JSZip();
-    var shpCorrect = false;
-    fileReader.onload = function() {
-      var zip = new JSZip(this.result);
-      shpCorrect = zip.file(/.*?/).every(function(file) {
-        return (file.name.slice(-3) === 'shp' ||
-        file.name.slice(-3) === 'dbf' ||
-        file.name.slice(-3) === 'shx');
-      });
-    };
-    fileReader.readAsArrayBuffer(this.file);
-    return shpCorrect;
-  } else {
-    return true;
-  }
-};
-/**
  * Callback for handling upload progress percentage
  *
  * @callback progressCallback
@@ -282,7 +290,7 @@ gsc.upload.Data.prototype.isShapefileCorrect  = function() {
  */
 gsc.upload.Data.prototype.send = function(pc, sc, fc) {
   'use strict';
-  if (this.isFileSizeCorrect() && this.isShapefileCorrect()) {
+  if (this.isFileSizeCorrect()) {
     var formData = new FormData();
     formData.append('file', this.file, this.name);
     formData.append('height', this.height);
