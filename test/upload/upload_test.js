@@ -1,12 +1,14 @@
-var gsc = require('../../src/upload/upload');
-// Only for test purposes
-var FileAPI = require('file-api');
-var FileNode = FileAPI.File;
+'use strict';
 
-exports.isTooBigFileFalse = function(test) {
-  var file = new FileNode({name: 'filename',
-    type: 'text/plain', buffer: new Buffer(''), size: 10000000});
-  var dataObject = new gsc.upload.Data(file);
-  test.ok(dataObject.isFileSizeCorrect());
-  test.done();
-};
+describe('Testing gsc.upload', function () {
+  it("Contains Data method", function () {
+    expect(gsc.map.hasOwnProperty('Data')).toBe(true);
+  });
+  
+  it('Checks file size', function() {
+    var file = new File([''], 'filename',
+        {type: 'text/plain', size: 10000000});
+    var dataObject = new gsc.upload.Data(file);
+    expect(dataObject.isFileSizeCorrect()).toBe(true);
+  });
+});
