@@ -6,7 +6,7 @@
  * @namespace gsc.upload
  * @requires jQuery-2.1.4
  */
-var gsc = module.exports = gsc || {};
+var gsc = gsc || {};
 
 gsc.upload = {
   /**
