@@ -97,20 +97,20 @@ module.exports = function(grunt) {
                     'node_modules/bootstrap/dist/css/bootstrap-theme.css',
                     'css/*.css'
                 ],
-                dest: "dist/styles.css"
+                dest: "dist/gsc.css"
             },
             gsc: {
                 src: [
                     'css/*.css'
                 ],
-                dest: "dist/styles.css"
+                dest: "dist/gsc.css"
             },
         },
         cssmin: {
             target: {
                 files: [{
                     expand: true,
-                    src: ['dist/styles.css'],
+                    src: ['dist/gsc.css'],
                     dest: '',
                     ext: '.min.css'
                 }]
