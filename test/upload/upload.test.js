@@ -1,3 +1,4 @@
+/* global File */
 'use strict';
 
 describe('Testing gsc.upload', function () {

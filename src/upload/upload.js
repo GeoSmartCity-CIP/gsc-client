@@ -1,4 +1,7 @@
-/*global File, JSZip */
+'use strict';
+
+var gsc = gsc || {};
+
 /**
  * <p>API for crowd sourcing feature of gsc.js library</p>
  * <p>Functions to handle server side crowd sourcing app.</p>
@@ -6,8 +9,6 @@
  * @namespace gsc.upload
  * @requires jQuery-2.1.4
  */
-var gsc = gsc || {};
-
 gsc.upload = {
   /**
    * Version number of the uploading feature of gsc.js
@@ -22,7 +23,6 @@ gsc.upload = {
 };
 
 gsc.upload.uploadForm = function(selector) {
-  'use strict';
   var html =
       `<div class='upload'>
         <form role='form'>
@@ -177,7 +177,7 @@ gsc.upload.uploadForm = function(selector) {
 /**
  * Create a Data with uploaded file and building height
  *
- * @param {FileNode} file First element of FileList provided by input type file
+ * @param {File} file First element of FileList provided by input type file
  * @param {Number} [height] Height in meters of the building
  * (for solar potential calculation) if not specified will be -1
  * @constructor
