@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * @namespace gsc
+ */
 var gsc = (function() {
 
   /**
@@ -7,7 +10,7 @@ var gsc = (function() {
    *
    * @type {String}
    * @private
- * @requires OpenLayers-3.13.1
+   * @requires OpenLayers-3.13.1
    */
   var _version = '0.1.0';
 
@@ -24,6 +27,7 @@ var gsc = (function() {
    * be introduced into the global namespace.
    *
    * @exports gsc
+   * @memberof gsc
    */
   var mod = {};
 
@@ -49,19 +53,6 @@ var gsc = (function() {
       _dcUrl = dcUrl;
     }
     return _dcUrl;
-  };
-
-  /**
-   * Response object
-   *
-   * @property {string} status - Whether the request was successful (done) or failed (error)
-   * @property {string} description - Any error or status message
-   * @property {Object} request - The request object
-   * @property {number} [id] - Identifier of inserted object, only available on create statements
-   * @class
-   */
-  mod.Response = function() {
-
   };
 
   /**
