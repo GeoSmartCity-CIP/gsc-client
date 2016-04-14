@@ -22,7 +22,7 @@ gsc.datasource = (function() {
      * ESRI Shapefile
      * @type {String}
      */
-    SHAPE: 'ESRI Shapefile',
+    SHAPE: 'Shape',
     /**
      * PostgreSQL+PostGIS database
      * @type {String}
@@ -62,6 +62,7 @@ gsc.datasource = (function() {
    * @param {String} username [description]
    * @param {String} password [description]
    * @param {String} ipaddress [description]
+   * @param {String} schema [description]
    * @param {String} port [description]
    * @param {String} path [description]
    * @return {Promise.<gsc.datasource.DataSource>} [description]
@@ -76,6 +77,7 @@ gsc.datasource = (function() {
     username,
     password,
     ipaddress,
+    schema,
     port,
     path) {
 
@@ -89,6 +91,7 @@ gsc.datasource = (function() {
       username: username,
       password: password,
       ipaddress: ipaddress,
+      schema: schema,
       port: port,
       path: path
     });
@@ -96,27 +99,55 @@ gsc.datasource = (function() {
   };
 
   /**
-   * List datasource
+   * List datasources - one of datasourceId or organization must be specified.
+   * Organization may be combined with (partial) datasourceName queries
    *
-   * @param {Number} datasourceId Identifier of datasource to be deleted
+   * @param {Number} [datasourceId=null] Identifier of datasource to be retrieved
+   * @param {Number} [organization=null] Whether to include details
+   * @param {String} [datasourceName=null] Name or partial name of datasource
    * @param {Boolean} [includeDetail=false] Whether to include details
    * @return {Promise.<Object>} A list of datasource objects
    */
-  mod.list = function(datasourceId, includeDetail) {
+  mod.list = function(
+    datasourceId,
+    organization,
+    datasourceName,
+    includeDetail) {
+
+    var params = {};
+
     if (includeDetail === undefined) {
       includeDetail = false;
     }
-    return gsc.doPost('listdatasrc', {
-      iddatasource: datasourceId,
-      detail: includeDetail
-    });
+
+    params.detail = includeDetail;
+
+    if (!gsc.util.isNull(datasourceId)) {
+      params.iddatasource = datasourceId;
+    }
+
+    if (!gsc.util.isNull(datasourceName)) {
+      params.datasourcename = datasourceName;
+    }
+
+    if (!gsc.util.isNull(organization)) {
+      params.organization = organization;
+    }
+
+    if (params.iddatasource === undefined &&
+      params.organization === undefined) {
+      return gsc.util.errorPromise(
+        'Parameter datasourceId or organization must be present in request');
+    }
+
+    return gsc.doPost('listdatasrc', params);
   };
 
   /**
    * Delete datasource
    *
-   * @param {Number} datasourceId ID of datasource to be deleted
-   * @return {Promise.<Object>}
+   * @param {number} datasourceId - Identifier of datasource to be deleted
+   * @return {Promise.<Object>} The deleted datasource
    */
   mod.delete = function(datasourceId) {
     return gsc.doPost('deletedatasrc', {
@@ -137,6 +168,7 @@ gsc.datasource = (function() {
    * @param {String} username [description]
    * @param {String} password [description]
    * @param {String} ipaddress [description]
+   * @param {String} schema [description]
    * @param {String} port [description]
    * @param {String} path [description]
    * @return {Promise.<Response>} [description]
@@ -151,6 +183,7 @@ gsc.datasource = (function() {
     username,
     password,
     ipaddress,
+    schema,
     port,
     path) {
     return gsc.doPost('updatedatasrc', {
@@ -164,6 +197,7 @@ gsc.datasource = (function() {
       username: username,
       password: password,
       ipaddress: ipaddress,
+      schema: schema,
       port: port,
       path: path
     });

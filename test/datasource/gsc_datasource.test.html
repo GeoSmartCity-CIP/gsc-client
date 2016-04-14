@@ -4,13 +4,13 @@
     <title>Datasource tests</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../node_modules/jquery.1/node_modules/jquery/dist/jquery.js" type="text/javascript"></script>
-    <script src="../dist/gsc.js" type="text/javascript"></script>
+    <script src="../../node_modules/jquery.1/node_modules/jquery/dist/jquery.js" type="text/javascript"></script>
+    <script src="../../dist/gsc.js" type="text/javascript"></script>
     <script>
     jQuery(document).ready(function() {
 
       // Create a new datasource
-      gsc.datasource.create('AVINET test datasource 3',
+      gsc.datasource.create('AVINET test datasource 4',
         "1",
         gsc.datasource.DatasourceType.POSTGIS,
         'A test data source 2',
@@ -28,7 +28,7 @@
 
         // Update datasource
         gsc.datasource.update(datasourceId,
-        'AVINET test datasource updated',
+        'AVINET test datasource updated 5',
         "1",
         gsc.datasource.DatasourceType.POSTGIS,
         'A test data source 2 updated',
@@ -43,15 +43,24 @@
             console.log(res.description);
 
             // List datasource
-            gsc.datasource.list(datasourceId, true).then(function(res) {
+            gsc.datasource.list(null, 1, null, true).then(function(res) {
 
-              console.log(res.datasources.length);
+              if (!gsc.util.isError(res)) {
+                console.log(res.datasources);
+              } else {
+                console.log(res.description);
+              }
 
               // List data origin
-              gsc.datasource.listDataOrigin(datasourceId).then(function(res) {
-                console.log(res.description);
+              gsc.datasource.listDataOrigin(148).then(function(res) {
 
-                // Delete datasource
+                if (!gsc.util.isError(res)) {
+                  console.log(res.dataorigin);
+                } else {
+                  console.log(res.description);
+                }
+
+                 // Delete datasource
                  gsc.datasource.delete(datasourceId).then(function(res) {
 
                   console.log(res.description);

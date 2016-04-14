@@ -4,13 +4,15 @@
     <title>User tests</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../node_modules/jquery.1/node_modules/jquery/dist/jquery.js" type="text/javascript"></script>
-    <script src="../dist/gsc.js" type="text/javascript"></script>
+    <script src="../../node_modules/jquery.1/node_modules/jquery/dist/jquery.js" type="text/javascript"></script>
+    <script src="../../dist/gsc.js" type="text/javascript"></script>
     <script>
     jQuery('document').ready(function() {
 
+      console.log(gsc);
+
       // Register a user
-      gsc.user.register('rb@avinet.no', 'runarbe2', 'pwd', 'pwd', [{'organization': 1}])
+      gsc.user.register('runarbe@gmail.com', 'runarbe2', 'pwd', 'pwd', [{'organization': 1}])
         .then(function(res) {
 
           var userId = res.id;
@@ -19,7 +21,7 @@
           console.log(userId);
 
           // Update user
-          gsc.user.update(userId, 'rb@avinet.no', 'runarbe2', [{'organization': 1}])
+          gsc.user.update(userId, 'runarbe@gmail.com', 'runarbe2', [{'organization': 1}])
             .then(function(res) {
 
               console.log(res.description);
