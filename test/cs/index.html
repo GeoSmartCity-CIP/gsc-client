@@ -9,8 +9,20 @@
     <script src="../../src/cs/cs.js" type="text/javascript"></script>
 
     <script>
+        var sampleData = [];
+
+        (function init() {
+            gsc.cs.eventListFilter({})
+                    .done(function(res){
+                        sampleData=res;
+                    }).fail(function(err){
+
+            });
+        })();
+
+
         // callback function which catch the error or print the results to a console
-        function print(err,data){
+        function print(err,data) {
             if (err){
                 console.error(err);
                 return;
@@ -59,14 +71,13 @@
         function eventComment(){
             var data = {
                 "user": {
-                    "id": "Filip_"+createUuidgen()
+                    "id": "filip"
                 },
-                "text": "{'A new comment'}",
-                "datetime":getTimeStamp(),
-                'status' : 'hello'
+                "text": $('#commentInput').val(),
+                "datetime":getTimeStamp()
             };
 
-            var uuid = "1d9f1c02-de8e-4b05-8a40-a394b2b68d10";
+            var uuid = sampleData[0].id;
             gsc.cs.eventComment(data, uuid)
                     .done(function(data){
                         print(null, data);
@@ -83,24 +94,22 @@
                 "description": "An event with 1 attachment",
                 "media": [{"type": "image/png", "uri": "part://1"}],
                 "user": {
-                    "id": "Filip_"+createUuidgen(),
-                    "email": "karel@unckle.com",
-                    "role": "admin",
-                    "organization": "family"
+                    "id": "filip",
+                    "password": "zava"
                 },
                 "location": {
-                    "lat": 23.43,
-                    "lon": 33.1,
+                    "lat": 50+Math.random(),
+                    "lon": 15+Math.random(),
                     "crs": "epsg:4326"
                 },
-                "priority": "normal",
+                "priority": "high",
                 "datetime": getTimeStamp(),
                 "status": "submitted"
             };
 
             var request = new FormData();
             request.append('event', JSON.stringify(data));
-            request.append('part://1', $('input[type=file]')[0].files[0]);
+            request.append('part://1', $('#fileInput')[0].files[0]);
 
             gsc.cs.eventCreate(request)
                     .done(function(data){
@@ -120,16 +129,13 @@
                     {"type": "image/jpeg", "uri": "part://1"},
                     {"type": "image/jpeg", "uri": "part://2"}
                 ],
-
                 "user": {
-                    "id": "Filip_"+createUuidgen(),
-                    "email": "karel@unckle.com",
-                    "role": "admin",
-                    "organization": "family"
+                    "id": "filip",
+                    "password": "zava"
                 },
                 "location": {
-                    "lat": 23.43,
-                    "lon": 33.1,
+                    "lat": 50+Math.random(),
+                    "lon": 15+Math.random(),
                     "crs": "epsg:4326"
                 },
                 "priority": "normal",
@@ -139,8 +145,8 @@
 
             var request = new FormData();
             request.append('event', JSON.stringify(data));
-            request.append('part://1', $('input[type=file]')[0].files[0]);
-            request.append('part://2', $('input[type=file]')[0].files[0]);
+            request.append('part://1', $('#fileInput')[0].files[0]);
+            request.append('part://2', $('#fileInput2')[0].files[0]);
 
             gsc.cs.eventCreate(request)
                     .done(function(data){
@@ -248,6 +254,27 @@
                 print(err,null)
             });
         }
+
+        function eventUpdate(){
+            var id_ = sampleData[0].id;
+            console.log('event update id: ',id_);
+            var data = {
+                "id": id_,
+                "user": {
+                    "id": "filip",
+                    "password": "zava"
+                },
+                "priority": "low",
+                "status": "assigned"
+            };
+
+            gsc.cs.eventUpdate(data)
+                    .done(function(res){
+                        print(null,res)
+                    }).fail(function(err){
+                print(err,null)
+            });
+        }
     </script>
 </head>
 <body>
@@ -264,11 +291,15 @@
     <button onclick="eventListFilterDateTime3()">filter datetime to</button>
     <button onclick="eventListFilterEmpty()">filter empty</button>
     <button onclick="eventListFilterPriority()">filter priority</button>
-
+    <button onclick="eventUpdate()">update event</button>
+    <br/> <br/>
+    <input id="commentInput" type="text" placeholder="event comment text" />
 
 <form id="upload" method="post" action="" enctype="multipart/form-data">
-    <input class="input-file" id="fileInput" type="file" name="file">
+    <input class="input-file" id="fileInput" type="file" name="file" >
+    <input class="input-file" id="fileInput2" type="file" name="file" >
 </form>
+
 </p>
 </body>
 </html>
