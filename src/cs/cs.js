@@ -11,18 +11,16 @@ var gsc = gsc || {};
 
 gsc.cs = {
   /**
-   * Version number of the crowd sourcing feauture of gsc.js
+   * Version number of the crowd sourcing feature of gsc.js
    * @type {Number}
    */
-  version: '0.1.0'
+  version: '0.1.1'
 };
 
 gsc.cs._csUrl = 'http://geo.mapshakers.com:8080/CrowdSourcing';
 
 /**
- * Get or set GSC Datacatalog URL. If a parameter is supplied,
- * it is assumed to be a valid URL to the web service end-point of
- * a GSC Datacatalogue instance.
+ * Get or set GSC CrowdSourcing URL. If a parameter is supplied,.
  *
  * If no parameter is provided, the function will return the currently
  * configured URL.
@@ -55,6 +53,16 @@ gsc.cs.getConfig = function() {
  */
 gsc.cs.eventComment =  function(data, uuid) {
   return this.doPost('/event/comment/' + uuid, data);
+};
+
+/**
+ * Update an event
+ *
+ * @param {JSON} data The JSON data object
+ * @return {Promise.<Object>} a jQuery promise object
+ */
+gsc.cs.eventUpdate =  function(formdata) {
+  return this.doPost('/event/change',formdata);
 };
 
 /**
