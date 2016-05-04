@@ -41,7 +41,7 @@ gsc.cs.csUrl =  function(csUrl) {
  * @return {Promise.<Object>} a jQuery promise object
  */
 gsc.cs.getConfig = function() {
-  return this.doPost('/config',null);
+  return this.doPost('/config', null);
 };
 
 /**
@@ -61,8 +61,8 @@ gsc.cs.eventComment =  function(data, uuid) {
  * @param {JSON} data The JSON data object
  * @return {Promise.<Object>} a jQuery promise object
  */
-gsc.cs.eventUpdate =  function(formdata) {
-  return this.doPost('/event/change',formdata);
+gsc.cs.eventUpdate =  function(data) {
+  return this.doPost('/event/change', data);
 };
 
 /**
@@ -72,7 +72,7 @@ gsc.cs.eventUpdate =  function(formdata) {
  * @return {Promise.<Object>} a jQuery promise object
  */
 gsc.cs.eventCreate =  function(formdata) {
-  return this.doPostFormData('/event/create',formdata);
+  return this.doPostFormData('/event/create', formdata);
 };
 
 /**
@@ -82,7 +82,7 @@ gsc.cs.eventCreate =  function(formdata) {
  * @return {Promise.<Object>} a jQuery promise object
  */
 gsc.cs.eventListFilter =  function(data) {
-  return this.doPost('/event/list',data);
+  return this.doPost('/event/list', data);
 };
 
 /**
