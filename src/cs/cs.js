@@ -1,119 +1,117 @@
 'use strict';
 
-/**
- * <p>API for crowd sourcing feature of gsc.js library</p>
- * <p>Functions to handle server side crowd sourcing app.</p>
- *
- * @namespace gsc.cs
- * @requires jQuery-2.1.4
- */
-var gsc = gsc || {};
-
-gsc.cs = {
+gsc.cs = (function() {
   /**
-   * Version number of the crowd sourcing feature of gsc.js
-   * @type {Number}
+   *
+   * @exports gsc/cs
    */
-  version: '0.1.1'
-};
+  var mod = {};
 
-gsc.cs._csUrl = 'http://geo.mapshakers.com:8080/CrowdSourcing';
+  mod._csUrl = 'http://geo.mapshakers.com:8080/CrowdSourcing';
 
-/**
- * Get or set GSC CrowdSourcing URL. If a parameter is supplied,.
- *
- * If no parameter is provided, the function will return the currently
- * configured URL.
- *
- * @param {String} [csUrl] URL to working instance of GSC CrowdSourcing Servlet
- * @return {String} URL of GSC CrowdSourcing instance web service end-point
- */
-gsc.cs.csUrl =  function(csUrl) {
-  if (csUrl !== undefined) {
-    gsc.cs._csUrl = csUrl;
-  }
-  return gsc.cs._csUrl;
-};
+  /**
+   * Get or set GSC CrowdSourcing URL. If a parameter is supplied,.
+   *
+   * If no parameter is provided, the function will return the currently
+   * configured URL.
+   *
+   * @param {String} [csUrl] URL to working instance of GSC CrowdSourcing Servlet
+   * @return {String} URL of GSC CrowdSourcing instance web service end-point
+   */
+  mod.csUrl =  function(csUrl) {
+    if (csUrl !== undefined) {
+      mod._csUrl = csUrl;
+    }
+    return mod._csUrl;
+  };
 
-/**
- * Receive a config file
- *
- * @return {Promise.<Object>} a jQuery promise object
- */
-gsc.cs.getConfig = function() {
-  return this.doPost('/config', null);
-};
+  /**
+   * Receive a config file
+   *
+   * @return {Promise.<Object>} a jQuery promise object
+   */
+  mod.getConfig = function() {
+    return this.doPost_('/config', null);
+  };
 
-/**
- * Create a comment
- *
- * @param {JSON} data The JSON data object
- * @param {String} uuid Identification string of event
- * @return {Promise.<Object>} a jQuery promise object
- */
-gsc.cs.eventComment =  function(data, uuid) {
-  return this.doPost('/event/comment/' + uuid, data);
-};
+  /**
+   * Create a comment
+   *
+   * @param {JSON} data The JSON data object
+   * @param {String} uuid Identification string of event
+   * @return {Promise.<Object>} a jQuery promise object
+   */
+  mod.eventComment =  function(data, uuid) {
+    return this.doPost_('/event/comment/' + uuid, data);
+  };
 
-/**
- * Update an event
- *
- * @param {JSON} data The JSON data object
- * @return {Promise.<Object>} a jQuery promise object
- */
-gsc.cs.eventUpdate =  function(data) {
-  return this.doPost('/event/change', data);
-};
+  /**
+   * Update an event
+   *
+   * @param {JSON} data The JSON data object
+   * @return {Promise.<Object>} a jQuery promise object
+   */
+  mod.eventUpdate =  function(data) {
+    return this.doPost_('/event/change', data);
+  };
 
-/**
- * Create an event
- *
- * @param {FormData} formdata The FormData object (JSON + attachment)
- * @return {Promise.<Object>} a jQuery promise object
- */
-gsc.cs.eventCreate =  function(formdata) {
-  return this.doPostFormData('/event/create', formdata);
-};
+  /**
+   * Create an event
+   *
+   * @param {FormData} formdata The FormData object (JSON + attachment)
+   * @return {Promise.<Object>} a jQuery promise object
+   */
+  mod.eventCreate =  function(formdata) {
+    return this.doPostFormData_('/event/create', formdata);
+  };
 
-/**
- * Filter list on bounding box
- **
- * @param {JSON} data The JSON data object
- * @return {Promise.<Object>} a jQuery promise object
- */
-gsc.cs.eventListFilter =  function(data) {
-  return this.doPost('/event/list', data);
-};
+  /**
+   * Filter list
+   **
+   * @param {JSON} data The JSON data object
+   * @return {Promise.<Object>} a jQuery promise object
+   */
+  mod.eventListFilter =  function(data) {
+    return this.doPost_('/event/list', data);
+  };
 
-/**
- * send POST requests
- **
- * @param {String} urlPart - Service url.
- * @param {Object} data The JSON data object
- * @return {Promise.<Object>} a jQuery promise object
- */
-gsc.cs.doPost =  function(urlPart, data) {
-  return $.ajax({
-    url: gsc.cs._csUrl + '/' + urlPart ,
-    type: 'POST',
-    data: JSON.stringify(data),
-    dataType: 'json'
-  });
-};
+  /**
+   * send POST requests
+   *
+   * @private
+   * @param {String} urlPart - Service url.
+   * @param {Object} data The JSON data object
+   * @return {Promise.<Object>} a jQuery promise object
+   *
+   */
+  mod.doPost_ =  function(urlPart, data) {
+    return $.ajax({
+      url: mod._csUrl + '/' + urlPart ,
+      type: 'POST',
+      data: JSON.stringify(data),
+      dataType: 'json'
+    });
+  };
 
-/**
- * send POST formdata requests
- **
- * @param {String} urlPart - Service url.
- * @param {FormData} formData The JSON data object
- * @return {Promise.<Object>} a jQuery promise object
- */
-gsc.cs.doPostFormData =  function(urlPart, formData) {
-  return $.ajax({
-    url: gsc.cs._csUrl + '/' + urlPart ,
-    type: 'POST',
-    data: formData,
-    processData: false,
-    contentType: false
-  });
-};
+  /**
+   * send POST formdata requests
+   *
+   * @private
+   * @param {String} urlPart - Service url.
+   * @param {FormData} formData The JSON data object
+   * @return {Promise.<Object>} a jQuery promise object
+   *
+   */
+  mod.doPostFormData_ =  function(urlPart, formData) {
+    return $.ajax({
+      url: mod._csUrl + '/' + urlPart ,
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false
+    });
+  };
+
+  return mod;
+
+}());
