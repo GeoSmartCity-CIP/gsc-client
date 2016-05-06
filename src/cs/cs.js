@@ -35,6 +35,16 @@ gsc.cs = (function() {
   };
 
   /**
+   * Login to cs API
+   *
+   * @param {JSON} data (Username and Password)
+   * @return {Promise.<Object>} a jQuery promise object
+   */
+  mod.login = function(data) {
+    return this.doPost_('/login', data);
+  };
+
+  /**
    * Create a comment
    *
    * @param {JSON} data The JSON data object
