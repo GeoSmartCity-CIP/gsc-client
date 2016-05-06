@@ -1,7 +1,7 @@
 {
   "name": "gsc",
   "description": "Geosmartcity Client Side Javascript Library",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "homepage": "https://github.com/GeoSmartCity-CIP/gsc-client",
   "author": "GSC partners",
   "repository": {
@@ -18,24 +18,30 @@
       "url": "https://github.com/GeoSmartCity-CIP/gsc-client/blob/master/LICENSE"
     }
   ],
-  "main": "src/gsc",
+  "main": "dist/gsc.js",
+  "browser": "dist/gsc.js",
+  "style": [
+    "dist/gsc.css"
+  ],
   "engines": {
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "grunt nodeunit"
+    "test": "grunt jasmine"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-concat-css": "^0.3.1",
     "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-contrib-jasmine": "^1.0.0",
     "grunt-contrib-jshint": "^0.11.3",
     "grunt-contrib-nodeunit": "^0.4.1",
     "grunt-contrib-uglify": "^0.11.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-jscs": "^2.3.0",
-    "grunt-jsdoc": "^1.0.0"
+    "grunt-jsdoc": "^1.0.0",
+    "ink-docstrap": "^1.1.4"
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
@@ -45,5 +51,8 @@
   "keywords": [],
   "directories": {
     "doc": "doc"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

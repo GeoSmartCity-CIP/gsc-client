@@ -1,9 +1,7 @@
-//load external library - gsc.js
-var gsc = require('../../src/map/Map');
+'use strict';
+describe("Testing gsc.map", function() {
 
-//test task
-exports.isMapObject = function(test) {
-    var map = gsc.map;
-    test.ok(map.hasOwnProperty('Map'), "Created gsc.map object");
-    test.done();
-};
+    it("namespace gsc.map has object 'Map'", function() {
+        expect(gsc.map.hasOwnProperty('Map')).toBe(true);
+    });
+});
