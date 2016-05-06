@@ -275,6 +275,24 @@
                 print(err,null)
             });
         }
+
+        function login(){
+            var id_ = sampleData[0].id;
+            console.log('event update id: ',id_);
+            var data = {
+                "user": {
+                    "id": "filip",
+                    "password": "zava"
+                }
+            };
+
+            gsc.cs.login(data)
+                    .done(function(res){
+                        print(null,res)
+                    }).fail(function(err){
+                print(err,null)
+            });
+        }
     </script>
 </head>
 <body>
@@ -292,6 +310,7 @@
     <button onclick="eventListFilterEmpty()">filter empty</button>
     <button onclick="eventListFilterPriority()">filter priority</button>
     <button onclick="eventUpdate()">update event</button>
+    <button onclick="login()">login</button>
     <br/> <br/>
     <input id="commentInput" type="text" placeholder="event comment text" />
 
