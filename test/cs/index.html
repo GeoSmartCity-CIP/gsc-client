@@ -143,6 +143,12 @@
                 "status": "submitted"
             };
 
+            var data = {
+                "description": "Event with no attachment",
+                "location": { "lat": 23.43, "lon": 33.1, "crs": "epsg:4326" },
+                "priority": "normal",
+                "datetime": "2016-03-07T15:48:36Z" };
+
             var request = new FormData();
             request.append('event', JSON.stringify(data));
             request.append('part://1', $('#fileInput')[0].files[0]);
