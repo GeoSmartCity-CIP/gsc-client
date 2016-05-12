@@ -5,7 +5,7 @@ var options = {
 };
 
 // map initializing
-var gscMap = gsc.map.Map('map',options);
+gsc.map.create('map',options);
 
 // reggio_emilia layer
 // layers: http://hub.geosmartcity.eu/geoserver/web/
@@ -21,12 +21,12 @@ var reggio_emilia = new ol.layer.Image({
     })
 });
 
-gscMap.addLayer(reggio_emilia);
+gsc.map.addLayer(reggio_emilia);
 
 $('#updateFilterButton').on('click',function(){
-    gscMap.filterOnAttributes($('#filterType').val(),$('#filter').val())
+    gsc.map.filterOnAttributes($('#filterType').val(),$('#filter').val())
 });
 
 $('#resetFilterButton').on('click',function(){
-    gscMap.resetFilter('cql','')
+    gsc.map.resetFilter('cql','')
 });
