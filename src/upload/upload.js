@@ -42,6 +42,18 @@ gsc.upload.uploadForm = function(selector) {
             Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )
             </span>
           </div>
+          <div class='epsg'>
+            <div class='input-group'>
+              <span class='input-group-addon' id='basic-addon1'>&#127970;
+            </span>
+              <input type='text' id='epsg' class='form-control numbersOnly'
+                style='width: 20%' placeholder='EPSG'
+                aria-describedby='basic-addon1'>
+            </div>
+            <span class='help-block'>
+            Provide EPSG for the reference system
+            </span>
+          </div>
           <div class='building-height collapse'>
             <div class='input-group'>
               <span class='input-group-addon' id='basic-addon1'>&#127970;
@@ -52,6 +64,30 @@ gsc.upload.uploadForm = function(selector) {
             </div>
             <span class='help-block'>
             Provide height of the building in meters
+            </span>
+          </div>
+          <div class='inspireIdLoc'>
+            <div class='input-group'>
+              <span class='input-group-addon' id='basic-addon1'>&#127970;
+            </span>
+              <input type='text' id='inspireIdLoc' class='form-control'
+                style='width: 20%'
+                aria-describedby='basic-addon1'>
+            </div>
+            <span class='help-block'>
+            Field that contains the localId for Inspire
+            </span>
+          </div>
+          <div class='inspireIdName'>
+            <div class='input-group'>
+              <span class='input-group-addon' id='basic-addon1'>&#127970;
+            </span>
+              <input type='text' id='inspireIdName' class='form-control'
+                style='width: 20%'
+                aria-describedby='basic-addon1'>
+            </div>
+            <span class='help-block'>
+            Field that contains the namespace for Inspire
             </span>
           </div>
           <button type='submit' class='btn btn-primary '>Submit</button>
@@ -68,7 +104,7 @@ gsc.upload.uploadForm = function(selector) {
   var script =
       `<script>
       jQuery(document).on('change', '.btn-file :file', function() {
-        var input = jQuery(this);
+        var input = jQuery(this); 
         var label = input.val();
         if (label.substring(3, 11) == 'fakepath') {
           label = label.substring(12);
@@ -131,10 +167,13 @@ gsc.upload.uploadForm = function(selector) {
         var fileToProcess = document.getElementById('geometryFile').files[
           0];
         var height = jQuery('#height').val();
-        var dataToProcess = gsc.upload.Data(fileToProcess, height);
+        var epsg = jQuery('#epsg').val();
+        var inspireIdLoc = jQuery('#inspireIdLoc');
+        var inspireIdName = jQuery('#inspireIdName');
+        var dataToProcess = gsc.upload.Data(fileToProcess,epsg, height, inspireIdLoc, inspireIdName);
         dataToProcess.send(progressCallback, successCallback, failedCallback);
       });
-      </script>`      ;
+      </script>`;
   jQuery(function() {
     jQuery('head').append(script);
   });
@@ -178,14 +217,13 @@ gsc.upload.uploadForm = function(selector) {
  * Create a Data with uploaded file and building height
  *
  * @param {File} file First element of FileList provided by input type file
- * @param {Number} [height] Height in meters of the building
- * (for solar potential calculation) if not specified will be -1
+ * @param {String} [height] Height in meters of the building
  * @constructor
  */
-gsc.upload.Data = function(file, height) {
+gsc.upload.Data = function(file, epsg, height, inspireIdLoc, inspireIdName ) {
   'use strict';
   /**
-   * Actual file to send
+   * File to send
    * @type {File}
    */
   if (typeof file === undefined) {
@@ -194,14 +232,25 @@ gsc.upload.Data = function(file, height) {
     this.file = file;
   }
   /**
-   * Height of the building (for solar potential calculation) in meters
-   * @type {Number}
+   * EPSG for the reference system
+   * @type {String}
    */
-  if (height !== undefined) {
-    this.height = height;
-  } else {
-    this.height = -1;
-  }
+  this.epsg = epsg;
+  /**
+   * Height of the building (for solar potential calculation) in meters
+   * @type {String}
+   */
+  this.height = height;
+  /**
+   * Name of the field that contains the localId for Inspire
+   * @type {String}
+   */
+  this.inspireIdLoc = inspireIdLoc;
+  /**
+   * Name of the field that contains the namespace for Inspire
+   * @type {String}
+   */
+  this.inspireIdName = inspireIdName;
 };
 
 /**
@@ -293,7 +342,10 @@ gsc.upload.Data.prototype.send = function(pc, sc, fc) {
   if (this.isFileSizeCorrect()) {
     var formData = new FormData();
     formData.append('file', this.file, this.name);
-    formData.append('height', this.height);
+    formData.append('epsg', this.epsg);
+    formData.append('fieldHeight', this.height);
+    formData.append('fieldInspireIdLoc', this.inspireIdLoc);
+    formData.append('fieldInspireIdName', this.inspireIdName);
     var request = new XMLHttpRequest();
     if (pc || typeof pc === 'function') {
       request.upload.addEventListener('progress', function(e) {
