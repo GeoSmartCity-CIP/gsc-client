@@ -46,7 +46,8 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "jquery.1": "^1.0.0",
-    "openlayers": "^3.13.0"
+    "openlayers": "^3.13.0",
+	"jspdf":""
   },
   "keywords": [],
   "directories": {
