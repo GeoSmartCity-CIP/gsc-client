@@ -23,6 +23,13 @@ var gsc = (function() {
     'gsc-datacatalogue/datacatalogservlet';
 
   /**
+   * URL of the GSC Upload Features API
+   * @type {String}
+   * @private
+   */
+  var _uploadUrl = 'http://hub.geosmartcity.eu/building/';
+
+  /**
    * 'gsc' is the root object of the gsc.js library and the only variable to
    * be introduced into the global namespace.
    *
@@ -53,6 +60,23 @@ var gsc = (function() {
       _dcUrl = dcUrl;
     }
     return _dcUrl;
+  };
+
+  /**
+   * Get or set GSC Upload feature URL. If a parameter is supplied,
+   * it is assumed to be a valid URL to the upload feature API.
+   *
+   * If no parameter is provided, the function will return the currently
+   * configured URL.
+   *
+   * @param {String} [uploadUrl] URL to upload feature API
+   * @return {String} URL of upload feature API
+   */
+  mod.uploadUrl = function(uploadUrl) {
+    if (dcUrl !== undefined) {
+      _uploadUrl = uploadUrl;
+    }
+    return _uploadUrl;
   };
 
   /**

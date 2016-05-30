@@ -369,7 +369,7 @@ gsc.upload.Data.prototype.send = function(pc, sc, fc) {
         }
       }, false);
     }
-    request.open('POST', 'http://hub.geosmartcity.eu/building/', true);
+    request.open('POST', gsc.uploadUrl(), true);
     request.send(formData);
   }
 };
