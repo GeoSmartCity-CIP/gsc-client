@@ -31,22 +31,22 @@ gsc.upload.uploadForm = function(selector) {
             <div class='input-group'>
               <span class='input-group-btn'>
             <span class='btn btn-primary btn-file'>
-            Browse… 
-            <input type='file' id='geometryFile' accept='.gml, .kml, .zip'>
+            Browse... 
+            <input type='file' required='true' id='geometryFile' accept='.gml, .kml, .zip'>
             </span>
               </span>
               <input type='text' class='form-control' style='width: 20%'
                 readonly>
             </div>
             <span class='help-block'>
-            Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )
+            Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )  
             </span>
           </div>
           <div class='epsg'>
             <div class='input-group'>
-              <span class='input-group-addon' id='basic-addon1'>&#127970;
+              <span class='input-group-addon' id='basic-addon1'>&#128196;
             </span>
-              <input type='text' id='epsg' class='form-control numbersOnly'
+              <input type='text' required='true' id='epsg' class='form-control numbersOnly'
                 style='width: 20%' placeholder='EPSG'
                 aria-describedby='basic-addon1'>
             </div>
@@ -58,7 +58,7 @@ gsc.upload.uploadForm = function(selector) {
             <div class='input-group'>
               <span class='input-group-addon' id='basic-addon1'>&#127970;
             </span>
-              <input type='text' id='height' class='form-control numbersOnly'
+              <input type='text' required='true' id='height' class='form-control numbersOnly'
                 style='width: 20%' placeholder='Height'
                 aria-describedby='basic-addon1'>
             </div>
@@ -68,7 +68,7 @@ gsc.upload.uploadForm = function(selector) {
           </div>
           <div class='inspireIdLoc'>
             <div class='input-group'>
-              <span class='input-group-addon' id='basic-addon1'>&#127970;
+              <span class='input-group-addon' id='basic-addon1'>&#128448;
             </span>
               <input type='text' id='inspireIdLoc' class='form-control'
                 style='width: 20%'
@@ -80,7 +80,7 @@ gsc.upload.uploadForm = function(selector) {
           </div>
           <div class='inspireIdName'>
             <div class='input-group'>
-              <span class='input-group-addon' id='basic-addon1'>&#127970;
+              <span class='input-group-addon' id='basic-addon1'>&#128448;
             </span>
               <input type='text' id='inspireIdName' class='form-control'
                 style='width: 20%'
@@ -122,9 +122,9 @@ gsc.upload.uploadForm = function(selector) {
             ':text');
           var extension = label.substr(-3, 3);
           if (extension === 'zip' || extension === 'gml') {
-            jQuery('.building-height').addClass('collapse');
-          } else {
             jQuery('.building-height').removeClass('collapse');
+          } else {
+            jQuery('.building-height').addClass('collapse');
           }
           if (input.length) {
             input.val(label);
@@ -155,8 +155,11 @@ gsc.upload.uploadForm = function(selector) {
       };
       
       failedCallback = function(error) {
+        if(error == undefined){
+            error = '';
+        }
         jQuery('#alert').removeClass('collapse').addClass('alert-danger')
-          .text('Upload failed with error: ' + error);
+          .text('Upload failed ' + error);
       };
       
       jQuery('form').on('submit', function(e) {
@@ -168,9 +171,9 @@ gsc.upload.uploadForm = function(selector) {
           0];
         var height = jQuery('#height').val();
         var epsg = jQuery('#epsg').val();
-        var inspireIdLoc = jQuery('#inspireIdLoc');
-        var inspireIdName = jQuery('#inspireIdName');
-        var dataToProcess = gsc.upload.Data(fileToProcess,epsg, height, inspireIdLoc, inspireIdName);
+        var inspireIdLoc = jQuery('#inspireIdLoc').val();
+        var inspireIdName = jQuery('#inspireIdName').val();
+        var dataToProcess = new gsc.upload.Data(fileToProcess, epsg, height, inspireIdLoc, inspireIdName);
         dataToProcess.send(progressCallback, successCallback, failedCallback);
       });
       </script>`;
@@ -217,11 +220,13 @@ gsc.upload.uploadForm = function(selector) {
  * Create a Data with uploaded file and building height
  *
  * @param {File} file First element of FileList provided by input type file
+ * @param {Number} epsg EPSG for the reference system of data
  * @param {String} [height] Height in meters of the building
+ * @param {String} [inspireIdLoc] Field that contains the localId for Inspire
+ * @param {String} [inspireIdName] Field that contains the namespace for Inspire
  * @constructor
  */
-gsc.upload.Data = function(file, epsg, height, inspireIdLoc, inspireIdName ) {
-  'use strict';
+gsc.upload.Data = function(file, epsg, height, inspireIdLoc, inspireIdName) {
   /**
    * File to send
    * @type {File}
@@ -306,7 +311,6 @@ Object.defineProperty(gsc.upload.Data.prototype, 'type', {
  * @returns {Boolean} True if file size is smaller or equals to config
  */
 gsc.upload.Data.prototype.isFileSizeCorrect = function() {
-  'use strict';
   return (this.size <= gsc.upload.fileSize);
 };
 
@@ -338,7 +342,6 @@ gsc.upload.Data.prototype.isFileSizeCorrect = function() {
  * @param {failedCallback} fc Callback that handles upload failure
  */
 gsc.upload.Data.prototype.send = function(pc, sc, fc) {
-  'use strict';
   if (this.isFileSizeCorrect()) {
     var formData = new FormData();
     formData.append('file', this.file, this.name);
@@ -358,11 +361,15 @@ gsc.upload.Data.prototype.send = function(pc, sc, fc) {
       }, false);
     }
     if (fc || typeof fc === 'function') {
-      request.upload.addEventListener('error', function(e) {
-        fc(e);
+      request.upload.addEventListener('error', function() {
+        if(request.status === 400){
+          fc('Format not supported');
+        } else {
+          fc();
+        }
       }, false);
     }
-    request.open('POST', 'some.php', true);
+    request.open('POST', 'http://hub.geosmartcity.eu/building/', true);
     request.send(formData);
   }
 };
