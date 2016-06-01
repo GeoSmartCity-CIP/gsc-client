@@ -176,7 +176,7 @@ gsc.upload.uploadForm = function(selector) {
         var dataToProcess = new gsc.upload.Data(fileToProcess, epsg, height, inspireIdLoc, inspireIdName);
         dataToProcess.send(progressCallback, successCallback, failedCallback);
       });
-      </script>`;
+      </script>`      ;
   jQuery(function() {
     jQuery('head').append(script);
   });
@@ -362,7 +362,7 @@ gsc.upload.Data.prototype.send = function(pc, sc, fc) {
     }
     if (fc || typeof fc === 'function') {
       request.upload.addEventListener('error', function() {
-        if(request.status === 400){
+        if (request.status === 400) {
           fc('Format not supported');
         } else {
           fc();

@@ -73,7 +73,7 @@ var gsc = (function() {
    * @return {String} URL of upload feature API
    */
   mod.uploadUrl = function(uploadUrl) {
-    if (dcUrl !== undefined) {
+    if (uploadUrl !== undefined) {
       _uploadUrl = uploadUrl;
     }
     return _uploadUrl;
