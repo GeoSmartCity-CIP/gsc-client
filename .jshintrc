@@ -12,6 +12,7 @@
     "eqnull": true,
     "predef": ["exports"],
     "globalstrict": true,
+    "browser": true,
     "globals": {
         "__r__": false,
         "jQuery": false,
@@ -32,6 +33,7 @@
         "clearTimeout": true,
         "setInterval": true,
         "clearInterval": true,
-        "ol": true
+        "ol": true,
+        "File": true
     }
 }
