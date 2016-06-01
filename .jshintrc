@@ -3,6 +3,7 @@
     "eqeqeq": false,
     "immed": true,
     "latedef": true,
+    "esnext": true,
     "newcap": true,
     "noarg": true,
     "sub": true,
