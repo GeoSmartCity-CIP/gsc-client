@@ -5,7 +5,7 @@ var options = {
 };
 
 // map initializing
-var gscMap = gsc.map.Map('map',options);
+gsc.map.create('map',options);
 
 // reggio_emilia layer
 // layers: http://hub.geosmartcity.eu/geoserver/web/
@@ -21,7 +21,7 @@ var reggio_emilia = new ol.layer.Image({
     })
 });
 
-gscMap.addLayer(reggio_emilia);
+gsc.map.addLayer(reggio_emilia);
 
 // add info on feature functionality
-gscMap.addInfoOnFeatureEvent('nodelist',50,reggio_emilia);
+gsc.map.addInfoOnFeatureEvent('nodelist', 50, reggio_emilia);

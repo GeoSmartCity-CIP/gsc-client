@@ -132,6 +132,7 @@ module.exports = function(grunt) {
                 options: {
                     vendor: [
                         "node_modules/jquery.1/node_modules/jquery/dist/jquery.js",
+                        "node_modules/jquery/dist/jquery.js",
                         "dist/gsc.js"
                     ]
                 }

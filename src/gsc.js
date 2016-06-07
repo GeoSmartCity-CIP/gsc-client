@@ -64,7 +64,7 @@ var gsc = (function() {
    */
   mod.doPost = function(actionName,
     requestData) {
-    return jQuery.post(gsc.dcUrl(), {
+    return $.post(gsc.dcUrl(), {
       actionName: actionName,
       request: JSON.stringify(requestData)
     }, null, 'json');
