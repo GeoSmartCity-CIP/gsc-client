@@ -146,6 +146,46 @@ gsc.map = (function() {
       {'INFO_FORMAT': 'text/html',
              'FEATURE_COUNT': this.maxFeaturesNumber
       });
+    if (this.executor.rejectFn && this.executor.resolveFn) {
+      var resolve = this.executor.resolveFn;
+      var reject = this.executor.rejectFn;
+      var req = new window.XMLHttpRequest();
+      req.onload  = function() {
+        if (this.status == 200) {
+          var responseDoc = document.createElement('html');
+          responseDoc.innerHTML  = this.responseText;
+          var layers = responseDoc.getElementsByTagName('table');
+          if (layers) {
+            var objResponse = {};
+            for (var i = 0; i < layers.length; i++) {
+              var name = (layers[i].caption ?
+              layers[i].caption.innerText : i);
+              objResponse[name] = [];
+              if (layers[i].rows && layers[i].rows.length >= 2) {
+                for (var j = 1; j < layers[i].rows.length; j++) {
+                  var feature = {};
+                  for (var k = 0; k < layers[i].rows[0].cells.length; k++) {
+                    var key = layers[i].rows[0].cells[k].innerText;
+                    var value = layers[i].rows[j].cells[k].innerText;
+                    feature[key] = value;
+                  }
+                  objResponse[name].push(feature);
+                }
+              }
+            }
+            resolve(objResponse);
+          } else {
+            resolve(null);
+          }
+        } else {
+          reject(this.statusText);
+        }
+      };
+      req.open('GET',url,true);
+      req.setRequestHeader('X-Requested-With','XMLHttpRequest');
+      req.setRequestHeader('Content-Type','text/xml');
+      req.send();
+    }
     if (url) {
       document.getElementById(this.nodelist).innerHTML = '<iframe seamless ' +
       'src="' + url + '"></iframe>';
@@ -153,12 +193,35 @@ gsc.map = (function() {
   };
 
   mod.addInfoOnFeatureEvent = function(nodelist, maxFeaturesNumber, layer) {
-    var opts = {
-      nodelist: nodelist,
-      maxFeaturesNumber: maxFeaturesNumber,
-      layer: layer
-    };
-    mod.olMap.on('singleclick', mod.infoOnFeatureEvent, opts);
+    var prom;
+    if (window.Promise) {
+      prom = new window.Promise(function(resolve, reject) {
+      var opts = {
+        nodelist: nodelist,
+        maxFeaturesNumber: maxFeaturesNumber,
+        layer: layer,
+        executor: {
+          resolveFn: resolve,
+          rejectFn: reject
+        }
+      };
+      mod.olMap.on('singleclick', mod.infoOnFeatureEvent, opts);
+    });
+    }else {
+      prom = new Promise(function(resolve, reject) {// jshint ignore:line
+        var opts = {
+        nodelist: nodelist,
+        maxFeaturesNumber: maxFeaturesNumber,
+        layer: layer,
+        executor: {
+          resolveFn: resolve,
+          rejectFn: reject
+        }
+      };
+        mod.olMap.on('singleclick', mod.infoOnFeatureEvent, opts);
+      });
+    }
+    return prom;
   };
 
   mod.removeInfoOnFeatureEvent = function() {
