@@ -42,11 +42,13 @@
     "grunt-jscs": "^2.3.0",
     "grunt-jsdoc": "^1.0.0",
     "ink-docstrap": "^1.1.4"
+
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
     "jquery.1": "^1.0.0",
-    "openlayers": "^3.13.0"
+    "openlayers": "^3.13.0",
+    "dust":"^0.3.0"
   },
   "keywords": [],
   "directories": {

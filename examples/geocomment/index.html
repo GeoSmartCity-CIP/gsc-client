@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example of gsc.map</title>
+    <link href="../../node_modules/openlayers/dist/ol.css" rel="stylesheet">
+    <script src="../../node_modules/openlayers/dist/ol.js"></script>
+
+    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="../../node_modules/dust/dist/dust-core-0.3.0.min.js"></script>	
+
+    <link href="../../dist/gsc.css" rel="stylesheet">
+
+    <script src="../../dist/gsc.js"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 400px;
+            border: 1px solid deeppink;
+        }
+
+        iframe {
+            width: 100%;
+            height: auto;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="page-header">
+    <div class="container">
+        <h2>Comment Geofeature</h2>
+        <p id="example"> See the <a href="GeoComment.js" target="_blank">Geocomment object source</a> to see how this is done.</p>
+    </div>
+</div>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../../">gsc.js</a>
+            <a class="navbar-brand" href="../">examples</a>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">   
+    <div id='map'></div>
+		<div class="botonera"></div>
+</div>
+
+
+
+    <script src="index.js"></script>
+
+</div>
+</body>
+</html>
