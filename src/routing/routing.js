@@ -14,9 +14,8 @@ gsc.routing = gsc.routing || {};
  */
 gsc.routing.routing = function(x1, y1, x2, y2) {
 
-  //var RoutingUrl = 'http:/hub.geosmartcity.eu'
-  // + '/GironaRouting/geo/RestService/getroute?';
-  var RoutingUrl = 'http://localhost:8080' +
+  var RoutingUrl = 'http:/hub.geosmartcity.eu' +
+  //var RoutingUrl = 'http://localhost:8080' +
    '/GironaRouting/geo/RestService/getroute?';
 
   RoutingUrl += ('x1=' + x1 + '&y1=' + y1 + '&x2=' + x2 + '&y2=' +  y2);
