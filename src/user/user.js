@@ -11,12 +11,12 @@ gsc.user = (function() {
   /**
    * Register a new user
    *
-   * @param {String} email [description]
-   * @param {String} username [description]
-   * @param {String} password [description]
-   * @param {String} confirmpassword [description]
-   * @param {Object[]} organizations [description]
-   * @return {Promise.<Object>} [description]
+   * @param {String} email - E-mail address that the user will be registerred with
+   * @param {String} username - Username
+   * @param {String} password - Password
+   * @param {String} confirmpassword - Confirm password
+   * @param {Object[]} organizations - A list of organizations that the user belongs to
+   * @return {Promise.<Object>} - User response object
    */
   mod.register = function(email,
     username,
@@ -39,7 +39,7 @@ gsc.user = (function() {
    *
    * @param {string} username - Username
    * @param {string} password - Password
-   * @return {Promise.<Response.<User>>} User object
+   * @return {Promise.<Response.<User>>} User response object
    */
   mod.login = function(username, password) {
     return gsc.doPost('login', {
@@ -51,9 +51,9 @@ gsc.user = (function() {
   /**
    * Delete a user
    *
-   * @param {String} username User name
-   * @param {String} password Password
-   * @return {Promise.<Object>}
+   * @param {String} username - Username
+   * @param {String} password - Password
+   * @return {Promise.<Object>} - User response object
    */
   mod.delete = function(username, password) {
     return gsc.doPost('unreguser', {
@@ -68,7 +68,7 @@ gsc.user = (function() {
    *
    * @param {string} email - E-mail of user to get reminder for
    * @param {string} username - Username of user to get reminder for
-   * @return {Promise} [description]
+   * @return {Promise.<Object>} - User response object
    */
   mod.remindPassword = function(email, username) {
 
@@ -87,11 +87,11 @@ gsc.user = (function() {
   /**
    * Change password for user
    *
-   * @param {string} username [description]
-   * @param {string} oldpassword [description]
-   * @param {string} newpassword [description]
-   * @param {string} confirmnewpassword [description]
-   * @return {Promise} [description]
+   * @param {string} username - Username
+   * @param {string} oldpassword - Old password
+   * @param {string} newpassword - New password
+   * @param {string} confirmnewpassword - Confirm new password
+   * @return {Promise.<Object>} - User response object
    */
   mod.changePassword = function(username,
     oldpassword,
@@ -110,8 +110,8 @@ gsc.user = (function() {
   /**
    * Update user
    *
-   * @param {number} userId Id of user to update
-   * @return {Promise.<Object>} Updated user object
+   * @param {number} userId - Identifier of user to update
+   * @return {Promise.<Object>} - User response object
    */
   mod.update = function(userId, email, username, organizations) {
 
@@ -127,8 +127,8 @@ gsc.user = (function() {
   /**
    * Lock user
    *
-   * @param {string} username Username
-   * @param {boolean} [lock=true] Boolean flag to lock user
+   * @param {string} username - Username
+   * @param {boolean} [lock=true] - Boolean flag to lock user
    * @return {Promise.<Object>}
    */
   mod.lock = function(username, lock) {
@@ -147,7 +147,7 @@ gsc.user = (function() {
   /**
    * Verify registered email
    *
-   * @param {number} verificationId Id to confirm - sent to registerred email
+   * @param {Number} verificationId Id to confirm - sent to registerred email
    * @return {Promise.<Object>}
    */
   mod.verifyEmail = function(verificationId) {
