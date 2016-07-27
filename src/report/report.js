@@ -375,7 +375,7 @@ gsc.Report = function(map, format, quality, options) {
   };
 };
 
-gsc.Report.prototype.Print = function(format, quality) {
+gsc.Report.prototype.Print = function(format, quality, callback) {
   var report = this;
   var map = this._map;
   if (arguments.length > 0) {
@@ -424,7 +424,7 @@ gsc.Report.prototype.Print = function(format, quality) {
             report._addImage(pdf,data,dim,ratio);
             report._renderDOMObject(pdf,function() {
               pdf.save('map.pdf');
-
+              if (callback) {callback();}
             });
 
           },1000);
@@ -459,6 +459,7 @@ gsc.Report.prototype.Print = function(format, quality) {
         report._addImage(pdf,data,dim,ratio);
         report._renderDOMObject(pdf,function() {
               pdf.save('map.pdf');
+              if (callback) {callback();}
             });
 
         map.setSize(size);

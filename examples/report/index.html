@@ -111,7 +111,10 @@
 		exportElement.addEventListener('click', function (e) {
 			var format= document.getElementById('format').value;
 			var resolution= document.getElementById('resolution').value;
-			print.Print(format,resolution);
+			console.log("print start!!")
+			print.Print(format,resolution,function(){
+				console.log("print end!!")
+			});
 		});
 		document.getElementById('changeBase').onchange=function(){
 			var oldLayer=layer;
