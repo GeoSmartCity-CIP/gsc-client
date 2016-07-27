@@ -7,6 +7,7 @@
 	<link href="../../node_modules/openlayers/dist/ol.css" rel="stylesheet">
     <script src="../../node_modules/openlayers/dist/ol.js"></script>
 	<script src="../../node_modules/jspdf/dist/jspdf.debug.js"></script>	
+	<!--<script src="jspdf.plugin.cell.js"></script>	-->
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 
     <link href="../../dist/gsc.css" rel="stylesheet">
@@ -24,6 +25,23 @@
         .form {
             display:inline;
         }
+		table {
+			font-family: arial, sans-serif;
+			border-collapse: collapse;
+			width: 100%;
+		}
+		thead{
+			background-color: #fcf8e3;
+		}
+		td, th {
+			border: 1px solid #dddddd;
+			text-align: left;
+			padding: 8px;
+		}
+
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}
 	</style>
 	<script language="javascript">
 
@@ -72,10 +90,21 @@
 		},
 		{
 			type: gsc.ReportConst.ObjectType.Text,
-			data: 'Titulo',
+			data: 'Title',
 			vAlign:gsc.ReportConst.VerticalAlign.Top,
 			hAlign:gsc.ReportConst.HorizontalAlign.Center,
-			size:40
+			size:26
+		},
+		{
+			type: gsc.ReportConst.ObjectType.Text,
+			data: new Date().toLocaleDateString(),
+			vAlign:gsc.ReportConst.VerticalAlign.Bottom,
+			hAlign:gsc.ReportConst.HorizontalAlign.Right,
+			size:12
+		}],
+		HTML:[{
+			data: document.getElementById("data"),
+			position:gsc.ReportConst.HTMLPosition.AfterMap
 		}]
 	  });
 	  var exportElement = document.getElementById('export-pdf');
@@ -123,7 +152,24 @@
 						crossOrigin: 'Anonymous'
 					  })
 				});
-				break;			
+				break;
+			case "BING":
+				var styles = [
+				  'Road',
+				  'Aerial',
+				  'AerialWithLabels',
+				  'collinsBart',
+				  'ordnanceSurvey'
+				];
+				layer = new ol.layer.Tile({
+				  visible: false,
+				  preload: Infinity,
+				  source: new ol.source.BingMaps({
+					key: 'AkGbxXx6tDWf1swIhPJyoAVp06H0s0gDTYslNWWHZ6RoPqMpB9ld5FY1WutX8UoF',
+					imagerySet: styles[1]					
+				  })
+				})
+				break;
 		}
 		var olMap=gsc.map.getOlMap();
 		var layers = olMap.getLayers();
@@ -136,16 +182,17 @@
   </head>
   <body>
     
-	<div id="map" class="map"></div>	
+	<div id="map" class="map"></div>
+	
 	<div>    
 		<form class="form">
 			<select id="changeBase">	
 				<option value="OSM">OSM</option>
                 <!--<option value="BingSat">Bing Sat</option>
                 <option value="BingRoad">Bing Road</option>   -->             
-                <option value="MapquestSat">Mapquest Sat</option>
-                <option value="MapQuestRoad">MapQuest Road</option>
-				<option value="WMS">Idena(WMS)</option>
+                <!--<option value="MapquestSat">Mapquest Sat</option>
+                <option value="MapQuestRoad">MapQuest Road</option>-->
+				<option value="WMS">Idena(WMS)</option>				
 				<!--<option value="WMTS">Idena(WMTS)</option>-->
 				
 			</select> 
@@ -165,7 +212,57 @@
             </form>
             <button id="export-pdf" class="btn">Export PDF</button>
           </div>
-	
+	<br/>
+	<div id="data" style="width:600px">	
+		<table id="tab_customers">
+        <colgroup>
+            <col width="20%">
+                <col width="20%">
+                    <col width="20%">
+                        <col width="20%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Country</th>
+                <th>Population</th>
+                <th>Date</th>
+                <th>Age</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Chinna</td>
+                <td>1,363,480,000</td>
+                <td>March 24, 2014</td>
+                <td>19.1</td>
+            </tr>
+            <tr>
+                <td>India</td>
+                <td>1,241,900,000</td>
+                <td>March 24, 2014</td>
+                <td>17.4</td>
+            </tr>
+            <tr>
+                <td>United States</td>
+                <td>317,746,000</td>
+                <td>March 24, 2014</td>
+                <td>4.44</td>
+            </tr>
+            <tr>
+                <td>Indonesia</td>
+                <td>249,866,000</td>
+                <td>July 1, 2013</td>
+                <td>3.49</td>
+            </tr>
+            <tr>
+                <td>Brazil</td>
+                <td>201,032,714</td>
+                <td>July 1, 2013</td>
+                <td>2.81</td>
+            </tr>
+        </tbody>
+    </table>
+	</div>
 	
     <script>		
 		

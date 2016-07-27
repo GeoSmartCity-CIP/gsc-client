@@ -15,8 +15,7 @@ gsc.ReportConst = {
     'Image': 'Image',
     'Text': 'Text',
     'Date': 'Date',
-    'Scale': 'Scale',
-    'DOM': 'DOM'
+    'Scale': 'Scale'
   },
   VerticalAlign: {
     'Top': 'TOP',
@@ -26,6 +25,11 @@ gsc.ReportConst = {
     'Left': 'LEFT',
     'Right': 'RIGHT',
     'Center': 'CENTER'
+  },
+  HTMLPosition: {
+    'BeforeMap': 'BeforeMap',
+    'AfterMap': 'AfterMap',
+    'NewPage': 'NewPage'
   }
 };
 
@@ -44,6 +48,7 @@ gsc.Report = function(map, format, quality, options) {
     margin: [10],
     content: null
   };
+  this.pdfDPIs = 90;
   this._options = null;
   this._setFormat = function(format) {
     if (format) {
@@ -139,7 +144,7 @@ gsc.Report = function(map, format, quality, options) {
 
     pdf.addImage(data,'PNG',
 		margin.left,
-		margin.top,
+		this._mapTopPosition ? this._mapTopPosition : margin.top,
         dim[0] - margin.left - margin.right,
         Math.round((dim[0] - margin.left - margin.right) / ratio));
   };
@@ -155,7 +160,6 @@ gsc.Report = function(map, format, quality, options) {
     return margin;
   };
   this._renderObject = function(pdf, object) {
-
     if (object) {
       switch (object.type){
         case gsc.ReportConst.ObjectType.Image:
@@ -202,13 +206,79 @@ gsc.Report = function(map, format, quality, options) {
       h = (h / this._quality) * 25.4;
       var position = this._getXYPosition(object,w,h);
       pdf.addImage(imgData,'png',position.x,position.y,w,h);
+      if (object.vAlign === gsc.ReportConst.VerticalAlign.Top) {
+        if (this._mapTopPosition < (position.y + h)) {
+          this._mapTopPosition = (position.y + h + 3);
+        }
+      }
     };
   this._renderText = function(pdf, object) {
     if (object.size && typeof(object.size) === 'number') {
       pdf.setFontSize(object.size);
     }
-    var position = this._getXYPosition(object,0,0);
-    pdf.text(object.data,position.x,position.y);
+    var position = this._getXYPosition(object,
+		pdf.getTextWidth(object.data),pdf.getLineHeight());
+    pdf.text(position.x,position.y + this.pxToMM(object.size),
+    object.data);
+    var y = position.y + this.pxToMM(object.size);
+    if (object.vAlign === gsc.ReportConst.VerticalAlign.Top) {
+      if (this._mapTopPosition < y) {
+        this._mapTopPosition = (y + 3);
+      }
+    }
+  };
+  this._renderDOMObject = function(pdf, callback) {
+    var map = this._map;
+    var dim = this._dimensions;
+    var olMap = map.getOlMap();
+    var size = (olMap.getSize());
+    var ratio = size[0] / size[1];
+    var margins = this._getMargins();
+    var c = 0;
+    var args = [];
+    if (this._options && this._options.HTML) {
+      var htmlObjs = this._options.HTML;
+      var fnc = function() {
+        args.push(arguments);
+        if (++c === htmlObjs.length && callback) {
+          callback(args);
+        }
+      };
+      for (var i = 0; i < this._options.HTML.length; i++) {
+        var y;
+        switch (this._options.HTML[i].position) {
+          case gsc.ReportConst.HTMLPosition.BeforeMap:
+            y = this._mapTopPosition ? this._mapTopPosition : margins.top;
+            this._mapTopPosition += this._options.HTML[i].data.clientHeight;
+            this._mapTopPosition += 3;
+          break;
+          case gsc.ReportConst.HTMLPosition.AfterMap:
+            y = this._mapTopPosition ? this._mapTopPosition : margins.top;
+            y += Math.round((dim[0] - margins.left - margins.right) / ratio);
+            y += 3;
+            if (dim[1] <  (y +
+				this.pxToMM(this._options.HTML[i].data.clientHeight) +
+				margins.bottom)) {
+              pdf.addPage();
+              y = margins.top;
+            }
+          break;
+          case gsc.ReportConst.HTMLPosition.NewPage:
+
+          break;
+          default: //in default case render text
+          break;
+        }
+        pdf.addHTML(this._options.HTML[i].data, margins.left, y, {
+          imageTimeout: 2000,
+          background: '#fff'
+        },fnc);
+      }
+    }else {
+      if (callback) {callback();
+      }
+    }
+
   };
   this._renderContent = function(pdf) {
     if (this._options && this._options.content) {
@@ -225,7 +295,7 @@ gsc.Report = function(map, format, quality, options) {
     if (object.vAlign) {
       y = object.vAlign === gsc.ReportConst.VerticalAlign.Top ?
       margins.top :
-      this._dimensions[1] - margins.bottom - height;
+      this._dimensions[1] - margins.bottom - this.pxToMM(height);
     } else {
       y = margins.top;
     }
@@ -244,8 +314,8 @@ gsc.Report = function(map, format, quality, options) {
       break;
     }
     return {
-      'x': x,
-      'y': y
+      'x': Math.round(x),
+      'y': Math.round(y)
     };
   };
 
@@ -292,6 +362,9 @@ gsc.Report = function(map, format, quality, options) {
     return out;
   };
   // jscs:enable
+  this.pxToMM = function(px) {
+      return (px / this.pdfDPIs) * 25.4;
+    };
   this._measureImage = function(data) {
     var img = document.createElement('img');
     img.src = data;
@@ -314,6 +387,7 @@ gsc.Report.prototype.Print = function(format, quality) {
   this._dimensions = this._ReportDimensions
 	[this._paperOrientation.toLowerCase()]
 	[this._paperSize.toLowerCase()];
+  this._mapTopPosition = 0;
   var dim = this._dimensions;
   var olMap = map.getOlMap();
   var size = (olMap.getSize());
@@ -324,13 +398,14 @@ gsc.Report.prototype.Print = function(format, quality) {
   var tileCount = 0;
   olMap.once('postcompose', function(event) {
     var source = null;
-
+    var map = this;
     //tiled base layers
     if (this.getLayers().item(0) instanceof ol.layer.Tile) {
-      var map = this;
       source = this.getLayers().item(0).getSource();
 
-      var tileStartLoad = function() {tileCount++;};
+      var tileStartLoad = function() {
+        tileCount++;
+      };
       var tileEndLoad = function() {
         tileCount--;
         checkTiles();
@@ -346,9 +421,13 @@ gsc.Report.prototype.Print = function(format, quality) {
             // jscs:enable requireCapitalizedConstructors
             // jscs:enable maximumLineLength
             report._renderContent(pdf,dim);
-            //report._addImage(pdf,data,dim,ratio);
-            pdf.save('map.pdf');
-          },300);
+            report._addImage(pdf,data,dim,ratio);
+            report._renderDOMObject(pdf,function() {
+              pdf.save('map.pdf');
+
+            });
+
+          },1000);
           map.setSize(size);
           map.getView().fit(extent, size);
           map.renderSync();
@@ -375,9 +454,13 @@ gsc.Report.prototype.Print = function(format, quality) {
         var pdf = new jsPDF(report._paperOrientation.toLowerCase(),'mm',report._paperSize.toLowerCase()); // jshint ignore:line
         // jscs:enable requireCapitalizedConstructors
         // jscs:enable maximumLineLength
+
         report._renderContent(pdf,dim);
-        //report._addImage(pdf,data,dim,ratio);
-        pdf.save('map.pdf');
+        report._addImage(pdf,data,dim,ratio);
+        report._renderDOMObject(pdf,function() {
+              pdf.save('map.pdf');
+            });
+
         map.setSize(size);
         map.getView().fit(extent, size);
         map.renderSync();
