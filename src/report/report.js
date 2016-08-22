@@ -396,6 +396,9 @@ gsc.Report.prototype.Print = function(format, quality, callback) {
   var height = Math.round((dim[0] / ratio) * this._quality / 25.4);
   var extent = olMap.getView().calculateExtent(size);
   var tileCount = 0;
+  olMap.once('render', function(event) {
+    console.log('render');
+  });
   olMap.once('postcompose', function(event) {
     var source = null;
     var map = this;
@@ -425,20 +428,20 @@ gsc.Report.prototype.Print = function(format, quality, callback) {
             report._renderDOMObject(pdf,function() {
               pdf.save('map.pdf');
               if (callback) {callback();}
+              source.un('tileloadstart', tileStartLoad);
+              source.un('tileloadend', tileEndLoad);
+              source.un('tileloaderror', tileEndLoad);
+              map.setSize(size);
+              map.getView().fit(extent, size, {nearest: true});
+              map.renderSync();
             });
-
-          },1000);
-          map.setSize(size);
-          map.getView().fit(extent, size);
-          map.renderSync();
-          source.un('tileloadstart', tileStartLoad);
-          source.un('tileloadend', tileEndLoad);
-          source.un('tileloaderror', tileEndLoad);
+          },100);
         }
       };
       source.on('tileloadstart', tileStartLoad);
       source.on('tileloadend', tileEndLoad);
       source.on('tileloaderror', tileEndLoad);
+      source.refresh();
     }
     //image base layers
     if (this.getLayers().item(0) instanceof ol.layer.Image) {
@@ -455,19 +458,18 @@ gsc.Report.prototype.Print = function(format, quality, callback) {
         // jscs:enable requireCapitalizedConstructors
         // jscs:enable maximumLineLength
 
-        report._renderContent(pdf,dim);
+        //report._renderContent(pdf,dim);
         report._addImage(pdf,data,dim,ratio);
         report._renderDOMObject(pdf,function() {
-              pdf.save('map.pdf');
-              if (callback) {callback();}
-            });
-
-        map.setSize(size);
-        map.getView().fit(extent, size);
-        map.renderSync();
-        source.un('imageloadstart', ImageStartLoad);
-        source.un('imageloadend', ImageEndLoad);
-        source.un('imageloaderror', ImageEndLoad);
+          pdf.save('map.pdf');
+          if (callback) {callback();}
+          source.un('imageloadstart', ImageStartLoad);
+          source.un('imageloadend', ImageEndLoad);
+          source.un('imageloaderror', ImageEndLoad);
+          map.setSize(size);
+          map.getView().fit(extent, size);
+          map.renderSync();
+        });
       };
       source.on('imageloadstart', ImageStartLoad);
       source.on('imageloadend', ImageEndLoad);
