@@ -39,7 +39,7 @@ module.exports = function(grunt) {
           'src/**/*.js'
         ],
         dest: 'dist/<%= pkg.name %>.js'
-      },
+            }
     },
     babel: {
       options: {
@@ -84,6 +84,7 @@ module.exports = function(grunt) {
       },
       all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
       dev: ['src/**/*.js'],
+            gruntfile: ['Gruntfile.js']
     },
     jscs: {
       src: 'src/**/*.js',
@@ -118,7 +119,7 @@ module.exports = function(grunt) {
           'css/*.css'
         ],
         dest: "dist/gsc.css"
-      },
+            }
     },
     cssmin: {
       target: {
@@ -131,13 +132,18 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      gruntfile: {
-        files: '<%= jshint.gruntfile.src %>',
-        tasks: ['jshint:gruntfile']
-      },
-      lib: {
-        files: '<%= jshint.lib.src %>',
-        tasks: ['jshint:src', 'nodeunit']
+            gruntfile: {
+                files: '<%= jshint.gruntfile.src %>',
+                tasks: ['jshint:gruntfile']
+            },
+            lib: {
+                files: '<%= jshint.lib.src %>',
+                tasks: ['jshint:src', 'nodeunit']
+            },
+            default: {
+                files: '<%= jshint.all %>',
+                tasks: ['default-gsc']
+            }
       }
     },
     jasmine: {
@@ -167,7 +173,8 @@ module.exports = function(grunt) {
   grunt.registerTask('update-docs', ['concat', 'jsdoc']);
 
   // Default task - only GSC custom code.
-  grunt.registerTask('default-gsc', ['jshint', 'jscs', 'build-js-gsc', 'build-css-gsc', 'update-docs-gsc']);
+  grunt.registerTask('default-gsc', ['jshint', 'jscs', 'build-js-gsc', 'build-css-gsc']);
+  grunt.registerTask('default-gsc-with-docs', ['jshint', 'jscs', 'build-js-gsc', 'build-css-gsc', 'update-docs-gsc']);
   grunt.registerTask('update-docs-gsc', ['concat:gsc', 'jsdoc']);
   grunt.registerTask('build-js-gsc', ['concat:gsc', 'uglify']);
   grunt.registerTask('build-css-gsc', ['concat_css:gsc', 'cssmin']);

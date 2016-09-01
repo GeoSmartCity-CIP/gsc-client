@@ -19,10 +19,10 @@ gsc.user = (function() {
    * @return {Promise.<Object>} - User response object
    */
   mod.register = function(email,
-    username,
-    password,
-    confirmpassword,
-    organizations) {
+      username,
+      password,
+      confirmpassword,
+      organizations) {
 
     return gsc.doPost('reguser', {
       email: email,
@@ -94,9 +94,9 @@ gsc.user = (function() {
    * @return {Promise.<Object>} - User response object
    */
   mod.changePassword = function(username,
-    oldpassword,
-    newpassword,
-    confirmnewpassword) {
+      oldpassword,
+      newpassword,
+      confirmnewpassword) {
 
     return gsc.doPost('changepwd', {
       username: username,
@@ -156,6 +156,89 @@ gsc.user = (function() {
       id: verificationId
     });
 
+  };
+
+  /**
+   * Creates a login form in a user-specified div using Bootstrap CSS classes.
+   * The login form is linked to the GSC data catalogue back-end
+   *
+   * @param {String|jQuery} domNode - Either a jQuery node or an
+   * CSS selector expression, i.e. #id or .class
+   */
+  mod.loginWidget = function(domNode) {
+    var n = jQuery(domNode);
+    n.append(
+        '<div id="gscLoginForm">\
+            <form>\
+                <div class="form-group">\
+                    <label for="usr">E-mail</label>\
+                    <input id="usr" class="form-control" name="usr"\
+                        type="text" placeholder="abc@def.com">\
+                </div>\
+                <div class="form-group">\
+                    <label for="pwd">Password</label>\
+                    <input id="pwd" class="form-control" name="pwd"\
+                        type="password" placeholder="*****">\
+                </div>\
+                <button class="btn btn-primary" id="gscLoginBtn"\
+                    type="submit">Login</button>\
+            </form>\
+        </div>');
+    jQuery('#gscLoginForm button#gscLoginBtn').click(function(evt) {
+      evt.preventDefault();
+      console.log('Trying to log in');
+      var usr = jQuery('#gscLoginForm input#usr').val();
+      var pwd = jQuery('#gscLoginForm input#pwd').val();
+      mod.login(usr, pwd).then(function(data) {
+        console.log(data);
+      });
+    });
+  };
+
+  /**
+   * Creates a user registration form in a user-specified div using Bootstrap CSS classes.
+   * The login form is linked to the GSC data catalogue back-end
+   *
+   * @param {String|jQuery} domNode - Either a jQuery node or an
+   * CSS selector expression, i.e. #id or .class
+   */
+  mod.registrationWidget = function(domNode) {
+    var n = jQuery(domNode);
+    n.append(
+        '<div id="gscRegistrationForm">\
+            <form>\
+                <div class="form-group">\
+                    <label for="email">E-mail</label>\
+                    <input id="email" class="form-control" name="email"\
+                        type="text" placeholder="name@organization.tld">\
+                </div>\
+                <div class="form-group">\
+                    <label for="pwd">Password</label>\
+                    <input id="pwd" class="form-control" name="pwd"\
+                        type="password" placeholder="Enter password">\
+                </div>\
+                <div class="form-group">\
+                    <label for="pwd2">Confirm password</label>\
+                    <input id="pwd2" class="form-control" name="pwd2"\
+                        type="password" placeholder="Confirm password">\
+                </div>\
+                <button class="btn btn-primary" id="gscRegisterBtn"\
+                    type="submit">Register</button>\
+            </form>\
+        </div>');
+
+    console.log('Try to register user');
+    jQuery('#gscRegistrationForm button#gscRegisterBtn').click(function(evt) {
+      evt.preventDefault();
+      var email = jQuery('#gscRegistrationForm input#email').val();
+      var pwd = jQuery('#gscRegistrationForm input#pwd').val();
+      var pwd2 = jQuery('#gscRegistrationForm input#pwd2').val();
+      mod.register(email, email, pwd, pwd2, [{
+        'organization': 666
+      }]).then(function(data) {
+        console.log(data);
+      });
+    });
   };
 
   return mod;
