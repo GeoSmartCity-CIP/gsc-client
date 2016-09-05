@@ -308,5 +308,5 @@ gsc.editFeatures = (function() {
         break;
     }
   });
-
+  return mod;
 }());
