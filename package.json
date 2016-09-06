@@ -1,7 +1,7 @@
-{
+ {
   "name": "gsc",
   "description": "Geosmartcity Client Side Javascript Library",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "homepage": "https://github.com/GeoSmartCity-CIP/gsc-client",
   "author": "GSC partners",
   "repository": {
@@ -46,7 +46,8 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "jquery.1": "^1.0.0",
-    "openlayers": "^3.13.0"
+    "openlayers": "^3.13.0",
+    "x-editable": "^1.5.1"
   },
   "keywords": [],
   "directories": {
