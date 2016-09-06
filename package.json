@@ -1,7 +1,7 @@
 {
   "name": "gsc",
   "description": "Geosmartcity Client Side Javascript Library",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "homepage": "https://github.com/GeoSmartCity-CIP/gsc-client",
   "author": "GSC partners",
   "repository": {
