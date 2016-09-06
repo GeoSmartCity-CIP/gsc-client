@@ -19,6 +19,9 @@ npm install
 
 # to build entire project (jhint, nodeunit, concat, uglify, jsdoc)
 grunt
+
+# to run test
+grunt jasmine
 ```
 
 ## How to contribute
