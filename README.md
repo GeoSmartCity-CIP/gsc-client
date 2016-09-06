@@ -11,6 +11,9 @@
 # clone repository
 git clone https://github.com/GeoSmartCity-CIP/gsc-client.git
 
+# install grunt (task runner)
+npm install grunt
+
 # to install package (dependecies,...)
 npm install
 
