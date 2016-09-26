@@ -133,12 +133,12 @@ module.exports = function(grunt) {
         },
         watch: {
             gruntfile: {
-                files: '<%= jshint.gruntfile.src %>',
+                files: '<%= jshint.gruntfile %>',
                 tasks: ['jshint:gruntfile']
             },
             lib: {
-                files: '<%= jshint.lib.src %>',
-                tasks: ['jshint:src', 'nodeunit']
+                files: '<%= jshint.all %>',
+                tasks: ['jshint:all']
             },
             default: {
                 files: '<%= jshint.all %>',
@@ -177,9 +177,7 @@ module.exports = function(grunt) {
     
     // Default task.
     grunt.registerTask('default', ['jshint', 'jscs', 'build-js', 'build-css', 'update-docs']);
-
     grunt.registerTask('babeling', ['babel']);
-
     grunt.registerTask('build-js', ['concat', 'babel', 'uglify']);
     grunt.registerTask('build-css', ['concat_css', 'cssmin']);
     grunt.registerTask('update-docs', ['concat', 'jsdoc']);

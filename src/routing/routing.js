@@ -59,7 +59,7 @@ gsc.routing = (function() {
    *          console.debug('Could not calculate service area: ' + err);
    *      });
    */
-  mod.routing.calculateRoute = function(lon1, lat1, lon2, lat2) {
+  mod.calculateRoute = function(lon1, lat1, lon2, lat2) {
 
     var dfd = jQuery.Deferred();
 
