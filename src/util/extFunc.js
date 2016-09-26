@@ -7,6 +7,7 @@ gsc.util = gsc.util || {};
  *
  * @param {Array|Object|null|undefined} arrayCandidate
  * @returns {Boolean} True if array with >= 1 entry, false otherwise
+ * @memberof gsc.util
  */
 gsc.util.isArrayWithContent = function(arrayCandidate) {
   if (arrayCandidate !== undefined &&
@@ -19,11 +20,28 @@ gsc.util.isArrayWithContent = function(arrayCandidate) {
 };
 
 /**
+ * Cecks if an object has an error property
+ *
+ * @param {type} responseObject
+ * @returns {String|Boolean} The error message if error, false if no error
+ * @memberof gsc.util
+ * */
+gsc.util.hasError = function(responseObject) {
+
+  if (responseObject.error !== undefined) {
+    return responseObject.error.toString();
+  } else {
+    return false;
+  }
+};
+
+/**
  * Clears an existing array and adds all elements from another array into it.
  * Modifies the targetArray.
  *
  * @param {Object[]} targetArray
  * @param {Object[]} sourceArray
+ * @memberof gsc.util
  */
 gsc.util.clearExtendArray = function(targetArray, sourceArray) {
   targetArray.length = 0;
@@ -36,6 +54,7 @@ gsc.util.clearExtendArray = function(targetArray, sourceArray) {
  *
  * @param {type} targetObject
  * @param {type} sourceObject
+ * @memberof gsc.util
  */
 gsc.util.clearExtendObject = function(targetObject, sourceObject) {
   jQuery.each(targetObject, function(key, value) {

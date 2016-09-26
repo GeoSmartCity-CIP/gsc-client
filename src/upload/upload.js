@@ -6,8 +6,8 @@ var gsc = gsc || {};
  * <p>API for crowd sourcing feature of gsc.js library</p>
  * <p>Functions to handle server side crowd sourcing app.</p>
  *
- * @namespace gsc.upload
  * @requires jQuery-2.1.4
+ * @exports gsc/upload
  */
 gsc.upload = {
   /**

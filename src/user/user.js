@@ -11,18 +11,18 @@ gsc.user = (function() {
   /**
    * Register a new user
    *
-   * @param {String} email [description]
-   * @param {String} username [description]
-   * @param {String} password [description]
-   * @param {String} confirmpassword [description]
-   * @param {Object[]} organizations [description]
-   * @return {Promise.<Object>} [description]
+   * @param {String} email - E-mail address that the user will be registerred with
+   * @param {String} username - Username
+   * @param {String} password - Password
+   * @param {String} confirmpassword - Confirm password
+   * @param {Object[]} organizations - A list of organizations that the user belongs to
+   * @return {Promise.<Object>} - User response object
    */
   mod.register = function(email,
-    username,
-    password,
-    confirmpassword,
-    organizations) {
+      username,
+      password,
+      confirmpassword,
+      organizations) {
 
     return gsc.doPost('reguser', {
       email: email,
@@ -39,7 +39,7 @@ gsc.user = (function() {
    *
    * @param {string} username - Username
    * @param {string} password - Password
-   * @return {Promise.<Response.<User>>} User object
+   * @return {Promise.<Response.<User>>} User response object
    */
   mod.login = function(username, password) {
     return gsc.doPost('login', {
@@ -51,9 +51,9 @@ gsc.user = (function() {
   /**
    * Delete a user
    *
-   * @param {String} username User name
-   * @param {String} password Password
-   * @return {Promise.<Object>}
+   * @param {String} username - Username
+   * @param {String} password - Password
+   * @return {Promise.<Object>} - User response object
    */
   mod.delete = function(username, password) {
     return gsc.doPost('unreguser', {
@@ -68,7 +68,7 @@ gsc.user = (function() {
    *
    * @param {string} email - E-mail of user to get reminder for
    * @param {string} username - Username of user to get reminder for
-   * @return {Promise} [description]
+   * @return {Promise.<Object>} - User response object
    */
   mod.remindPassword = function(email, username) {
 
@@ -87,16 +87,16 @@ gsc.user = (function() {
   /**
    * Change password for user
    *
-   * @param {string} username [description]
-   * @param {string} oldpassword [description]
-   * @param {string} newpassword [description]
-   * @param {string} confirmnewpassword [description]
-   * @return {Promise} [description]
+   * @param {string} username - Username
+   * @param {string} oldpassword - Old password
+   * @param {string} newpassword - New password
+   * @param {string} confirmnewpassword - Confirm new password
+   * @return {Promise.<Object>} - User response object
    */
   mod.changePassword = function(username,
-    oldpassword,
-    newpassword,
-    confirmnewpassword) {
+      oldpassword,
+      newpassword,
+      confirmnewpassword) {
 
     return gsc.doPost('changepwd', {
       username: username,
@@ -110,8 +110,8 @@ gsc.user = (function() {
   /**
    * Update user
    *
-   * @param {number} userId Id of user to update
-   * @return {Promise.<Object>} Updated user object
+   * @param {number} userId - Identifier of user to update
+   * @return {Promise.<Object>} - User response object
    */
   mod.update = function(userId, email, username, organizations) {
 
@@ -127,8 +127,8 @@ gsc.user = (function() {
   /**
    * Lock user
    *
-   * @param {string} username Username
-   * @param {boolean} [lock=true] Boolean flag to lock user
+   * @param {string} username - Username
+   * @param {boolean} [lock=true] - Boolean flag to lock user
    * @return {Promise.<Object>}
    */
   mod.lock = function(username, lock) {
@@ -147,7 +147,7 @@ gsc.user = (function() {
   /**
    * Verify registered email
    *
-   * @param {number} verificationId Id to confirm - sent to registerred email
+   * @param {Number} verificationId Id to confirm - sent to registerred email
    * @return {Promise.<Object>}
    */
   mod.verifyEmail = function(verificationId) {
@@ -156,6 +156,89 @@ gsc.user = (function() {
       id: verificationId
     });
 
+  };
+
+  /**
+   * Creates a login form in a user-specified div using Bootstrap CSS classes.
+   * The login form is linked to the GSC data catalogue back-end
+   *
+   * @param {String|jQuery} domNode - Either a jQuery node or an
+   * CSS selector expression, i.e. #id or .class
+   */
+  mod.loginWidget = function(domNode) {
+    var n = jQuery(domNode);
+    n.append(
+        '<div id="gscLoginForm">\
+            <form>\
+                <div class="form-group">\
+                    <label for="usr">E-mail</label>\
+                    <input id="usr" class="form-control" name="usr"\
+                        type="text" placeholder="abc@def.com">\
+                </div>\
+                <div class="form-group">\
+                    <label for="pwd">Password</label>\
+                    <input id="pwd" class="form-control" name="pwd"\
+                        type="password" placeholder="*****">\
+                </div>\
+                <button class="btn btn-primary" id="gscLoginBtn"\
+                    type="submit">Login</button>\
+            </form>\
+        </div>');
+    jQuery('#gscLoginForm button#gscLoginBtn').click(function(evt) {
+      evt.preventDefault();
+      console.log('Trying to log in');
+      var usr = jQuery('#gscLoginForm input#usr').val();
+      var pwd = jQuery('#gscLoginForm input#pwd').val();
+      mod.login(usr, pwd).then(function(data) {
+        console.log(data);
+      });
+    });
+  };
+
+  /**
+   * Creates a user registration form in a user-specified div using Bootstrap CSS classes.
+   * The login form is linked to the GSC data catalogue back-end
+   *
+   * @param {String|jQuery} domNode - Either a jQuery node or an
+   * CSS selector expression, i.e. #id or .class
+   */
+  mod.registrationWidget = function(domNode) {
+    var n = jQuery(domNode);
+    n.append(
+        '<div id="gscRegistrationForm">\
+            <form>\
+                <div class="form-group">\
+                    <label for="email">E-mail</label>\
+                    <input id="email" class="form-control" name="email"\
+                        type="text" placeholder="name@organization.tld">\
+                </div>\
+                <div class="form-group">\
+                    <label for="pwd">Password</label>\
+                    <input id="pwd" class="form-control" name="pwd"\
+                        type="password" placeholder="Enter password">\
+                </div>\
+                <div class="form-group">\
+                    <label for="pwd2">Confirm password</label>\
+                    <input id="pwd2" class="form-control" name="pwd2"\
+                        type="password" placeholder="Confirm password">\
+                </div>\
+                <button class="btn btn-primary" id="gscRegisterBtn"\
+                    type="submit">Register</button>\
+            </form>\
+        </div>');
+
+    console.log('Try to register user');
+    jQuery('#gscRegistrationForm button#gscRegisterBtn').click(function(evt) {
+      evt.preventDefault();
+      var email = jQuery('#gscRegistrationForm input#email').val();
+      var pwd = jQuery('#gscRegistrationForm input#pwd').val();
+      var pwd2 = jQuery('#gscRegistrationForm input#pwd2').val();
+      mod.register(email, email, pwd, pwd2, [{
+        'organization': 666
+      }]).then(function(data) {
+        console.log(data);
+      });
+    });
   };
 
   return mod;

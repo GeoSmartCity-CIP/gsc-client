@@ -1,6 +1,9 @@
 'use strict';
 
 /**
+ * 'gsc' is the root object of the gsc.js library and the only variable to
+ * be introduced into the global namespace.
+ *
  * @namespace gsc
  */
 var gsc = (function() {
@@ -20,27 +23,29 @@ var gsc = (function() {
    * @private
    */
   var _dcUrl = 'http://hub.geosmartcity.eu/' +
-    'gsc-datacatalogue/datacatalogservlet';
+      'gsc-datacatalogue/datacatalogservlet';
 
   /**
+   * URL of the GSC Geocoding API)
+   *
+   * @type {String}
+   * @private
+   */
+  var _geonamesUrl = 'http://hub.geosmartcity.eu/geocode';
+
+  /*
    * URL of the GSC Upload Features API
    * @type {String}
    * @private
    */
   var _uploadUrl = 'http://hub.geosmartcity.eu/building/';
 
-  /**
-   * 'gsc' is the root object of the gsc.js library and the only variable to
-   * be introduced into the global namespace.
-   *
-   * @exports gsc
-   * @memberof gsc
-   */
   var mod = {};
 
   /**
    * Version number of the s4a.js library
    * @type {Number}
+   * @memberof gsc
    */
   mod.version = _version;
 
@@ -54,6 +59,7 @@ var gsc = (function() {
    *
    * @param {String} [dcUrl] URL to working instance of GSC Datacatalogue
    * @return {String} URL of GSC Datacatalogue instance web service end-point
+   * @memberof gsc
    */
   mod.dcUrl = function(dcUrl) {
     if (dcUrl !== undefined) {
@@ -80,14 +86,28 @@ var gsc = (function() {
   };
 
   /**
+   * The URL for an end-point where the geonames Geocoding API can be reached
+   *
+   * @param {String} geonamesUrl
+   * @returns {String} - Returns the currently configured version of the geonames API
+   */
+  mod.geonamesUrl = function(geonamesUrl) {
+    if (geonamesUrl !== undefined) {
+      _geonamesUrl = geonamesUrl;
+    }
+    return _geonamesUrl;
+  };
+
+  /**
    * Execute a HTTP post request and return the resulting promise
    *
    * @param {String} actionName Name of action to invoke
    * @param {Object} requestData  A JSON object with the parameters to send to the web service
    * @return {Promise.<Object>} a jQuery promise object
+   * @memberof gsc
    */
   mod.doPost = function(actionName,
-    requestData) {
+      requestData) {
     return $.post(gsc.dcUrl(), {
       actionName: actionName,
       request: JSON.stringify(requestData)
