@@ -56,7 +56,7 @@ module.exports = function(grunt) {
             dist: {
                 src: [
                     'DOC.md',
-                    'dist/*.js'
+                    'dist/<%= pkg.name %>.js'
                 ],
                 options: {
                     destination: 'doc',
@@ -97,7 +97,7 @@ module.exports = function(grunt) {
                 // http://jscs.info/overview.html#verbose
                 verbose: true,
                 // Autofix code style violations when possible.
-                fix: true,
+                fix: false,
                 requireCurlyBraces: ["if"]
             }
         },
@@ -142,7 +142,11 @@ module.exports = function(grunt) {
             },
             default: {
                 files: '<%= jshint.all %>',
-                tasks: ['default-gsc']
+                tasks: ['default-gsc-without-jscs']
+            },
+            develop: {
+                files: '<%= jshint.all %>',
+                tasks: ['default-gsc-without-jscs']
             },
             docs: {
                 files: '<%= jshint.all %>',
@@ -174,7 +178,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-babel');
     grunt.loadNpmTasks('grunt-concat-css');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-    
+
     // Default task.
     grunt.registerTask('default', ['jshint', 'jscs', 'build-js', 'build-css', 'update-docs']);
     grunt.registerTask('babeling', ['babel']);
@@ -184,10 +188,13 @@ module.exports = function(grunt) {
 
     // Default task - only GSC custom code.
     grunt.registerTask('default-gsc', ['jshint', 'jscs', 'build-js-gsc', 'build-css-gsc']);
+    grunt.registerTask('default-gsc-without-jscs', ['jshint', 'build-js-gsc', 'build-css-gsc']);
     grunt.registerTask('default-gsc-with-docs', [
         'jshint', 'jscs', 'build-js-gsc', 'build-css-gsc', 'update-docs-gsc']);
     grunt.registerTask('update-docs-gsc', ['concat:gsc', 'jsdoc']);
     grunt.registerTask('build-js-gsc', ['concat:gsc', 'uglify']);
     grunt.registerTask('build-css-gsc', ['concat_css:gsc', 'cssmin']);
     grunt.registerTask('update-docs-gsc', ['concat:gsc', 'jsdoc']);
+    grunt.registerTask('build', ['jshint', 'jscs', 'build-js-gsc', 'build-css-gsc']);
+    grunt.registerTask('docs', ['concat:gsc', 'jsdoc']);
 };
