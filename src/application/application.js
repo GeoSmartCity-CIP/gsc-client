@@ -20,7 +20,7 @@ gsc.application = (function() {
      * @param {String} password
      * @property {String} url - The URL of the GeoServer instance, e.g. http://hub.geosmartcity.eu/geoserver/
      * @property {String} username - The username of the GeoServer user that will publish the data
-     * @property {Srting} password - The corresponding password of the GeoServer user
+     * @property {String} password - The corresponding password of the GeoServer user
      * @returns {gsc.application.GeoServerParams}
      */
     mod.GeoServerParams = function(uri,
@@ -64,7 +64,7 @@ gsc.application = (function() {
      * @param {String} organization
      * @param {String} description
      * @param {gsc.application.GeoServerParams} geoserver
-     * @param {type} srs
+     * @param {String} srs - Spatial reference system, specified on the form 'namespace:identifier', e.g. 'EPSG:4326' for WGS84 Lat/Lon
      * @param {gsc.application.Extent} maxExtent
      * @param {String} uri
      * @returns {Promise.<Object>}
@@ -90,21 +90,20 @@ gsc.application = (function() {
     };
 
     /**
-     * Assign layers and groups to an application
-     * @todo: Is it necessary to pass all application paramters with this request? Wouldn't applicationId be enough?
+     * Update an application and assign layers and group layers to it
      * 
      * @param {Number} applicationId
      * @param {String} applicationName
      * @param {Number} organization
      * @param {gsc.application.GeoServerParams} geoServerParams
-     * @param {Number} srs
+     * @param {String} srs - Spatial reference system, specified on the form 'namespace:identifier', e.g. 'EPSG:4326' for WGS84 Lat/Lon
      * @param {gsc.application.Extent} maxExtent
      * @param {String} uri
      * @param {Object[]} layers
      * @param {Object[]} groups
      * @returns {Promise.<Object>}
      */
-    mod.assignContent = function(applicationId,
+    mod.updateAssignContent = function(applicationId,
         applicationName,
         organization,
         geoServerParams,

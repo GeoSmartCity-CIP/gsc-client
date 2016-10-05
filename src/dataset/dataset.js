@@ -97,7 +97,7 @@ gsc.dataset = (function() {
             refreshinterval: refreshInterval,
             url: url
         };
-
+        console.log('running once...');
         return gsc.doPost('createdataset', params);
 
     };
