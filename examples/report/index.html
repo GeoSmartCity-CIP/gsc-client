@@ -1,1 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <link rel="stylesheet" href="http://openlayers.org/en/v3.14.2/css/ol.css" type="text/css">
+    <script src="http://openlayers.org/en/v3.14.2/build/ol-debug.js"></script>
+	<script src="http://mrrio.github.io/jsPDF/dist/jspdf.min.js" type="text/javascript"></script>
+	<style>
+		.btn{
+			padding-left: 1.5em;
+			padding-right: 1.5em;
+		}
+		.btn.thinking{
+			background-image: url("data:image/gif;base64,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");
+			background-repeat: no-repeat;
+		}
+        .form {
+            display:inline;
+        }
+	</style>
+	<script language="javascript">
 
+	window.onload = function(e){ 
+		var viewNavarre=new ol.View({
+          center: [-193538.55561806628, 5265899.752622362],
+          zoom: 9
+        });
+		
+		var vectorSource = new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        url: function(extent) {		
+          return 'http://idena.tracasa.es/ogc/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=IDENA:REFERE_Pol_Navarra&maxFeatures=50&outputFormat=application/json&srsName=EPSG:3857'
+        }});
+	
+      var map = new ol.Map({
+        layers: [
+			new ol.layer.Tile({
+				source: new ol.source.OSM()
+			}),
+			new ol.layer.Vector({
+				source: vectorSource
+			})
+        ],
+        target: 'map',
+        view: viewNavarre
+      });
+	  
+	  var dims = {
+		  a0: [1189, 841],
+		  a1: [841, 594],
+		  a2: [594, 420],
+		  a3: [420, 297],
+		  a4: [297, 210],
+		  a5: [210, 148]
+		};
+		var exportElement = document.getElementById('export-pdf');
+		exportElement.addEventListener('click', function (e) {
+		    var boton = this;
+		    boton.className += " thinking";
+			var format = document.getElementById('format').value;
+			var resolution = document.getElementById('resolution').value;
+			var dim = dims[format];
+			var size = /** @type {ol.Size} */ (map.getSize());
+			var ratio=size[0] / size[1];
+			var width = Math.round(dim[0] * resolution / 25.4);
+			var height = Math.round((dim[0] / ratio) * resolution / 25.4);
+			var extent = map.getView().calculateExtent(size);
+			var tileCount=0;
+			map.once('postcompose', function(event) {
+				var source=map.getLayers().item(0).getSource();
+				var tileStartLoad=function(){tileCount++;};
+				var tileEndLoad=function(){
+					tileCount--;
+					checkTiles();};				
+				var checkTiles=function(){
+					if(tileCount==0)
+					{
+						var canvas = event.context.canvas;
+						var data = canvas.toDataURL('image/jpeg');
+						var pdf = new jsPDF('landscape', undefined, format);
+						pdf.addImage(data, 'JPEG', 0, (dim[1]-Math.round(dim[0]/ratio))/2, dim[0], Math.round(dim[0]/ratio));
+						pdf.save('map.pdf');
+						map.setSize(size);
+						map.getView().fit(extent, size);
+						map.renderSync();
+						exportElement.className =exportElement.className.replace(' disabled', '');						
+						source.un('tileloadstart', tileStartLoad);
+						source.un('tileloadend', tileEndLoad);
+						source.un('tileloaderror', tileEndLoad);
+						boton.className = "btn";
+					}
+				}
+				source.on('tileloadstart', tileStartLoad);
+				source.on('tileloadend', tileEndLoad);
+				source.on('tileloaderror', tileEndLoad);
+			});
+			map.setSize([width, height]);
+			map.getView().fit(extent, /** @type {ol.Size} */ (map.getSize()));
+			map.renderSync();
+						
+		});
+	}
+</script>
+  </head>
+  <body>
+    
+	<div id="map" class="map"></div>
+	
+	<div>
+            <form class="form">
+              <label>Page size </label>
+              <select id="format">
+                <option value="a0">A0 (slow)</option>
+                <option value="a1">A1</option>
+                <option value="a2">A2</option>
+                <option value="a3">A3</option>
+                <option value="a4" selected>A4</option>
+                <option value="a5">A5 (fast)</option>
+              </select>
+              <label>Resolution </label>
+              <select id="resolution">
+                <option value="72">72 dpi (fast)</option>
+                <option value="150">150 dpi</option>
+                <option value="300">300 dpi (slow)</option>
+              </select>			 
+            </form>
+            <button id="export-pdf" class="btn">Export PDF</button>
+          </div>
+	
+	
+    <script>		
+		
+	  
+    </script>
+  </body>
+</html>

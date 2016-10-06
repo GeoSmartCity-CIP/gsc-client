@@ -152,6 +152,13 @@ gsc.map = (function() {
     }
   };
 
+  /**
+   * Adds info on feature event.
+   *
+   * @param nodelist
+   * @param maxFeaturesNumber
+   * @param layer
+   */
   mod.addInfoOnFeatureEvent = function(nodelist, maxFeaturesNumber, layer) {
     var opts = {
       nodelist: nodelist,
@@ -165,6 +172,12 @@ gsc.map = (function() {
     mod.olMap.on('singleclick', mod.infoOnFeatureEvent);
   };
 
+  /**
+   * Restricts displayed objects to those satisfying condition given by the filter parameter.
+   *
+   * @param {string} filterType Can be one of 'CQL', 'OGC' or 'FID'.
+   * @param {string} filter Holds the filter expression in format given by filterType. For example 'ID=400'.
+   */
   mod.filterOnAttributes = function(filterType, filter) {
     // by default, reset all filters
     var filterParams = {
