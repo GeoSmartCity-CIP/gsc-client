@@ -66,8 +66,8 @@ gsc.user = (function() {
    * Get a password reminder
    * If both arguments are supplied, email takes presedent
    *
-   * @param {string} email - E-mail of user to get reminder for
-   * @param {string} username - Username of user to get reminder for
+   * @param {string} [email=null] - E-mail of user to get reminder for
+   * @param {string} [username=null] - Username of user to get reminder for
    * @return {Promise.<Object>} - User response object
    */
   mod.remindPassword = function(email, username) {
@@ -122,6 +122,18 @@ gsc.user = (function() {
       organizations: organizations
     });
 
+  };
+
+  /**
+   * List all users for a specific organization
+   *
+   * @param {Number} organizationId - The numerical identifier of the organization for which users are to be retrieved
+   * @returns {Promise.<Object>}
+   */
+  mod.list = function(organizationId) {
+    return gsc.doPost('listuser', {
+      idorganization: organizationId
+    });
   };
 
   /**

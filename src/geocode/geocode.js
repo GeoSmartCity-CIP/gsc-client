@@ -14,7 +14,7 @@ gsc.geocode = (function() {
   function invokeGeocodingAPI(actionName,
       requestData) {
     return $.post(gsc.geonamesUrl(), {
-      actionName: actionName,
+      action: actionName,
       request: JSON.stringify(requestData)
     }, null, 'json');
   }

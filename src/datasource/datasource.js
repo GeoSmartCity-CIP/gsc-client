@@ -69,17 +69,17 @@ gsc.datasource = (function() {
    * @public
    */
   mod.create = function(datasourcename,
-    organization,
-    type,
-    description,
-    updated,
-    url,
-    username,
-    password,
-    ipaddress,
-    schema,
-    port,
-    path) {
+      organization,
+      type,
+      description,
+      updated,
+      url,
+      username,
+      password,
+      ipaddress,
+      schema,
+      port,
+      path) {
 
     return gsc.doPost('createdatasrc', {
       datasourcename: datasourcename,
@@ -109,10 +109,10 @@ gsc.datasource = (function() {
    * @return {Promise.<Object>} A list of datasource objects
    */
   mod.list = function(
-    datasourceId,
-    organization,
-    datasourceName,
-    includeDetail) {
+      datasourceId,
+      organization,
+      datasourceName,
+      includeDetail) {
 
     var params = {};
 
@@ -135,9 +135,9 @@ gsc.datasource = (function() {
     }
 
     if (params.iddatasource === undefined &&
-      params.organization === undefined) {
+        params.organization === undefined) {
       return gsc.util.errorPromise(
-        'Parameter datasourceId or organization must be present in request');
+          'Parameter datasourceId or organization must be present in request');
     }
 
     return gsc.doPost('listdatasrc', params);
@@ -174,22 +174,64 @@ gsc.datasource = (function() {
    * @return {Promise.<Response>} [description]
    */
   mod.update = function(datasourceId,
-    datasourcename,
-    organization,
-    type,
-    description,
-    updated,
-    url,
-    username,
-    password,
-    ipaddress,
-    schema,
-    port,
-    path) {
+      datasourcename,
+      organization,
+      type,
+      description,
+      updated,
+      url,
+      username,
+      password,
+      ipaddress,
+      schema,
+      port,
+      path) {
     return gsc.doPost('updatedatasrc', {
       iddatasource: datasourceId,
       datasourcename: datasourcename,
       organization: organization,
+      type: type,
+      description: description,
+      updated: updated,
+      url: url,
+      username: username,
+      password: password,
+      ipaddress: ipaddress,
+      schema: schema,
+      port: port,
+      path: path
+    });
+  };
+
+  /**
+   * Publish the data source to the CKAN instance running on the Hub platform
+   *
+   * @param {Number} datasourceId
+   * @param {gsc.datasource.DatasourceType} type
+   * @param {String} description
+   * @param {String} updated
+   * @param {String} url
+   * @param {String} username
+   * @param {String} password
+   * @param {String} ipaddress
+   * @param {String} schema
+   * @param {Number} port
+   * @param {String} path
+   * @returns {Promise.<Object>}
+   */
+  mod.publishToCkan = function(datasourceId,
+      type,
+      description,
+      updated,
+      url,
+      username,
+      password,
+      ipaddress,
+      schema,
+      port,
+      path) {
+    return gsc.doPost('pubtockan', {
+      iddatasource: datasourceId,
       type: type,
       description: description,
       updated: updated,

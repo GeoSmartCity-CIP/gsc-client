@@ -1,3 +1,4 @@
+// jscs:disable maximumLineLength
 'use strict';
 
 var gsc = gsc || {};
@@ -24,159 +25,175 @@ gsc.upload = {
 
 gsc.upload.uploadForm = function(selector) {
   var html =
-      `<div class='upload'>
-        <form role='form'>
-          <h4>Upload file</h4>
-          <div class='upload-file'>
-            <div class='input-group'>
-              <span class='input-group-btn'>
-            <span class='btn btn-primary btn-file'>
-            Browse... 
-            <input type='file' required='true' id='geometryFile' accept='.gml, .kml, .zip'>
-            </span>
-              </span>
-              <input type='text' class='form-control' style='width: 20%'
-                readonly>
-            </div>
-            <span class='help-block'>
-            Select .gml, .kml, .zip (containing .shp, .shx, and .dbf )  
-            </span>
-          </div>
-          <div class='epsg'>
-            <div class='input-group'>
-              <span class='input-group-addon' id='basic-addon1'>&#128196;
-            </span>
-              <input type='text' required='true' id='epsg' class='form-control numbersOnly'
-                style='width: 20%' placeholder='EPSG'
-                aria-describedby='basic-addon1'>
-            </div>
-            <span class='help-block'>
-            Provide EPSG for the reference system
-            </span>
-          </div>
-          <div class='building-height collapse'>
-            <div class='input-group'>
-              <span class='input-group-addon' id='basic-addon1'>&#127970;
-            </span>
-              <input type='text' required='true' id='height' class='form-control numbersOnly'
-                style='width: 20%' placeholder='Height'
-                aria-describedby='basic-addon1'>
-            </div>
-            <span class='help-block'>
-            Provide height of the building in meters
-            </span>
-          </div>
-          <div class='inspireIdLoc'>
-            <div class='input-group'>
-              <span class='input-group-addon' id='basic-addon1'>&#128448;
-            </span>
-              <input type='text' id='inspireIdLoc' class='form-control'
-                style='width: 20%'
-                aria-describedby='basic-addon1'>
-            </div>
-            <span class='help-block'>
-            Field that contains the localId for Inspire
-            </span>
-          </div>
-          <div class='inspireIdName'>
-            <div class='input-group'>
-              <span class='input-group-addon' id='basic-addon1'>&#128448;
-            </span>
-              <input type='text' id='inspireIdName' class='form-control'
-                style='width: 20%'
-                aria-describedby='basic-addon1'>
-            </div>
-            <span class='help-block'>
-            Field that contains the namespace for Inspire
-            </span>
-          </div>
-          <button type='submit' class='btn btn-primary '>Submit</button>
-        </form>
-        <div class='progress'>
-          <div class='progress-bar' aria-valuenow='0'
-            aria-valuemin='0' aria-valuemax='100'
-            id='progressbar' style='min-width: 2em; width: 0'>0%</div>
-        </div>
-        <div class='alert collapse' id='alert' role='alert'>...</div>
-      </div>`      ;
+      ` < div class = 'upload' >
+        < form role = 'form' >
+        < h4 > Upload file < /h4>
+        < div class = 'upload-file' >
+        < div class = 'input-group' >
+        < span class = 'input-group-btn' >
+        < span class = 'btn btn-primary btn-file' >
+        Browse...
+        < input type = 'file' required = 'true' id = 'geometryFile' accept = '.gml, .kml, .zip' >
+        < /span>
+        < /span>
+        < input type = 'text' class = 'form-control' style = 'width: 20%'
+        readonly >
+        < /div>
+        < span class = 'help-block' >
+        Select.gml, .kml, .zip (containing.shp, .shx, and.dbf)
+        < /span>
+        < /div>
+        < div class = 'epsg' >
+        < div class = 'input-group' >
+        < span class = 'input-group-addon' id = 'basic-addon1' > & #128196;
+        < /span>
+        < input type = 'text' required = 'true' id = 'epsg' class = 'form-control numbersOnly'
+        style = 'width: 20%'
+    placeholder = 'EPSG'
+        aria - describedby = 'basic-addon1' >
+        < /div>
+        < span class = 'help-block' >
+        Provide EPSG for the reference system
+        < /span>
+        < /div>
+        < div class = 'building-height collapse' >
+        < div class = 'input-group' >
+        < span class = 'input-group-addon' id = 'basic-addon1' > & #127970;
+        < /span>
+        < input
+    type = 'text'
+        required = 'true'
+    id = 'height' class = 'form-control numbersOnly'
+        style = 'width: 20%'
+    placeholder = 'Height'
+        aria - describedby = 'basic-addon1' >
+        < /div>
+        < span class = 'help-block' >
+        Provide height of the building in meters
+        < /span>
+        < /div>
+        < div class = 'inspireIdLoc' >
+        < div class = 'input-group' >
+        < span class = 'input-group-addon' id = 'basic-addon1' > & #128448;
+        < /span>
+        < input
+    type = 'text'
+        id = 'inspireIdLoc'
+    class = 'form-control'
+        style = 'width: 20%'
+        aria - describedby = 'basic-addon1' >
+        < /div>
+        < span class = 'help-block' >
+        Field that contains the localId for Inspire
+        < /span>
+        < /div>
+        < div class = 'inspireIdName' >
+        < div class = 'input-group' >
+        < span class = 'input-group-addon' id = 'basic-addon1' > & #128448;
+        < /span>
+        < input
+    type = 'text'
+    id = 'inspireIdName'
+        class = 'form-control'
+        style = 'width: 20%'
+        aria - describedby = 'basic-addon1' >
+        < /div>
+        < span class = 'help-block' >
+        Field that contains the namespace for Inspire
+        < /span>
+        < /div>
+        < button type = 'submit' class = 'btn btn-primary ' > Submit < /button>
+        < /form>
+        < div class = 'progress' >
+        < div class = 'progress-bar' aria - valuenow = '0'
+        aria - valuemin = '0' aria - valuemax = '100'
+        id = 'progressbar' style = 'min-width: 2em; width: 0' > 0 % < /div>
+        < /div>
+        < div class = 'alert collapse' id = 'alert' role = 'alert' > ... < /div>
+        < /div>`      ;
   jQuery(selector).html(html);
 
   var script =
-      `<script>
-      jQuery(document).on('change', '.btn-file :file', function() {
-        var input = jQuery(this); 
+      ` < script >
+        jQuery(document).on('change', '.btn-file :file', function() {
+        var input = jQuery(this);
         var label = input.val();
         if (label.substring(3, 11) == 'fakepath') {
-          label = label.substring(12);
+            label = label.substring(12);
         }
         input.trigger('fileselect', [label]);
-      });
-      
-      jQuery(document).ready(function() {
+    });
+
+    jQuery(document).ready(function() {
         jQuery('.btn-file :file').on('fileselect', function(event,
-          label) {
-          jQuery('#progressbar').width('0%').text('0%');
-          jQuery('#alert').addClass('collapse').removeClass(
-            'alert-danger alert-success').text('');
-          var input = jQuery(this).parents('.input-group').find(
-            ':text');
-          var extension = label.substr(-3, 3);
-          if (extension === 'zip' || extension === 'gml') {
-            jQuery('.building-height').removeClass('collapse');
-          } else {
-            jQuery('.building-height').addClass('collapse');
-          }
-          if (input.length) {
-            input.val(label);
-          } else {
-            if (label) {
-              alert(label);
+            label) {
+            jQuery('#progressbar').width('0%').text('0%');
+            jQuery('#alert').addClass('collapse').removeClass(
+                'alert-danger alert-success').text('');
+            var input = jQuery(this).parents('.input-group').find(
+                ':text');
+            var extension = label.substr(-3, 3);
+            if (extension === 'zip' || extension === 'gml') {
+                jQuery('.building-height').removeClass('collapse');
+            } else {
+                jQuery('.building-height').addClass('collapse');
             }
-          }
+            if (input.length) {
+                input.val(label);
+            } else {
+                if (label) {
+                    alert(label);
+                }
+            }
         });
-      });
-      
-      jQuery('.numbersOnly').keyup(function() {
+    });
+
+    jQuery('.numbersOnly').keyup(function() {
         if (jQuery.isNumeric(this.value) === false) {
-          this.value = this.value.slice(0, -1);
+            this.value = this.value.slice(0, -1);
         }
-      });
-      
-      progressCallback = function(progress) {
+    });
+
+    progressCallback = function(progress) {
         if (progress > 0) {
-          jQuery('#progressbar').width(progress + '%').text(progress +
-            ' %');
+            jQuery('#progressbar').width(progress + '%').text(progress +
+                ' %');
         }
-      };
-      
-      successCallback = function(success) {
+    };
+
+    successCallback = function(success) {
         jQuery('#alert').removeClass('collapse').addClass('alert-success')
-          .text('Upload successful');
-      };
-      
-      failedCallback = function(error) {
-        if(error == undefined){
+            .text('Upload successful');
+    };
+
+    failedCallback = function(error) {
+        if (error == undefined) {
             error = '';
         }
         jQuery('#alert').removeClass('collapse').addClass('alert-danger')
-          .text('Upload failed ' + error);
-      };
-      
-      jQuery('form').on('submit', function(e) {
+            .text('Upload failed ' + error);
+    };
+
+    jQuery('form').on('submit', function(e) {
         e.preventDefault();
         jQuery('#progressbar').width('0%').text('0%');
         jQuery('#alert').addClass('collapse').removeClass(
-          'alert-danger alert-success').text('');
+            'alert-danger alert-success').text('');
         var fileToProcess = document.getElementById('geometryFile').files[
-          0];
+            0];
         var height = jQuery('#height').val();
         var epsg = jQuery('#epsg').val();
         var inspireIdLoc = jQuery('#inspireIdLoc').val();
         var inspireIdName = jQuery('#inspireIdName').val();
-        var dataToProcess = new gsc.upload.Data(fileToProcess, epsg, height, inspireIdLoc, inspireIdName);
+        var dataToProcess = new gsc.upload.Data(fileToProcess,
+            epsg,
+            height,
+            inspireIdLoc,
+            inspireIdName);
         dataToProcess.send(progressCallback, successCallback, failedCallback);
-      });
-      </script>`      ;
+    });
+        < /script>`      ;
+
   jQuery(function() {
     jQuery('head').append(script);
   });
@@ -199,17 +216,22 @@ gsc.upload.uploadForm = function(selector) {
     'cursor': 'inherit',
     'display': 'block'
   });
+
   jQuery('input[readonly]').css({
     'background-color': 'white !important',
     'cursor': 'text !important'
   });
-  jQuery('.upload').css({
-    'margin': '2em'
-  });
-  jQuery('.progress').css({
-    'margin-top': '1em',
-    'width': '25%'
-  });
+
+  jQuery('.upload')
+        .css({
+          'margin': '2em'
+        });
+
+  jQuery('.progress')
+        .css({
+          'margin-top': '1em',
+          'width': '25%'
+        });
   jQuery('.alert').css({
     'margin-top': '1em',
     'width': '25%'

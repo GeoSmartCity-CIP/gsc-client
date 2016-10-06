@@ -26,11 +26,13 @@ gsc.dataset = (function() {
    * @param {Number} [dataSourceId] - Id of data source to retrieve data sets for
    * @param {Number} [dataSetId] - Id of data set to retrieve
    * @param {String} [dataSetName] - Name or part of data set name to search for
+   * @param {Number} [organizationId] - Id of organization
    * @return {Promise} Data set response
    */
   mod.list = function(dataSourceId,
-          dataSetId,
-          dataSetName) {
+      dataSetId,
+      dataSetName,
+      organizationId) {
 
     var params = {};
 
@@ -44,6 +46,10 @@ gsc.dataset = (function() {
 
     if (dataSetName !== undefined) {
       params.datasetname = dataSetName;
+    }
+
+    if (organizationId !== undefined) {
+      params.idorganization = organizationId;
     }
 
     return gsc.doPost('listdataset', params);
@@ -63,13 +69,13 @@ gsc.dataset = (function() {
    * @return {Promise.<Object>} Data set response
    */
   mod.create = function(dataSetName,
-          realName,
-          dataSourceId,
-          description,
-          toBeIngested,
-          refreshInterval,
-          url
-          ) {
+      realName,
+      dataSourceId,
+      description,
+      toBeIngested,
+      refreshInterval,
+      url
+      ) {
     if (toBeIngested === undefined) {
       toBeIngested = false;
     }
@@ -91,7 +97,7 @@ gsc.dataset = (function() {
       refreshinterval: refreshInterval,
       url: url
     };
-
+    console.log('running once...');
     return gsc.doPost('createdataset', params);
 
   };
@@ -110,15 +116,15 @@ gsc.dataset = (function() {
    * @return {Promise.<Object>} Update data set response
    */
   mod.update = function(
-          dataSetId,
-          dataSetName,
-          realName,
-          dataSourceId,
-          description,
-          toBeIngested,
-          refreshInterval,
-          url
-          ) {
+      dataSetId,
+      dataSetName,
+      realName,
+      dataSourceId,
+      description,
+      toBeIngested,
+      refreshInterval,
+      url
+      ) {
 
     if (toBeIngested === undefined) {
       toBeIngested = false;

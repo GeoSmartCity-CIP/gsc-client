@@ -78,26 +78,32 @@ gsc.layer = (function() {
    * Search for layers
    *
    * @param {Number} [dataSetId=null] - The identifier of the data set for which layers should be retrieved
-   * @param {type} [layerId=null] - The identifier of the layer that should be retrieved
-   * @param {type} [layerName=null] - The name or partial name of layers to be retrieved
-   * @returns {jqXHR|!jQuery.jqXHR|Promise.<Object>}
+   * @param {Number} [layerId=null] - The identifier of the layer that should be retrieved
+   * @param {String} [layerName=null] - The name or partial name of layers to be retrieved
+   * @param {Number} [organizationId=null] - The numeric identifier of an organization
+   * @returns {Promise.<Object>}
    */
   mod.list = function(dataSetId,
       layerId,
-      layerName) {
+      layerName,
+      organizationId) {
 
     var param = {};
 
-    if (dataSetId !== undefined && dataSetId !== null) {
+    if (!gsc.util.isNull(dataSetId)) {
       param.iddataset = dataSetId;
     }
 
-    if (layerId !== undefined && layerId !== null) {
+    if (!gsc.util.isNull(layerId)) {
       param.idlayer = layerId;
     }
 
-    if (layerName !== undefined && layerName !== null) {
+    if (!gsc.util.isNull(layerName)) {
       param.layername = layerName;
+    }
+
+    if (!gsc.util.isNull(organizationId)) {
+      param.idorganization = organizationId;
     }
 
     return gsc.doPost('listlyr', param);

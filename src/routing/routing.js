@@ -33,53 +33,68 @@ gsc.routing = (function() {
 
   };
 
+  mod.Request = function(url) {
+    return $.ajax({
+      method: 'GET',
+      url: url,
+      dataType: 'application/json',
+      crossDomain: true
+    });
+  };
+
   /**
-   * Get a vector layer with the route
+   * Get a vector layer with displaying a route
    *
    * @param {double} lon1 - Longitiude of start point
    * @param {double} lat1 - Latitude of the start point
    * @param {double} lon2 - Longitude of the end point
    * @param {double} lat2 - Latitude of the end point
    * @returns {GeoJSON.FeatureSet} - The route as a GeoJSON object
-   * @example // Calculate a route
-   * routing(lon1, lat1, lon2, lat2)
+   * @example <caption>Calculate a route</caption>
+   * gsc.routing.calculateRoute(2.8214,41.9794,2.8314,41.9694)
    *      .then(function(routeResponse) {
-   *          var route = routeResponse.data;
-   *      }, function(err) {
-   *          console.debug('An error occurred: ' + err);
-   *      };
-   *
-   *  @example <caption>Calculate a service area</caption>
-   *  gsc.routing.calculateRoute(lon, lat, distance)
-   *      .then(function(serviceAreaResponse) {
-   *          var serviceArea = serviceAreaResponse.data;
-   *          // Do something with the service area
+   *          var vectorLayer = routeResponse.data;
+   *          // Do something with the vector layer - typically add it to an OpenLayers map
    *      }, function(err) {
    *          // An error occurred
-   *          console.debug('Could not calculate service area: ' + err);
+   *          console.debug('Could not calculate route: ' + err);
    *      });
    */
   mod.calculateRoute = function(lon1, lat1, lon2, lat2) {
 
     var dfd = jQuery.Deferred();
 
-    var routingUrl = 'http:/hub.geosmartcity.eu/' +
+    var routingUrl = 'http://hub.geosmartcity.eu/' +
         'GironaRouting/geo/RestService/getroute?';
 
     routingUrl += ('x1=' + lon1 + '&y1=' + lat1 +
         '&x2=' + lon2 + '&y2=' + lat2);
 
-    var vectorLayer = new ol.layer.Vector({
-      source: new ol.source.Vector({
-        url: routingUrl,
-        format: new ol.format.GeoJSON()
-      })
-    });
-
-    dfd.resolve(vectorLayer);
+    mod.Request(routingUrl)
+            .then(function(res) {
+              console.log('Success loading JSON');
+              console.log(res.data);
+              var vectorLayer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                  url: routingUrl,
+                  format: new ol.format.GeoJSON()
+                })
+              });
+              dfd.resolve(vectorLayer);
+            }, function(err) {
+              console.log('Error loading JSON');
+              console.log(err.statusText);
+            });
 
     return dfd;
   };
+
+  /**
+   * Alias for calculateRoute
+   * @deprecated
+   */
+  mod.routing = mod.calculateRoute;
+
   /**
    * Persistently stores a route associated with the user id of the currently logged in user
    *
