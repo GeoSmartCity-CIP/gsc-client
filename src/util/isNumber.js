@@ -11,10 +11,10 @@ gsc.util = gsc.util || {};
  */
 gsc.util.isNumber = function(mvar) {
 
-    if (jQuery.isNumeric(mvar)) {
-        return true;
-    } else {
-        return false;
-    }
+  if (jQuery.isNumeric(mvar)) {
+    return true;
+  } else {
+    return false;
+  }
 
 };

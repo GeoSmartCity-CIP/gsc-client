@@ -93,11 +93,8 @@ module.exports = function(grunt) {
                 config: '.jscsrc',
                 // If you use ES6 http://jscs.info/overview.html#esnext
                 esnext: true,
-                // If you need output with rule names
-                // http://jscs.info/overview.html#verbose
                 verbose: true,
-                // Autofix code style violations when possible.
-                fix: false,
+                fix: true,
                 requireCurlyBraces: ["if"]
             }
         },

@@ -1,3 +1,4 @@
+// jscs:disable maximumLineLength
 'use strict';
 
 var gsc = gsc || {};
@@ -10,21 +11,21 @@ var gsc = gsc || {};
  * @exports gsc/upload
  */
 gsc.upload = {
-    /**
-     * Version number of the uploading feature of gsc.js
-     * @type {String}
-     */
-    version: '1.0.0',
-    /**
-     * Byte size of the uploading file
-     * @type {Number}
-     */
-    fileSize: 8000000
+  /**
+   * Version number of the uploading feature of gsc.js
+   * @type {String}
+   */
+  version: '1.0.0',
+  /**
+   * Byte size of the uploading file
+   * @type {Number}
+   */
+  fileSize: 8000000
 };
 
 gsc.upload.uploadForm = function(selector) {
-    var html =
-        ` < div class = 'upload' >
+  var html =
+      ` < div class = 'upload' >
         < form role = 'form' >
         < h4 > Upload file < /h4>
         < div class = 'upload-file' >
@@ -110,10 +111,10 @@ gsc.upload.uploadForm = function(selector) {
         < /div>
         < div class = 'alert collapse' id = 'alert' role = 'alert' > ... < /div>
         < /div>`      ;
-        jQuery(selector).html(html);
+  jQuery(selector).html(html);
 
-    var script =
-        ` < script >
+  var script =
+      ` < script >
         jQuery(document).on('change', '.btn-file :file', function() {
         var input = jQuery(this);
         var label = input.val();
@@ -191,50 +192,50 @@ gsc.upload.uploadForm = function(selector) {
             inspireIdName);
         dataToProcess.send(progressCallback, successCallback, failedCallback);
     });
-        < /script>`;
+        < /script>`      ;
 
-        jQuery(function() {
-            jQuery('head').append(script);
-        });
+  jQuery(function() {
+    jQuery('head').append(script);
+  });
 
-    jQuery('.btn-file').css({
-        'position': 'relative',
-        'overflow': 'hidden'
-    });
-    jQuery('.btn-file input[type=file]').css({
-        'position': 'absolute',
-        'top': '0',
-        'right': '0',
-        'min-width': '100%',
-        'min-height': '100%',
-        'font-size': '100px',
-        'text-align': 'right',
-        'filter': 'alpha(opacity=0)',
-        'opacity': '0',
-        'background': 'red',
-        'cursor': 'inherit',
-        'display': 'block'
-    });
+  jQuery('.btn-file').css({
+    'position': 'relative',
+    'overflow': 'hidden'
+  });
+  jQuery('.btn-file input[type=file]').css({
+    'position': 'absolute',
+    'top': '0',
+    'right': '0',
+    'min-width': '100%',
+    'min-height': '100%',
+    'font-size': '100px',
+    'text-align': 'right',
+    'filter': 'alpha(opacity=0)',
+    'opacity': '0',
+    'background': 'red',
+    'cursor': 'inherit',
+    'display': 'block'
+  });
 
-    jQuery('input[readonly]').css({
-        'background-color': 'white !important',
-        'cursor': 'text !important'
-    });
+  jQuery('input[readonly]').css({
+    'background-color': 'white !important',
+    'cursor': 'text !important'
+  });
 
-    jQuery('.upload')
+  jQuery('.upload')
         .css({
-            'margin': '2em'
+          'margin': '2em'
         });
 
-    jQuery('.progress')
+  jQuery('.progress')
         .css({
-            'margin-top': '1em',
-            'width': '25%'
+          'margin-top': '1em',
+          'width': '25%'
         });
-    jQuery('.alert').css({
-        'margin-top': '1em',
-        'width': '25%'
-    });
+  jQuery('.alert').css({
+    'margin-top': '1em',
+    'width': '25%'
+  });
 };
 
 /**
@@ -248,35 +249,35 @@ gsc.upload.uploadForm = function(selector) {
  * @constructor
  */
 gsc.upload.Data = function(file, epsg, height, inspireIdLoc, inspireIdName) {
-    /**
-     * File to send
-     * @type {File}
-     */
-    if (typeof file === undefined) {
-        this.file = new File([''], 'filename');
-    } else {
-        this.file = file;
-    }
-    /**
-     * EPSG for the reference system
-     * @type {String}
-     */
-    this.epsg = epsg;
-    /**
-     * Height of the building (for solar potential calculation) in meters
-     * @type {String}
-     */
-    this.height = height;
-    /**
-     * Name of the field that contains the localId for Inspire
-     * @type {String}
-     */
-    this.inspireIdLoc = inspireIdLoc;
-    /**
-     * Name of the field that contains the namespace for Inspire
-     * @type {String}
-     */
-    this.inspireIdName = inspireIdName;
+  /**
+   * File to send
+   * @type {File}
+   */
+  if (typeof file === undefined) {
+    this.file = new File([''], 'filename');
+  } else {
+    this.file = file;
+  }
+  /**
+   * EPSG for the reference system
+   * @type {String}
+   */
+  this.epsg = epsg;
+  /**
+   * Height of the building (for solar potential calculation) in meters
+   * @type {String}
+   */
+  this.height = height;
+  /**
+   * Name of the field that contains the localId for Inspire
+   * @type {String}
+   */
+  this.inspireIdLoc = inspireIdLoc;
+  /**
+   * Name of the field that contains the namespace for Inspire
+   * @type {String}
+   */
+  this.inspireIdName = inspireIdName;
 };
 
 /**
@@ -285,9 +286,9 @@ gsc.upload.Data = function(file, epsg, height, inspireIdLoc, inspireIdName) {
  * @name gsc.upload.Data#name
  */
 Object.defineProperty(gsc.upload.Data.prototype, 'name', {
-    get: function() {
-        return this.file && this.file.name;
-    }
+  get: function() {
+    return this.file && this.file.name;
+  }
 });
 
 /**
@@ -297,9 +298,9 @@ Object.defineProperty(gsc.upload.Data.prototype, 'name', {
  * @name gsc.upload.Data#lastModifiedDate
  */
 Object.defineProperty(gsc.upload.Data.prototype, 'lastModifiedDate', {
-    get: function() {
-        return this.file && this.file.lastModifiedDate;
-    }
+  get: function() {
+    return this.file && this.file.lastModifiedDate;
+  }
 });
 
 /**
@@ -308,9 +309,9 @@ Object.defineProperty(gsc.upload.Data.prototype, 'lastModifiedDate', {
  * @name gsc.upload.Data#size
  */
 Object.defineProperty(gsc.upload.Data.prototype, 'size', {
-    get: function() {
-        return this.file && this.file.size;
-    }
+  get: function() {
+    return this.file && this.file.size;
+  }
 });
 
 /**
@@ -320,9 +321,9 @@ Object.defineProperty(gsc.upload.Data.prototype, 'size', {
  * @name gsc.upload.Data#type
  */
 Object.defineProperty(gsc.upload.Data.prototype, 'type', {
-    get: function() {
-        return this.file && this.file.type;
-    }
+  get: function() {
+    return this.file && this.file.type;
+  }
 });
 
 /**
@@ -332,7 +333,7 @@ Object.defineProperty(gsc.upload.Data.prototype, 'type', {
  * @returns {Boolean} True if file size is smaller or equals to config
  */
 gsc.upload.Data.prototype.isFileSizeCorrect = function() {
-    return (this.size <= gsc.upload.fileSize);
+  return (this.size <= gsc.upload.fileSize);
 };
 
 /**
@@ -363,34 +364,34 @@ gsc.upload.Data.prototype.isFileSizeCorrect = function() {
  * @param {failedCallback} fc Callback that handles upload failure
  */
 gsc.upload.Data.prototype.send = function(pc, sc, fc) {
-    if (this.isFileSizeCorrect()) {
-        var formData = new FormData();
-        formData.append('file', this.file, this.name);
-        formData.append('epsg', this.epsg);
-        formData.append('fieldHeight', this.height);
-        formData.append('fieldInspireIdLoc', this.inspireIdLoc);
-        formData.append('fieldInspireIdName', this.inspireIdName);
-        var request = new XMLHttpRequest();
-        if (pc || typeof pc === 'function') {
-            request.upload.addEventListener('progress', function(e) {
-                pc(parseInt(e.loaded / e.total * 100));
-            }, false);
-        }
-        if (sc || typeof sc === 'function') {
-            request.upload.addEventListener('load', function(e) {
-                sc(e);
-            }, false);
-        }
-        if (fc || typeof fc === 'function') {
-            request.upload.addEventListener('error', function() {
-                if (request.status === 400) {
-                    fc('Format not supported');
-                } else {
-                    fc();
-                }
-            }, false);
-        }
-        request.open('POST', gsc.uploadUrl(), true);
-        request.send(formData);
+  if (this.isFileSizeCorrect()) {
+    var formData = new FormData();
+    formData.append('file', this.file, this.name);
+    formData.append('epsg', this.epsg);
+    formData.append('fieldHeight', this.height);
+    formData.append('fieldInspireIdLoc', this.inspireIdLoc);
+    formData.append('fieldInspireIdName', this.inspireIdName);
+    var request = new XMLHttpRequest();
+    if (pc || typeof pc === 'function') {
+      request.upload.addEventListener('progress', function(e) {
+        pc(parseInt(e.loaded / e.total * 100));
+      }, false);
     }
+    if (sc || typeof sc === 'function') {
+      request.upload.addEventListener('load', function(e) {
+        sc(e);
+      }, false);
+    }
+    if (fc || typeof fc === 'function') {
+      request.upload.addEventListener('error', function() {
+        if (request.status === 400) {
+          fc('Format not supported');
+        } else {
+          fc();
+        }
+      }, false);
+    }
+    request.open('POST', gsc.uploadUrl(), true);
+    request.send(formData);
+  }
 };
