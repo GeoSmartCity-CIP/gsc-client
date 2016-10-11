@@ -155,9 +155,9 @@ gsc.map = (function() {
   /**
    * Adds info on feature event.
    *
-   * @param nodelist
-   * @param maxFeaturesNumber
-   * @param layer
+   * @param {Object[]} nodelist
+   * @param {Number} maxFeaturesNumber
+   * @param {Object} layer
    */
   mod.addInfoOnFeatureEvent = function(nodelist, maxFeaturesNumber, layer) {
     var opts = {

@@ -21,25 +21,30 @@ gsc.organization = (function() {
   };
 
   /**
-   * List/search for organizations
+   * Return a list of organizations, optionally filtered by organization name or id
    *
-   * @param {type} [organizationname] - Optionally name of organization
+   * @param {String} [organizationName=null] - Name or partial name of organization
+   * @param {Number} [organizationId=null] - Numeric identifier of organization
    * @returns {Promise.<Object>}
    */
-  mod.list = function(organizationname) {
-    var param = {};
-    if (organizationname !== null && organizationname !== undefined) {
-      param.organizationname = organizationname;
+  mod.list = function(organizationName,
+      organizationId) {
+    var params = {};
+    if (!gsc.util.isNull(organizationName)) {
+      params.organizationname = organizationName;
     }
-    return gsc.doPost('listorg', param);
+    if (!gsc.util.isNull(organizationId)) {
+      params.id = organizationId;
+    }
+    return gsc.doPost('listorg', params);
   };
 
   /**
-   * Delete organization
-   *
-   * @param {type} organizationId
-   * @returns {Promise.<Object>}
-   */
+ * Delete organization
+ *
+ * @param {type} organizationId
+ * @returns {Promise.<Object>}
+ */
   mod.delete = function(organizationId) {
     return gsc.doPost('deleteorg', {
       idorganization: organizationId
