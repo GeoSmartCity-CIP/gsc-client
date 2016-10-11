@@ -110,7 +110,10 @@ gsc.user = (function() {
   /**
    * Update user
    *
-   * @param {number} userId - Identifier of user to update
+   * @param {Number} userId
+   * @param {String} email
+   * @param {String} username
+   * @param {Object[]} organizations
    * @return {Promise.<Object>} - User response object
    */
   mod.update = function(userId, email, username, organizations) {
@@ -254,5 +257,4 @@ gsc.user = (function() {
   };
 
   return mod;
-
 }());

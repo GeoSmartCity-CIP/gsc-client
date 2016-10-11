@@ -73,7 +73,7 @@ gsc.function = (function() {
    *
    * @param {Number} organizationId - The identifier of the organization for which functions should be loaded
    * @param {String} [functionName=null]
-   * @param {Boolean} [includeAdminRecords=null]
+   * @param {Boolean} [includeAdminRecords=true]
    * @returns {Promise.<Object>}
    * @todo This function does not return organization or type...
    */
@@ -91,6 +91,8 @@ gsc.function = (function() {
 
     if (!gsc.util.isNull(includeAdminRecords)) {
       params.includeadminrecords = includeAdminRecords;
+    } else {
+      params.includeadminrecords = true;
     }
 
     return gsc.doPost('listfunc', params);
