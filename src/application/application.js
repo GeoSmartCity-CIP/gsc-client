@@ -90,6 +90,7 @@ gsc.application = (function() {
    * @param {Number} applicationId
    * @param {String} applicationName
    * @param {Number} organization
+   * @param {String} description
    * @param {gsc.application.GeoServerParams} geoServerParams
    * @param {String} srs - Spatial reference system, specified on the form 'namespace:identifier', e.g. 'EPSG:4326' for WGS84 Lat/Lon
    * @param {gsc.application.Extent} maxExtent
@@ -101,6 +102,7 @@ gsc.application = (function() {
   mod.updateAssignContent = function(applicationId,
       applicationName,
       organization,
+      description,
       geoServerParams,
       srs,
       maxExtent,
@@ -112,6 +114,7 @@ gsc.application = (function() {
       idapplication: applicationId,
       applicationname: applicationName,
       organization: organization,
+      description: description,
       geoserver: geoServerParams,
       srs: srs,
       maxextent: maxExtent,

@@ -34,11 +34,11 @@ gsc.routing = (function() {
   };
 
   mod.Request = function(url) {
-    return $.ajax({
+    return jQuery.ajax({
       method: 'GET',
       url: url,
-      dataType: 'application/json',
-      crossDomain: true
+      //dataType: 'application/json',
+      //crossDomain: true
     });
   };
 
@@ -49,11 +49,11 @@ gsc.routing = (function() {
    * @param {double} lat1 - Latitude of the start point
    * @param {double} lon2 - Longitude of the end point
    * @param {double} lat2 - Latitude of the end point
-   * @returns {GeoJSON.FeatureSet} - The route as a GeoJSON object
+   * @returns {ol.layer.Vector} - The route as a GeoJSON object
    * @example <caption>Calculate a route</caption>
    * gsc.routing.calculateRoute(2.8214,41.9794,2.8314,41.9694)
    *      .then(function(routeResponse) {
-   *          var vectorLayer = routeResponse.data;
+   *          var vectorLayer = routeResponse;
    *          // Do something with the vector layer - typically add it to an OpenLayers map
    *      }, function(err) {
    *          // An error occurred
@@ -70,21 +70,34 @@ gsc.routing = (function() {
     routingUrl += ('x1=' + lon1 + '&y1=' + lat1 +
         '&x2=' + lon2 + '&y2=' + lat2);
 
-    mod.Request(routingUrl)
-            .then(function(res) {
-              console.log('Success loading JSON');
-              console.log(res.data);
-              var vectorLayer = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                  url: routingUrl,
-                  format: new ol.format.GeoJSON()
-                })
-              });
-              dfd.resolve(vectorLayer);
-            }, function(err) {
-              console.log('Error loading JSON');
-              console.log(err.statusText);
-            });
+    var defaultStyles = {
+      'LineString': new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'green',
+          width: 5
+        })
+      }),
+      'MultiLineString': new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'green',
+          width: 5
+        })
+      })
+    };
+
+    var defaultStyleFunction = function(feature) {
+      return defaultStyles[feature.getGeometry().getType()];
+    };
+
+    var vectorLayer = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        url: routingUrl,
+        format: new ol.format.GeoJSON(),
+        style: defaultStyleFunction
+      })
+    });
+
+    dfd.resolve(vectorLayer);
 
     return dfd;
   };

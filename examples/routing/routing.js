@@ -21,9 +21,9 @@ var styles = {
 };
 
 var styleFunction = function(feature) {
+    console.log(feature);
     return styles[feature.getGeometry().getType()];
 };
-
 
 // map initializing
 gsc.map.create('map', options);
@@ -42,7 +42,7 @@ var vectorLayer;
 var arr = [];
 gsc.map.olMap.on('click', function(e) {
     var point = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
-    
+
     if (arr.length > 1) {
         arr.length = 0;
     }
@@ -56,10 +56,10 @@ gsc.map.olMap.on('click', function(e) {
 
 
         gsc.routing.routing(arr[0][0], arr[0][1], arr[1][0], arr[1][1])
-            .then(function(vectorLayer) {
-                vectorLayer.style = styleFunction;
-                gsc.map.addLayer(vectorLayer);
-                console.log(vectorLayer.getSource());
+            .then(function(inData) {
+                inData.setStyle(styleFunction);
+                vectorLayer = gsc.map.addLayer(inData);
+                console.log('test');
             });
     }
 
@@ -73,8 +73,6 @@ gsc.map.olMap.on('click', function(e) {
 
 
 });
-
-
 
 function myFunction() {
     document.getElementById("x1").value = null;

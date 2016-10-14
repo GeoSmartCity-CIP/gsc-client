@@ -61,6 +61,28 @@ gsc.grouplayer = (function() {
   };
 
   /**
+   * Update a group layer
+   *
+   * @param {Number} groupId - Numeric identifier of group layer
+   * @param {String} groupName
+   * @param {Number} organizationId
+   * @param {String} description
+   * @returns {Promise.<Object>}
+   */
+  mod.create = function(groupId,
+      groupName,
+      organizationId,
+      description) {
+
+    return gsc.doPost('updategrp', {
+      idgroup: groupId,
+      groupname: groupName,
+      organization: organizationId,
+      description: description
+    });
+  };
+
+  /**
    * Assign layers to a group
    *
    * @param {Number} groupId - Numeric identifier of group

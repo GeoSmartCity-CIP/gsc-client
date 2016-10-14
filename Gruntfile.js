@@ -194,4 +194,6 @@ module.exports = function(grunt) {
     grunt.registerTask('update-docs-gsc', ['concat:gsc', 'jsdoc']);
     grunt.registerTask('build', ['jshint', 'jscs', 'build-js-gsc', 'build-css-gsc']);
     grunt.registerTask('docs', ['concat:gsc', 'jsdoc']);
+    grunt.registerTask('deploy', ['default-gsc-with-docs']);
+
 };
