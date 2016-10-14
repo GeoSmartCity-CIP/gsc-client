@@ -62,14 +62,6 @@ gsc.routing = (function() {
    */
   mod.calculateRoute = function(lon1, lat1, lon2, lat2) {
 
-    var dfd = jQuery.Deferred();
-
-    var routingUrl = 'http://hub.geosmartcity.eu/' +
-        'GironaRouting/geo/RestService/getroute?';
-
-    routingUrl += ('x1=' + lon1 + '&y1=' + lat1 +
-        '&x2=' + lon2 + '&y2=' + lat2);
-
     var defaultStyles = {
       'LineString': new ol.style.Style({
         stroke: new ol.style.Stroke({
@@ -89,15 +81,40 @@ gsc.routing = (function() {
       return defaultStyles[feature.getGeometry().getType()];
     };
 
-    var vectorLayer = new ol.layer.Vector({
-      source: new ol.source.Vector({
-        url: routingUrl,
-        format: new ol.format.GeoJSON(),
-        style: defaultStyleFunction
-      })
-    });
+    var dfd = jQuery.Deferred();
 
-    dfd.resolve(vectorLayer);
+    var routingUrl = 'http://hub.geosmartcity.eu/' +
+        'GironaRouting/geo/RestService/getroute?';
+    routingUrl += ('x1=' + lon1 + '&y1=' + lat1 +
+        '&x2=' + lon2 + '&y2=' + lat2);
+    routingUrl += '&csurl=';
+
+    jQuery.getJSON('http://geosmartcity.avinet.no/proxy/index.php', {
+      csurl: 'http://hub.geosmartcity.eu/' +
+          'GironaRouting/geo/RestService/getroute',
+      x1: lon1,
+      y1: lat1,
+      x2: lon2,
+      y2: lat2
+    }).then(function(routeGeoJson) {
+      var readFeatures = new ol.format.GeoJSON()
+                .readFeatures(routeGeoJson, {
+                  featureProjection: 'EPSG:3857',
+                  dataProjection: 'EPSG:4326'
+                });
+
+      var routeLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+          features: readFeatures,
+        }),
+        style: defaultStyleFunction
+      });
+
+      dfd.resolve(routeLayer);
+    }, function(err) {
+      //console.log(err);
+      dfd.reject(false);
+    });
 
     return dfd;
   };

@@ -21,7 +21,6 @@ var styles = {
 };
 
 var styleFunction = function(feature) {
-    console.log(feature);
     return styles[feature.getGeometry().getType()];
 };
 
@@ -39,6 +38,7 @@ gsc.map.addLayer(osmLayer);
 
 
 var vectorLayer;
+
 var arr = [];
 gsc.map.olMap.on('click', function(e) {
     var point = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
@@ -56,12 +56,14 @@ gsc.map.olMap.on('click', function(e) {
 
 
         gsc.routing.routing(arr[0][0], arr[0][1], arr[1][0], arr[1][1])
-            .then(function(inData) {
-                inData.setStyle(styleFunction);
-                vectorLayer = gsc.map.addLayer(inData);
-                console.log('test');
+            .then(function(routeResponse) {
+                routeResponse.setStyle(styleFunction);
+                vectorLayer = routeResponse;
+                gsc.map.addLayer(routeResponse);
+            }, function(err) {
+                //console.log(err);
             });
-    }
+    };
 
     if (arr.length == 0) {
         arr.push(point);
@@ -70,8 +72,7 @@ gsc.map.olMap.on('click', function(e) {
         document.getElementById("x1").value = x;
         document.getElementById("y1").value = y;
     }
-
-
+    
 });
 
 function myFunction() {

@@ -13,6 +13,11 @@ gsc.map = (function() {
   /** @type mapOptions */
   mod.mapOptions_ = null;
 
+  var defaultMapOptions = {
+    epsg: 'EPSG:3857',
+    units: 'm'
+  };
+
   /**
    * Create a map with standard functions (pan,zoom, view layers) and
    * other optional  specific functionality as info on feature and filter
@@ -21,8 +26,11 @@ gsc.map = (function() {
    * @param {divObject} divObject is the map div
    * @param {mapOptions} mapOptions are the map options
    */
-  mod.create  = function(divObject, mapOptions) {
+  mod.create = function(divObject, mapOptions) {
+    mapOptions = jQuery.extend(defaultMapOptions, mapOptions || {});
+
     mod.mapOptions_ = mapOptions;
+
     mod.layers_ = mapOptions.layers || [];
 
     var projection = new ol.proj.Projection({
@@ -106,11 +114,11 @@ gsc.map = (function() {
 
   mod.addMousePositionControl = function(location) {
     var mousePositionControl = new ol.control.MousePosition({
-        className: 'custom-mouse-position',
-        target: document.getElementById(location),
-        coordinateFormat: ol.coordinate.createStringXY(5),
-        undefinedHTML: '&nbsp;'
-      });
+      className: 'custom-mouse-position',
+      target: document.getElementById(location),
+      coordinateFormat: ol.coordinate.createStringXY(5),
+      undefinedHTML: '&nbsp;'
+    });
     mod.olMap.addControl(mousePositionControl);
   };
 
@@ -137,18 +145,19 @@ gsc.map = (function() {
 
   mod.infoOnFeatureEvent = function(evt) {
     document.getElementById(this.nodelist).innerHTML = 'Loading... please ' +
-    'wait...';
+        'wait...';
     var view = mod.olMap.getView();
     var viewResolution = view.getResolution();
     var source = this.layer.getSource();
     var url = source.getGetFeatureInfoUrl(
-      evt.coordinate, viewResolution, view.getProjection(),
-      {'INFO_FORMAT': 'text/html',
-             'FEATURE_COUNT': this.maxFeaturesNumber
-      });
+        evt.coordinate, viewResolution, view.getProjection(),
+            {
+              'INFO_FORMAT': 'text/html',
+              'FEATURE_COUNT': this.maxFeaturesNumber
+            });
     if (url) {
       document.getElementById(this.nodelist).innerHTML = '<iframe seamless ' +
-      'src="' + url + '"></iframe>';
+          'src="' + url + '"></iframe>';
     }
   };
 
@@ -181,10 +190,10 @@ gsc.map = (function() {
   mod.filterOnAttributes = function(filterType, filter) {
     // by default, reset all filters
     var filterParams = {
-          'FILTER': null,
-          'CQL_FILTER': null,
-          'FEATUREID': null
-        };
+      'FILTER': null,
+      'CQL_FILTER': null,
+      'FEATUREID': null
+    };
     if (filter.replace(/^\s\s*/, '').replace(/\s\s*$/, '') !== '') {
       if (filterType === 'cql') {
         filterParams.CQL_FILTER = filter;
@@ -198,12 +207,12 @@ gsc.map = (function() {
     }
     // merge the new filter definitions
     mod.olMap.getLayers().forEach(function(lyr) {
-            lyr.getSource().updateParams(filterParams);
-          });
+      lyr.getSource().updateParams(filterParams);
+    });
   };
 
   mod.resetFilter = function() {
-    mod.filterOnAttributes('cql','');
+    mod.filterOnAttributes('cql', '');
   };
 
   return mod;
