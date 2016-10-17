@@ -1,4 +1,4 @@
-'use strict';
+    'use strict';
 
 gsc.datasource = (function() {
 
@@ -58,11 +58,12 @@ gsc.datasource = (function() {
    * @param {gsc.datasource.DatasourceType} type [description]
    * @param {String} description [description]
    * @param {String} updated [description]
-   * @param {String} url [description]
-   * @param {String} username [description]
-   * @param {String} password [description]
-   * @param {String} ipaddress [description]
-   * @param {String} schema [description]
+   * @param {String} url - URL to where data source may be found
+   * @param {String} username - Username
+   * @param {String} password - Password
+   * @param {String} ipaddress - IP address
+   * @param {String} schema - Name of schema
+   * @param {String} database - Name of database
    * @param {String} port [description]
    * @param {String} path [description]
    * @return {Promise.<gsc.datasource.DataSource>} [description]
@@ -78,6 +79,7 @@ gsc.datasource = (function() {
       password,
       ipaddress,
       schema,
+      database,
       port,
       path) {
 
@@ -92,6 +94,7 @@ gsc.datasource = (function() {
       password: password,
       ipaddress: ipaddress,
       schema: schema,
+      database: database,
       port: port,
       path: path
     });
@@ -158,17 +161,18 @@ gsc.datasource = (function() {
   /**
    * Update datasource
    *
-   * @param {number} datasourceId [description]
-   * @param {String} datasourcename [description]
-   * @param {String} organization [description]
-   * @param {gsc.datasource.DatasourceType} type [description]
-   * @param {String} description [description]
+   * @param {Number} datasourceId - Numeric identified of data source
+   * @param {String} datasourcename - Name of data source
+   * @param {String} organization - Numeric id of organization
+   * @param {gsc.datasource.DatasourceType} type - Type of data source
+   * @param {String} description - Description
    * @param {String} updated [description]
-   * @param {String} url [description]
-   * @param {String} username [description]
-   * @param {String} password [description]
-   * @param {String} ipaddress [description]
-   * @param {String} schema [description]
+   * @param {String} url URL of data source
+   * @param {String} username Username
+   * @param {String} password - Password
+   * @param {String} ipaddress - IP address
+   * @param {String} schema - Name of database schema
+   * @param {String} database - Name of database
    * @param {String} port [description]
    * @param {String} path [description]
    * @return {Promise.<Response>} [description]
@@ -184,6 +188,7 @@ gsc.datasource = (function() {
       password,
       ipaddress,
       schema,
+      database,
       port,
       path) {
     return gsc.doPost('updatedatasrc', {
@@ -198,6 +203,7 @@ gsc.datasource = (function() {
       password: password,
       ipaddress: ipaddress,
       schema: schema,
+      database: database,
       port: port,
       path: path
     });
