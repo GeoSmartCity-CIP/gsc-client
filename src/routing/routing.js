@@ -49,7 +49,7 @@ gsc.routing = (function() {
    * @param {double} lat1 - Latitude of the start point
    * @param {double} lon2 - Longitude of the end point
    * @param {double} lat2 - Latitude of the end point
-   * @returns {ol.layer.Vector} - The route as a GeoJSON object
+   * @returns {ol.layer.Vector} - The route as an OpenLayers layer
    * @example <caption>Calculate a route</caption>
    * gsc.routing.calculateRoute(2.8214,41.9794,2.8314,41.9694)
    *      .then(function(routeResponse) {
@@ -105,7 +105,7 @@ gsc.routing = (function() {
 
       var routeLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-          features: readFeatures,
+          features: readFeatures
         }),
         style: defaultStyleFunction
       });
