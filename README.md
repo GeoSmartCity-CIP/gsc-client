@@ -35,7 +35,7 @@ grunt jasmine
 * [wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki)
 * [Project pages](http://hub.geosmartcity.eu/gsc-client/index.html)
 * [API documentation](http://hub.geosmartcity.eu/gsc-client/doc/index.html)
-* [Examples](http://hub.geosmartcity.eu/gsc-client/examples/index.html)
+<!--* [Examples](http://hub.geosmartcity.eu/gsc-client/examples/index.html)-->
 * [Meeting timetable and minutes] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki/Meeting-timetable-and-minutes)
 
 ## Funding
