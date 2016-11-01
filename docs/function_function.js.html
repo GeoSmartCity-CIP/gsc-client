@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: function/function.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: function/function.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+gsc.function = (function() {
+
+  /**
+   *
+   * @exports gsc/function
+   */
+  var mod = {};
+
+  /**
+   * Create a new function
+   *
+   * @param {type} functionname
+   * @param {type} organization
+   * @param {type} type
+   * @param {type} description
+   * @returns {jqXHR|!jQuery.jqXHR|Promise.&lt;Object>}
+   */
+  mod.create = function(functionname,
+      organization,
+      type,
+      description) {
+
+    return gsc.doPost('createfunc', {
+      functionname: functionname,
+      organization: organization,
+      type: type,
+      description: description
+    });
+
+  };
+
+  /**
+   * Delete a function
+   *
+   * @param {Number} functionId - The numerical identifier of the function to delete
+   * @returns {Promise.&lt;Object>}
+   */
+  mod.delete = function(functionId) {
+    return gsc.doPost('deletefunc', {
+      idfunction: functionId
+    });
+  };
+
+  /**
+   * Update an existing function
+   *
+   * @param {type} idfunction
+   * @param {type} functionname
+   * @param {type} organization
+   * @param {type} type
+   * @param {type} description
+   * @returns {jqXHR|!jQuery.jqXHR|Promise.&lt;Object>}
+   */
+  mod.update = function(idfunction,
+      functionname,
+      organization,
+      type,
+      description) {
+
+    return gsc.doPost('updatefunc', {
+      idfunction: idfunction,
+      functionname: functionname,
+      organization: organization,
+      type: type,
+      description: description
+    });
+  };
+
+  /**
+   * List functions
+   *
+   * @param {Number} organizationId - The identifier of the organization for which functions should be loaded
+   * @param {String} [functionName=null]
+   * @param {Boolean} [includeAdminRecords=true]
+   * @returns {Promise.&lt;Object>}
+   * @todo This function does not return organization or type...
+   */
+  mod.list = function(organizationId,
+      functionName,
+      includeAdminRecords) {
+
+    var params = {
+      organization: organizationId
+    };
+
+    if (!gsc.util.isNull(functionName)) {
+      params.functionname = functionName;
+    }
+
+    if (!gsc.util.isNull(includeAdminRecords)) {
+      params.includeadminrecords = includeAdminRecords;
+    } else {
+      params.includeadminrecords = true;
+    }
+
+    return gsc.doPost('listfunc', params);
+  };
+
+  return mod;
+}());
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gsc_application.html">gsc/application</a></li><li><a href="module-gsc_cs.html">gsc/cs</a></li><li><a href="module-gsc_dataset.html">gsc/dataset</a></li><li><a href="module-gsc_datasource.html">gsc/datasource</a></li><li><a href="module-gsc_download.html">gsc/download</a></li><li><a href="module-gsc_editFeatures.html">gsc/editFeatures</a></li><li><a href="module-gsc_function.html">gsc/function</a></li><li><a href="module-gsc_geocode.html">gsc/geocode</a></li><li><a href="module-gsc_grouplayer.html">gsc/grouplayer</a></li><li><a href="module-gsc_layer.html">gsc/layer</a></li><li><a href="module-gsc_location.html">gsc/location</a></li><li><a href="module-gsc_map.html">gsc/map</a></li><li><a href="module-gsc_organization.html">gsc/organization</a></li><li><a href="module-gsc_permission.html">gsc/permission</a></li><li><a href="module-gsc_role.html">gsc/role</a></li><li><a href="module-gsc_routing.html">gsc/routing</a></li><li><a href="module-gsc_upload.html">gsc/upload</a></li><li><a href="module-gsc_user.html">gsc/user</a></li></ul><h3>Classes</h3><ul><li><a href="gsc.Response.html">Response</a></li><li><a href="module-gsc_application-Extent.html">Extent</a></li><li><a href="module-gsc_application-GeoServerParams.html">GeoServerParams</a></li><li><a href="module-gsc_datasource.Datasource.html">Datasource</a></li><li><a href="module-gsc_geocode.Match.html">Match</a></li><li><a href="module-gsc_grouplayer.Layer.html">Layer</a></li><li><a href="module-gsc_location.Location.html">Location</a></li><li><a href="module-gsc_permission.Permission.html">Permission</a></li><li><a href="module-gsc_routing.Route.html">Route</a></li><li><a href="module-gsc_upload.Data.html">Data</a></li></ul><h3>Namespaces</h3><ul><li><a href="gsc.html">gsc</a></li><li><a href="gsc.util.html">util</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 01 2016 14:00:02 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

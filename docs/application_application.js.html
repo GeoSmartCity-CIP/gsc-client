@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: application/application.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: application/application.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* global gsc */
+
+'use strict';
+
+gsc.application = (function() {
+
+  /**
+   *
+   * @exports gsc/application
+   */
+  var mod = {};
+
+  /**
+   * Create a new instance of a GeoServerParams object
+   *
+   * @class GeoServerParams
+   * @param {String} uri
+   * @param {String} username
+   * @param {String} password
+   * @property {String} url - The URL of the GeoServer instance, e.g. http://hub.geosmartcity.eu/geoserver/
+   * @property {String} username - The username of the GeoServer user that will publish the data
+   * @property {String} password - The corresponding password of the GeoServer user
+   */
+  mod.GeoServerParams = function(uri,
+      username,
+      password) {
+    var self = this;
+
+    self.uri = uri;
+    self.username = username;
+    self.password = password;
+  };
+
+  /**
+   * Create a new instance of a {@link gsc/application.Extent} object
+   *
+   * @class Extent
+   * @param {Number} left
+   * @param {Number} bottom
+   * @param {Number} right
+   * @param {Number} top
+   * @property {Number} left - Left coordinate
+   * @property {Number} bottom - Bottom coordinate
+   * @property {Number} right - Right coordinate
+   * @property {Number} top - Top coordinate
+   */
+  mod.Extent = function(left, bottom, right, top) {
+    var self = this;
+    self.left = left;
+    self.bottom = bottom;
+    self.right = right;
+    self.top = top;
+  };
+
+  /**
+   * Create a new application
+   *
+   * @param {String} applicationName
+   * @param {String} organization
+   * @param {String} description
+   * @param {gsc.application.GeoServerParams} geoServerParams
+   * @param {String} srs - Spatial reference system, specified on the form 'namespace:identifier', e.g. 'EPSG:4326' for WGS84 Lat/Lon
+   * @param {gsc.application.Extent} maxExtent
+   * @param {String} uri
+   * @returns {Promise.&lt;Object>}
+   */
+  mod.create = function(applicationName,
+      organization,
+      description,
+      geoServerParams,
+      srs,
+      maxExtent,
+      uri) {
+
+    return gsc.doPost('createapp', {
+      applicationname: applicationName,
+      organization: organization,
+      description: description,
+      geoserver: geoServerParams,
+      srs: srs,
+      maxextent: maxExtent,
+      uri: uri
+    });
+
+  };
+
+  /**
+   * Update an application and assign layers and group layers to it
+   *
+   * @param {Number} applicationId
+   * @param {String} applicationName
+   * @param {Number} organization
+   * @param {String} description
+   * @param {gsc.application.GeoServerParams} geoServerParams
+   * @param {String} srs - Spatial reference system, specified on the form 'namespace:identifier', e.g. 'EPSG:4326' for WGS84 Lat/Lon
+   * @param {gsc.application.Extent} maxExtent
+   * @param {String} uri
+   * @param {Object[]} layers
+   * @param {Object[]} groups
+   * @returns {Promise.&lt;Object>}
+   */
+  mod.updateAssignContent = function(applicationId,
+      applicationName,
+      organization,
+      description,
+      geoServerParams,
+      srs,
+      maxExtent,
+      uri,
+      layers,
+      groups) {
+
+    return gsc.doPost('assigntoapp', {
+      idapplication: applicationId,
+      applicationname: applicationName,
+      organization: organization,
+      description: description,
+      geoserver: geoServerParams,
+      srs: srs,
+      maxextent: maxExtent,
+      uri: uri,
+      layers: layers,
+      groups: groups
+    });
+
+  };
+
+  /**
+   * Delete an application
+   *
+   * @param {Number} applicationId - The numeric identifier of the application to delete
+   * @returns {Promise.&lt;Object>}
+   */
+  mod.delete = function(applicationId) {
+
+    return gsc.doPost('deleteapp', {
+      idapplication: applicationId
+    });
+
+  };
+
+  /**
+   * List applications
+   *
+   * @param {Number} [organizationId=null]
+   * @param {String} [applicationName='']
+   * @param {Number} [applicationId=null]
+   * @returns {jqXHR|!jQuery.jqXHR|Promise.&lt;Object>}
+   */
+  mod.list = function(organizationId,
+      applicationName,
+      applicationId) {
+
+    var params = {};
+
+    if (!gsc.util.isNull(organizationId)) {
+      params.organization = organizationId;
+    }
+    if (!gsc.util.isNull(applicationName)) {
+      params.applicationname = applicationName;
+    }
+    if (!gsc.util.isNull(applicationId)) {
+      params.idapplication = applicationId;
+    }
+
+    return gsc.doPost('listapp', params);
+
+  };
+
+  /**
+   * Publish an application to GeoServer
+   *
+   * @param {Number} applicationId - The numerical identifier of the application to publish
+   * @returns {Promise.&lt;Object>}
+   */
+  mod.publishToGeoServer = function(applicationId) {
+
+    return gsc.doPost('pubongeoserver', {
+      idapplication: applicationId
+    });
+
+  };
+
+  /**
+   * Retrieve a configuration JSON that can be used to populate a map client or similar
+   *
+   * @todo Would it be interesting to retrieve configuration for an applicationId too?
+   * @param {Number} userId - The numerical identifier of the user to retrieve application data for
+   * @returns {Promise.&lt;Object>}
+   */
+  mod.getConfiguration = function(userId) {
+
+    return gsc.doPost('getconfiguration', {
+      iduser: userId
+    });
+
+  };
+
+  return mod;
+}());
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gsc_application.html">gsc/application</a></li><li><a href="module-gsc_cs.html">gsc/cs</a></li><li><a href="module-gsc_dataset.html">gsc/dataset</a></li><li><a href="module-gsc_datasource.html">gsc/datasource</a></li><li><a href="module-gsc_download.html">gsc/download</a></li><li><a href="module-gsc_editFeatures.html">gsc/editFeatures</a></li><li><a href="module-gsc_function.html">gsc/function</a></li><li><a href="module-gsc_geocode.html">gsc/geocode</a></li><li><a href="module-gsc_grouplayer.html">gsc/grouplayer</a></li><li><a href="module-gsc_layer.html">gsc/layer</a></li><li><a href="module-gsc_location.html">gsc/location</a></li><li><a href="module-gsc_map.html">gsc/map</a></li><li><a href="module-gsc_organization.html">gsc/organization</a></li><li><a href="module-gsc_permission.html">gsc/permission</a></li><li><a href="module-gsc_role.html">gsc/role</a></li><li><a href="module-gsc_routing.html">gsc/routing</a></li><li><a href="module-gsc_upload.html">gsc/upload</a></li><li><a href="module-gsc_user.html">gsc/user</a></li></ul><h3>Classes</h3><ul><li><a href="gsc.Response.html">Response</a></li><li><a href="module-gsc_application-Extent.html">Extent</a></li><li><a href="module-gsc_application-GeoServerParams.html">GeoServerParams</a></li><li><a href="module-gsc_datasource.Datasource.html">Datasource</a></li><li><a href="module-gsc_geocode.Match.html">Match</a></li><li><a href="module-gsc_grouplayer.Layer.html">Layer</a></li><li><a href="module-gsc_location.Location.html">Location</a></li><li><a href="module-gsc_permission.Permission.html">Permission</a></li><li><a href="module-gsc_routing.Route.html">Route</a></li><li><a href="module-gsc_upload.Data.html">Data</a></li></ul><h3>Namespaces</h3><ul><li><a href="gsc.html">gsc</a></li><li><a href="gsc.util.html">util</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 01 2016 14:00:02 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

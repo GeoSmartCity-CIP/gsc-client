@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: upload/upload.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: upload/upload.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// jscs:disable maximumLineLength
+'use strict';
+
+var gsc = gsc || {};
+
+/**
+ * &lt;p>API for crowd sourcing feature of gsc.js library&lt;/p>
+ * &lt;p>Functions to handle server side crowd sourcing app.&lt;/p>
+ *
+ * @requires jQuery-2.1.4
+ * @exports gsc/upload
+ */
+gsc.upload = {
+  /**
+   * Version number of the uploading feature of gsc.js
+   * @type {String}
+   */
+  version: '1.0.0',
+  /**
+   * Byte size of the uploading file
+   * @type {Number}
+   */
+  fileSize: 8000000
+};
+
+gsc.upload.uploadForm = function(selector) {
+  var html =
+      ` &lt; div class = 'upload' >
+        &lt; form role = 'form' >
+        &lt; h4 > Upload file &lt; /h4>
+        &lt; div class = 'upload-file' >
+        &lt; div class = 'input-group' >
+        &lt; span class = 'input-group-btn' >
+        &lt; span class = 'btn btn-primary btn-file' >
+        Browse...
+        &lt; input type = 'file' required = 'true' id = 'geometryFile' accept = '.gml, .kml, .zip' >
+        &lt; /span>
+        &lt; /span>
+        &lt; input type = 'text' class = 'form-control' style = 'width: 20%'
+        readonly >
+        &lt; /div>
+        &lt; span class = 'help-block' >
+        Select.gml, .kml, .zip (containing.shp, .shx, and.dbf)
+        &lt; /span>
+        &lt; /div>
+        &lt; div class = 'epsg' >
+        &lt; div class = 'input-group' >
+        &lt; span class = 'input-group-addon' id = 'basic-addon1' > &amp; #128196;
+        &lt; /span>
+        &lt; input type = 'text' required = 'true' id = 'epsg' class = 'form-control numbersOnly'
+        style = 'width: 20%'
+    placeholder = 'EPSG'
+        aria - describedby = 'basic-addon1' >
+        &lt; /div>
+        &lt; span class = 'help-block' >
+        Provide EPSG for the reference system
+        &lt; /span>
+        &lt; /div>
+        &lt; div class = 'building-height collapse' >
+        &lt; div class = 'input-group' >
+        &lt; span class = 'input-group-addon' id = 'basic-addon1' > &amp; #127970;
+        &lt; /span>
+        &lt; input
+    type = 'text'
+        required = 'true'
+    id = 'height' class = 'form-control numbersOnly'
+        style = 'width: 20%'
+    placeholder = 'Height'
+        aria - describedby = 'basic-addon1' >
+        &lt; /div>
+        &lt; span class = 'help-block' >
+        Provide height of the building in meters
+        &lt; /span>
+        &lt; /div>
+        &lt; div class = 'inspireIdLoc' >
+        &lt; div class = 'input-group' >
+        &lt; span class = 'input-group-addon' id = 'basic-addon1' > &amp; #128448;
+        &lt; /span>
+        &lt; input
+    type = 'text'
+        id = 'inspireIdLoc'
+    class = 'form-control'
+        style = 'width: 20%'
+        aria - describedby = 'basic-addon1' >
+        &lt; /div>
+        &lt; span class = 'help-block' >
+        Field that contains the localId for Inspire
+        &lt; /span>
+        &lt; /div>
+        &lt; div class = 'inspireIdName' >
+        &lt; div class = 'input-group' >
+        &lt; span class = 'input-group-addon' id = 'basic-addon1' > &amp; #128448;
+        &lt; /span>
+        &lt; input
+    type = 'text'
+    id = 'inspireIdName'
+        class = 'form-control'
+        style = 'width: 20%'
+        aria - describedby = 'basic-addon1' >
+        &lt; /div>
+        &lt; span class = 'help-block' >
+        Field that contains the namespace for Inspire
+        &lt; /span>
+        &lt; /div>
+        &lt; button type = 'submit' class = 'btn btn-primary ' > Submit &lt; /button>
+        &lt; /form>
+        &lt; div class = 'progress' >
+        &lt; div class = 'progress-bar' aria - valuenow = '0'
+        aria - valuemin = '0' aria - valuemax = '100'
+        id = 'progressbar' style = 'min-width: 2em; width: 0' > 0 % &lt; /div>
+        &lt; /div>
+        &lt; div class = 'alert collapse' id = 'alert' role = 'alert' > ... &lt; /div>
+        &lt; /div>`      ;
+  jQuery(selector).html(html);
+
+  var script =
+      ` &lt; script >
+        jQuery(document).on('change', '.btn-file :file', function() {
+        var input = jQuery(this);
+        var label = input.val();
+        if (label.substring(3, 11) == 'fakepath') {
+            label = label.substring(12);
+        }
+        input.trigger('fileselect', [label]);
+    });
+
+    jQuery(document).ready(function() {
+        jQuery('.btn-file :file').on('fileselect', function(event,
+            label) {
+            jQuery('#progressbar').width('0%').text('0%');
+            jQuery('#alert').addClass('collapse').removeClass(
+                'alert-danger alert-success').text('');
+            var input = jQuery(this).parents('.input-group').find(
+                ':text');
+            var extension = label.substr(-3, 3);
+            if (extension === 'zip' || extension === 'gml') {
+                jQuery('.building-height').removeClass('collapse');
+            } else {
+                jQuery('.building-height').addClass('collapse');
+            }
+            if (input.length) {
+                input.val(label);
+            } else {
+                if (label) {
+                    alert(label);
+                }
+            }
+        });
+    });
+
+    jQuery('.numbersOnly').keyup(function() {
+        if (jQuery.isNumeric(this.value) === false) {
+            this.value = this.value.slice(0, -1);
+        }
+    });
+
+    progressCallback = function(progress) {
+        if (progress > 0) {
+            jQuery('#progressbar').width(progress + '%').text(progress +
+                ' %');
+        }
+    };
+
+    successCallback = function(success) {
+        jQuery('#alert').removeClass('collapse').addClass('alert-success')
+            .text('Upload successful');
+    };
+
+    failedCallback = function(error) {
+        if (error == undefined) {
+            error = '';
+        }
+        jQuery('#alert').removeClass('collapse').addClass('alert-danger')
+            .text('Upload failed ' + error);
+    };
+
+    jQuery('form').on('submit', function(e) {
+        e.preventDefault();
+        jQuery('#progressbar').width('0%').text('0%');
+        jQuery('#alert').addClass('collapse').removeClass(
+            'alert-danger alert-success').text('');
+        var fileToProcess = document.getElementById('geometryFile').files[
+            0];
+        var height = jQuery('#height').val();
+        var epsg = jQuery('#epsg').val();
+        var inspireIdLoc = jQuery('#inspireIdLoc').val();
+        var inspireIdName = jQuery('#inspireIdName').val();
+        var dataToProcess = new gsc.upload.Data(fileToProcess,
+            epsg,
+            height,
+            inspireIdLoc,
+            inspireIdName);
+        dataToProcess.send(progressCallback, successCallback, failedCallback);
+    });
+        &lt; /script>`      ;
+
+  jQuery(function() {
+    jQuery('head').append(script);
+  });
+
+  jQuery('.btn-file').css({
+    'position': 'relative',
+    'overflow': 'hidden'
+  });
+  jQuery('.btn-file input[type=file]').css({
+    'position': 'absolute',
+    'top': '0',
+    'right': '0',
+    'min-width': '100%',
+    'min-height': '100%',
+    'font-size': '100px',
+    'text-align': 'right',
+    'filter': 'alpha(opacity=0)',
+    'opacity': '0',
+    'background': 'red',
+    'cursor': 'inherit',
+    'display': 'block'
+  });
+
+  jQuery('input[readonly]').css({
+    'background-color': 'white !important',
+    'cursor': 'text !important'
+  });
+
+  jQuery('.upload')
+        .css({
+          'margin': '2em'
+        });
+
+  jQuery('.progress')
+        .css({
+          'margin-top': '1em',
+          'width': '25%'
+        });
+  jQuery('.alert').css({
+    'margin-top': '1em',
+    'width': '25%'
+  });
+};
+
+/**
+ * Create a Data with uploaded file and building height
+ *
+ * @param {File} file First element of FileList provided by input type file
+ * @param {Number} epsg EPSG for the reference system of data
+ * @param {String} [height] Height in meters of the building
+ * @param {String} [inspireIdLoc] Field that contains the localId for Inspire
+ * @param {String} [inspireIdName] Field that contains the namespace for Inspire
+ * @constructor
+ */
+gsc.upload.Data = function(file, epsg, height, inspireIdLoc, inspireIdName) {
+  /**
+   * File to send
+   * @type {File}
+   */
+  if (typeof file === undefined) {
+    this.file = new File([''], 'filename');
+  } else {
+    this.file = file;
+  }
+  /**
+   * EPSG for the reference system
+   * @type {String}
+   */
+  this.epsg = epsg;
+  /**
+   * Height of the building (for solar potential calculation) in meters
+   * @type {String}
+   */
+  this.height = height;
+  /**
+   * Name of the field that contains the localId for Inspire
+   * @type {String}
+   */
+  this.inspireIdLoc = inspireIdLoc;
+  /**
+   * Name of the field that contains the namespace for Inspire
+   * @type {String}
+   */
+  this.inspireIdName = inspireIdName;
+};
+
+/**
+ * The name of the file referenced by the File object
+ * @property {String} name of the file
+ * @name gsc.upload.Data#name
+ */
+Object.defineProperty(gsc.upload.Data.prototype, 'name', {
+  get: function() {
+    return this.file &amp;&amp; this.file.name;
+  }
+});
+
+/**
+ * Returns the last modified date of the file.
+ * Files without a known last modified date use the current date instead
+ * @property {Date} last modified date
+ * @name gsc.upload.Data#lastModifiedDate
+ */
+Object.defineProperty(gsc.upload.Data.prototype, 'lastModifiedDate', {
+  get: function() {
+    return this.file &amp;&amp; this.file.lastModifiedDate;
+  }
+});
+
+/**
+ * The size, in bytes, of the data contained in the file
+ * @property {Number} size in bytes
+ * @name gsc.upload.Data#size
+ */
+Object.defineProperty(gsc.upload.Data.prototype, 'size', {
+  get: function() {
+    return this.file &amp;&amp; this.file.size;
+  }
+});
+
+/**
+ * A string indicating the MIME type of the data contained in the Blob.
+ * If the type is unknown, this string is empty
+ * @property {String} MIME type
+ * @name gsc.upload.Data#type
+ */
+Object.defineProperty(gsc.upload.Data.prototype, 'type', {
+  get: function() {
+    return this.file &amp;&amp; this.file.type;
+  }
+});
+
+/**
+ * Checks if size of file to be uploaded is smaller or equals to
+ * config {@link gsc.upload#fileSize}
+ *
+ * @returns {Boolean} True if file size is smaller or equals to config
+ */
+gsc.upload.Data.prototype.isFileSizeCorrect = function() {
+  return (this.size &lt;= gsc.upload.fileSize);
+};
+
+/**
+ * Callback for handling upload progress percentage
+ *
+ * @callback progressCallback
+ * @param {number} Percentage
+ */
+
+/**
+ * Callback for handling upload success
+ *
+ * @callback successCallback
+ * @param {event}
+ */
+
+/**
+ * Callback for handling upload failure
+ *
+ * @callback failedCallback
+ * @param {event}
+ */
+/**
+ * Function
+ *
+ * @param {progressCallback} pc Callback that handles upload progress
+ * @param {successCallback} sc Callback that handles upload success
+ * @param {failedCallback} fc Callback that handles upload failure
+ */
+gsc.upload.Data.prototype.send = function(pc, sc, fc) {
+  if (this.isFileSizeCorrect()) {
+    var formData = new FormData();
+    formData.append('file', this.file, this.name);
+    formData.append('epsg', this.epsg);
+    formData.append('fieldHeight', this.height);
+    formData.append('fieldInspireIdLoc', this.inspireIdLoc);
+    formData.append('fieldInspireIdName', this.inspireIdName);
+    var request = new XMLHttpRequest();
+    if (pc || typeof pc === 'function') {
+      request.upload.addEventListener('progress', function(e) {
+        pc(parseInt(e.loaded / e.total * 100));
+      }, false);
+    }
+    if (sc || typeof sc === 'function') {
+      request.upload.addEventListener('load', function(e) {
+        sc(e);
+      }, false);
+    }
+    if (fc || typeof fc === 'function') {
+      request.upload.addEventListener('error', function() {
+        if (request.status === 400) {
+          fc('Format not supported');
+        } else {
+          fc();
+        }
+      }, false);
+    }
+    request.open('POST', gsc.uploadUrl(), true);
+    request.send(formData);
+  }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gsc_application.html">gsc/application</a></li><li><a href="module-gsc_cs.html">gsc/cs</a></li><li><a href="module-gsc_dataset.html">gsc/dataset</a></li><li><a href="module-gsc_datasource.html">gsc/datasource</a></li><li><a href="module-gsc_download.html">gsc/download</a></li><li><a href="module-gsc_editFeatures.html">gsc/editFeatures</a></li><li><a href="module-gsc_function.html">gsc/function</a></li><li><a href="module-gsc_geocode.html">gsc/geocode</a></li><li><a href="module-gsc_grouplayer.html">gsc/grouplayer</a></li><li><a href="module-gsc_layer.html">gsc/layer</a></li><li><a href="module-gsc_location.html">gsc/location</a></li><li><a href="module-gsc_map.html">gsc/map</a></li><li><a href="module-gsc_organization.html">gsc/organization</a></li><li><a href="module-gsc_permission.html">gsc/permission</a></li><li><a href="module-gsc_role.html">gsc/role</a></li><li><a href="module-gsc_routing.html">gsc/routing</a></li><li><a href="module-gsc_upload.html">gsc/upload</a></li><li><a href="module-gsc_user.html">gsc/user</a></li></ul><h3>Classes</h3><ul><li><a href="gsc.Response.html">Response</a></li><li><a href="module-gsc_application-Extent.html">Extent</a></li><li><a href="module-gsc_application-GeoServerParams.html">GeoServerParams</a></li><li><a href="module-gsc_datasource.Datasource.html">Datasource</a></li><li><a href="module-gsc_geocode.Match.html">Match</a></li><li><a href="module-gsc_grouplayer.Layer.html">Layer</a></li><li><a href="module-gsc_location.Location.html">Location</a></li><li><a href="module-gsc_permission.Permission.html">Permission</a></li><li><a href="module-gsc_routing.Route.html">Route</a></li><li><a href="module-gsc_upload.Data.html">Data</a></li></ul><h3>Namespaces</h3><ul><li><a href="gsc.html">gsc</a></li><li><a href="gsc.util.html">util</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 01 2016 14:00:02 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
