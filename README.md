@@ -32,11 +32,11 @@ grunt jasmine
 
 
 ## Useful links for contributors
-* [wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki)
+* [Wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki)
 * [Project pages](http://hub.geosmartcity.eu/gsc-client/index.html)
 * [API documentation](http://htmlpreview.github.io/?https://github.com/GeoSmartCity-CIP/gsc-client/blob/develop/doc/index.html)
 <!--* [Examples](http://hub.geosmartcity.eu/gsc-client/examples/index.html)-->
-* [Meeting timetable and minutes] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki/Meeting-timetable-and-minutes)
+<!--* [Meeting timetable and minutes] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki/Meeting-timetable-and-minutes) -->
 
 ## Funding
 The development of gsc.js is part-funded by the European Commission through the GeoSmartCity project.
