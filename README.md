@@ -5,7 +5,7 @@
 
 ## Useful links for contributors
 * See [Wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki) for deteailed description of the library its modules and functionality.
-* [Project pages](http://hub.geosmartcity.eu/gsc-client/index.html)
+* Visit [project pages](http://hub.geosmartcity.eu/gsc-client/index.html) to view the library description on the project site.
 * Use [API documentation](http://htmlpreview.github.io/?https://github.com/GeoSmartCity-CIP/gsc-client/blob/develop/doc/index.html) to find out implementation-level information of functionality.
 <!--* [Examples](http://hub.geosmartcity.eu/gsc-client/examples/index.html)-->
 <!--* [Meeting timetable and minutes] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki/Meeting-timetable-and-minutes) -->
