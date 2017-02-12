@@ -3,8 +3,13 @@
 
 [![Build Status](https://travis-ci.org/GeoSmartCity-CIP/gsc-client.svg?branch=develop)](https://travis-ci.org/GeoSmartCity-CIP/gsc-client)
 
-## Status
-* The library is under development
+## Useful links for contributors
+* See [Wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki) for deteailed description of the library its modules and functionality.
+* [Project pages](http://hub.geosmartcity.eu/gsc-client/index.html)
+* Use [API documentation](http://htmlpreview.github.io/?https://github.com/GeoSmartCity-CIP/gsc-client/blob/develop/doc/index.html) to find out implementation-level information of functionality.
+<!--* [Examples](http://hub.geosmartcity.eu/gsc-client/examples/index.html)-->
+<!--* [Meeting timetable and minutes] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki/Meeting-timetable-and-minutes) -->
+
 
 ## How to install
 ```bash
@@ -30,13 +35,6 @@ grunt jasmine
  * As an example you can use [this feature branch](https://github.com/GeoSmartCity-CIP/gsc-client/tree/feature/workflow-alert-event) if there is a bug, open issue
  * Start coding your feature
 
-
-## Useful links for contributors
-* [Wiki pages] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki)
-* [Project pages](http://hub.geosmartcity.eu/gsc-client/index.html)
-* [API documentation](http://htmlpreview.github.io/?https://github.com/GeoSmartCity-CIP/gsc-client/blob/develop/doc/index.html)
-<!--* [Examples](http://hub.geosmartcity.eu/gsc-client/examples/index.html)-->
-<!--* [Meeting timetable and minutes] (https://github.com/GeoSmartCity-CIP/gsc-client/wiki/Meeting-timetable-and-minutes) -->
 
 ## Funding
 The development of gsc.js is part-funded by the European Commission through the GeoSmartCity project.
